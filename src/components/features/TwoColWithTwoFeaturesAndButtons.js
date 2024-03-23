@@ -1,60 +1,90 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
-import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
-import { ReactComponent as BriefcaseIcon } from "feather-icons/dist/icons/briefcase.svg";
-import { ReactComponent as MoneyIcon } from "feather-icons/dist/icons/dollar-sign.svg";
-import TeamIllustrationSrc from "images/team-illustration-2.svg";
+import { SectionHeading } from "components/misc/Headings.js";
+
+// icons
+import { GiDiscussion } from "react-icons/gi";
+import { PiAirplaneTiltLight } from "react-icons/pi";
+import { PiPenNibLight } from "react-icons/pi";
+import { PiCodeLight } from "react-icons/pi";
+import { PiChalkboardTeacherLight } from "react-icons/pi";
+
+//img
+import teacher from "../../images/original/teacher.jpg";
 
 const Container = tw.div`relative`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
-const ImageColumn = tw(Column)`md:w-5/12 flex-shrink-0 h-80 md:h-auto`;
+
+const ImageColumn = styled(Column)`
+  ${tw`flex-shrink-0 size-fit relative w-2/3 pl-8 pb-8  md:w-5/12 
+  sm:pl-16 sm:pb-16 sm:pt-0 sm:pr-0`}`;
+  // min-w-96
+
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,
   props.textOnLeft ? tw`md:mr-12 lg:mr-16 md:order-first` : tw`md:ml-12 lg:ml-16 md:order-last`
 ]);
 
-const Image = styled.div(props => [
-  `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-contain bg-no-repeat bg-center h-full`
-]);
+const FrameStyled = styled.div`
+  ${tw`absolute bg-blue-900 h-10`};
+  height: 100%;
+  width: 100%;
+  z-index: -2;
+  border-radius: 10%;
+  top: 10%;
+  right: 15%;
+`;
+const customStyleOuterDiv = {
+  top: '15%',
+  height: '80%',
+  right: '0',
+  width: '110%',
+  position: 'absolute',
+  zIndex: '-1',
+  border: '3px solid #2b7db3',
+  borderRadius: '10%',
+};
+const customStyleInnerDiv = {
+  top: '15%',
+  height: '100%',
+  right: '2rem',
+  width: '75%',
+  position: 'absolute',
+  zIndex: '-1',
+  border: '3px solid #2b7db3',
+  borderRadius: '10%',
+};
+
 const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 
-const Subheading = tw(SubheadingBase)`text-center md:text-left`;
 const Heading = tw(
   SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight`;
-const Description = tw.p`mt-4 text-center md:text-left text-sm md:text-base lg:text-lg font-medium leading-relaxed text-secondary-100`;
+)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight text-secondary-500`;
 
 const Features = tw.div`mt-8 max-w-sm mx-auto md:mx-0`;
 const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row`;
 
 const FeatureIconContainer = styled.div`
-  ${tw`mx-auto inline-block border border-primary-500 text-center rounded-full p-2 flex-shrink-0`}
+  ${props => props.isFirst ? tw`bg-primary-900` : tw`border border-primary-900`};
+  ${tw`mx-auto inline-block text-center rounded-full p-2 flex-shrink-0 md:ml-0 md:mr-0`}
   svg {
-    ${tw`w-5 h-5 text-primary-500`}
+    ${props => props.isFirst ? tw`text-white` : tw`w-5 h-5 text-primary-900`}
   }
 `;
 
-const FeatureText = tw.div`mt-4 md:mt-0 md:ml-4 text-center md:text-left`;
-const FeatureHeading = tw.div`font-bold text-lg text-primary-500`;
-const FeatureDescription = tw.div`mt-1 text-sm`;
+const FeatureText = tw.div`mt-4 md:mt-0 md:ml-4 text-center md:text-left mx-auto`;
+const FeatureDescription = tw.div`mt-1 text-sm text-gray-900`;
 
-const PrimaryButton = tw(PrimaryButtonBase)`mt-8 md:mt-10 text-sm inline-block mx-auto md:mx-0`;
+const Highlight = styled.span`
+  ${tw`text-primary-900`}
+`;
+
 
 export default ({
-  subheading = "Our Expertise",
-  heading = (
-    <>
-      We have the most <span tw="text-primary-500">professional</span> marketing team.
-    </>
+  heading = (<>Profesorul de japoneză <Highlight>Cheșca Vicențiu</Highlight>.</>
   ),
-  description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  primaryButtonText = "See Our Portfolio",
-  primaryButtonUrl = "https://timerse.com",
   features = null,
   textOnLeft = true
 }) => {
@@ -66,15 +96,25 @@ export default ({
    */
   const defaultFeatures = [
     {
-      Icon: BriefcaseIcon,
-      title: "Professionalism",
-      description: "We have the best professional marketing people across the globe just to work with you."
+      Icon: GiDiscussion,
+      description: "Vorbitor fluent de japoneză"
     },
     {
-      Icon: MoneyIcon,
-      title: "Affordable",
-      description: "We promise to offer you the best rate we can - at par with the industry standard."
-    }
+      Icon: PiAirplaneTiltLight,
+      description: "Experiență ca ghid turistic și interpret pentru grupuri de turisti japonezi"
+    },
+    {
+      Icon: PiPenNibLight,
+      description: "Experienta de traducere online de documente si scrieri din limba japoneza in engleza si vice-versa"
+    },
+    {
+      Icon: PiCodeLight,
+      description: "Experienta de colaborare cu japonezi nativi pe proiecte de dezvoltare software"
+    },
+    {
+      Icon: PiChalkboardTeacherLight,
+      description: "Experienta de predare a limbii japoneze de peste 5 ani"
+    },
   ];
 
   if (!features) features = defaultFeatures;
@@ -83,27 +123,40 @@ export default ({
     <Container>
       <TwoColumn>
         <ImageColumn>
-          <Image imageSrc={TeamIllustrationSrc} />
+          <div>
+            <div style={{ 
+              position: 'relative',
+            }}>
+              <FrameStyled></FrameStyled>
+              <div style={customStyleOuterDiv}></div>
+              <div style={customStyleInnerDiv}></div>
+              <img 
+              src={teacher} 
+              alt="teacher photo" 
+              style={{ 
+                borderRadius: '10%',
+                boxShadow: '-1rem 1rem 1.5rem rgba(0, 0, 0, 0.4)' 
+              }}/>
+            </div>
+          </div>
         </ImageColumn>
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>
-            <Subheading>{subheading}</Subheading>
             <Heading>{heading}</Heading>
-            <Description>{description}</Description>
             <Features>
               {features.map((feature, index) => (
                 <Feature key={index}>
-                  <FeatureIconContainer>{<feature.Icon />}</FeatureIconContainer>
+                  <FeatureIconContainer isFirst={index === 0}>
+                    {React.cloneElement(<feature.Icon />, {
+                      style: { fill: index === 0 ? "white" : "", width: "24px", height: "24px" },
+                    })}
+                  </FeatureIconContainer>
                   <FeatureText>
-                    <FeatureHeading>{feature.title}</FeatureHeading>
                     <FeatureDescription>{feature.description}</FeatureDescription>
                   </FeatureText>
                 </Feature>
               ))}
             </Features>
-            <PrimaryButton as="a" href={primaryButtonUrl}>
-              {primaryButtonText}
-            </PrimaryButton>
           </TextContent>
         </TextColumn>
       </TwoColumn>

@@ -3,73 +3,60 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg";
 import { SectionHeading as HeadingTitle } from "../misc/Headings.js";
+import talismans from "../../images/original/chibiMiyabi/talismans.png";
+import read from "../../images/original/chibiMiyabi/reading.png";
+import write from "../../images/original/chibiMiyabi/writeing.png";
 
 const Container = tw.div`relative`;
 
 const SingleColumn = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
 
 const HeadingInfoContainer = tw.div`flex flex-col items-center`;
-const HeadingDescription = tw.p`mt-4 font-medium text-gray-600 text-center max-w-sm`;
 
-const Content = tw.div`mt-16`;
+const Content = tw.div`mt-12`;
 
 const Card = styled.div(props => [
-  tw`mt-24 md:flex justify-center items-center`,
+  tw`mt-16 md:mt-8 md:flex justify-between items-center gap-x-10`,
   props.reversed ? tw`flex-row-reverse` : "flex-row"
 ]);
 const Image = styled.div(props => [
   `background-image: url("${props.imageSrc}");`,
-  tw`rounded md:w-1/2 lg:w-5/12 xl:w-1/3 flex-shrink-0 h-80 md:h-144 bg-cover bg-center mx-4 sm:mx-8 md:mx-4 lg:mx-8`
+  tw`rounded md:w-1/2 lg:w-5/12 xl:w-1/3 flex-shrink-0 h-80 md:h-144 bg-contain bg-center bg-no-repeat mx-4 sm:mx-8 md:mx-4 lg:mx-8`
 ]);
-const Details = tw.div`mt-4 md:mt-0 md:max-w-md mx-4 sm:mx-8 md:mx-4 lg:mx-8`;
-const Subtitle = tw.div`font-bold tracking-wide text-secondary-100`;
-const Title = tw.h4`text-3xl font-bold text-gray-900`;
-const Description = tw.p`mt-2 text-sm leading-loose`;
-const Link = tw.a`inline-block mt-4 text-sm text-primary-500 font-bold cursor-pointer transition duration-300 border-b-2 border-transparent hover:border-primary-500`;
+const Details = tw.div`mt-4 md:mt-0 md:max-w-2xl mx-4 sm:mx-8 md:mx-4 lg:mx-8`;
+const Description = tw.p`mt-2 text-base sm:text-xl leading-loose text-gray-800`;
 
 const SvgDotPattern1 = tw(
   SvgDotPatternIcon
-)`absolute top-0 left-0 transform -translate-x-20 rotate-90 translate-y-8 -z-10 opacity-25 text-primary-500 fill-current w-24`;
+)`absolute top-0 left-0 transform -translate-x-20 rotate-90 translate-y-8 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
 const SvgDotPattern2 = tw(
   SvgDotPatternIcon
-)`absolute top-0 right-0 transform translate-x-20 rotate-45 translate-y-24 -z-10 opacity-25 text-primary-500 fill-current w-24`;
+)`absolute top-0 right-0 transform translate-x-20 rotate-45 translate-y-24 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
 const SvgDotPattern3 = tw(
   SvgDotPatternIcon
-)`absolute bottom-0 left-0 transform -translate-x-20 rotate-45 -translate-y-8 -z-10 opacity-25 text-primary-500 fill-current w-24`;
+)`absolute bottom-0 left-0 transform -translate-x-20 rotate-45 -translate-y-8 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
 const SvgDotPattern4 = tw(
   SvgDotPatternIcon
-)`absolute bottom-0 right-0 transform translate-x-20 rotate-90 -translate-y-24 -z-10 opacity-25 text-primary-500 fill-current w-24`;
+)`absolute bottom-0 right-0 transform translate-x-20 rotate-90 -translate-y-24 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
 
 export default () => {
   const cards = [
     {
-      imageSrc:
-        "https://images.unsplash.com/photo-1550699026-4114bbf4fb49?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=632&q=80",
-      subtitle: "Paid",
-      title: "Loachella, NYC",
+      imageSrc: talismans,
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      url: "https://timerse.com"
+        "Daca vrei să ajungi profesionist, să înțelegi anime fără subtitrari, planuiești să vizitezi Japonia, sau pur și simplu vrei să înveți japoneza ca hobby, ai ajuns unde trebuie. Ne mândrim cu lecțiile noastre de calitate și cu ritmul în care avansează toți cursanții noștri, iar nivelul de cunoștințe pe care îl are profesorul nostru de japoneză este net superior multor altor opțiuni de pe piață. Ideea este simplă: îți place și dorești să aloci timpul necesar ➔ progresezi cum probabil nici tu nu îți imaginezi.",
     },
 
     {
-      imageSrc:
-        "https://images.unsplash.com/photo-1543423924-b9f161af87e4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-      subtitle: "Free",
-      title: "Rock In Rio, Upstate",
+      imageSrc: read,
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      url: "https://timerse.com"
+        "Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și usor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap (≧▽≦). Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât ̶ poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Da-i drumul și întreabă! ( ￣▽￣)b",
     },
 
     {
-      imageSrc:
-        "https://images.unsplash.com/photo-1509824227185-9c5a01ceba0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=658&q=80",
-      subtitle: "Exclusive",
-      title: "Lollapalooza, Manhattan",
+      imageSrc: write,
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      url: "https://timerse.com"
+        "Poate îți dorești și să obții atestatele JLPT de limba japoneză dacă tot înveți, nu? Nu-ți face griji, noi predăm limba ca întreg, pentru a putea fi înțeleasă și folosită în deplinătatea ei, deci dacă te ții de treabă le vei trece și pe acelea cu brio. Transformă-ți visul în obiectiv și nu rata experiența unică pe care ți-o oferă învățarea limbii japoneze. Și cel mai important, ține minte: Efortul depus cum trebuie transformă pasiunea în abilități.",
     }
   ];
 
@@ -77,10 +64,7 @@ export default () => {
     <Container>
       <SingleColumn>
         <HeadingInfoContainer>
-          <HeadingTitle>Popular Events</HeadingTitle>
-          <HeadingDescription>
-            Here are some of the most popular events in New York City curated by professionals.
-          </HeadingDescription>
+          <HeadingTitle>Cursuri online de japoneză</HeadingTitle>
         </HeadingInfoContainer>
 
         <Content>
@@ -88,10 +72,7 @@ export default () => {
             <Card key={i} reversed={i % 2 === 1}>
               <Image imageSrc={card.imageSrc} />
               <Details>
-                <Subtitle>{card.subtitle}</Subtitle>
-                <Title>{card.title}</Title>
                 <Description>{card.description}</Description>
-                <Link href={card.url}>See Event Details</Link>
               </Details>
             </Card>
           ))}
