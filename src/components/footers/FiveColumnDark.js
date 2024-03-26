@@ -3,10 +3,12 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 
-import LogoImage from "images/logo-light.svg";
+import LogoImage from "images/original/logo/Logo";
 import { ReactComponent as FacebookIcon } from "images/facebook-icon.svg";
 import { ReactComponent as TwitterIcon } from "images/twitter-icon.svg";
 import { ReactComponent as YoutubeIcon } from "images/youtube-icon.svg";
+import { SiGmail as GmailIcon } from "react-icons/si";
+import { IoLogoWhatsapp as WhatsAppIcon } from "react-icons/io";
 
 const Container = tw.div`relative bg-gray-900 text-gray-100 -mx-8 -mb-8 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-16 pb-8`
@@ -19,7 +21,7 @@ const ColumnHeading = tw.h5`font-bold uppercase`;
 
 const LinkList = tw.ul`mt-4 text-sm font-medium`;
 const LinkListItem = tw.li`mt-3`;
-const Link = tw.a`border-b-2 border-transparent hocus:text-gray-300 hocus:border-gray-100 pb-1 transition duration-300`;
+const Link = tw.a`border-b-2 border-transparent hocus:text-gray-300 hocus:border-gray-100 pb-1 transition duration-300 flex gap-2 items-center`;
 
 const LogoContainer = tw.div`flex items-center justify-center lg:justify-start`;
 const LogoImg = tw.img`w-8`;
@@ -29,7 +31,7 @@ const CompanyAddress = tw.p`mt-4 max-w-xs font-medium text-sm mx-auto lg:mx-0 lg
 
 const SocialLinksContainer = tw.div`mt-4 text-center lg:text-left`;
 const SocialLink = styled.a`
-  ${tw`cursor-pointer inline-block p-2 rounded-full bg-gray-100 text-gray-900 hover:bg-gray-500 transition duration-300 mr-4 last:mr-0`}
+  ${tw`cursor-pointer inline-block p-2 rounded-full bg-gray-100 text-gray-900 hover:bg-blue-600 transition duration-300 mr-4 mt-2 last:mr-0`}
   svg {
     ${tw`w-4 h-4`}
   }
@@ -48,77 +50,79 @@ export default () => {
           <CompanyColumn>
             <LogoContainer>
               <LogoImg src={LogoImage} />
-              <LogoText>Treact Inc.</LogoText>
+              <LogoText>Blue Kitsunebi</LogoText>
             </LogoContainer>
             <CompanyAddress>
-              123 Road, New Startup Building
-              Carter Road, San Francisco
-              California 40234
+              <div style={{display: 'flex', gap: '0.5rem', alignItems: 'center',}}><WhatsAppIcon /> WhatsApp</div> 
+              <div>+40 745 984 726</div>
             </CompanyAddress>
             <SocialLinksContainer>
-              <SocialLink href="https://facebook.com">
+              {/* <SocialLink href="https://www.facebook.com/vicentiu.chesca">
                 <FacebookIcon />
-              </SocialLink>
-              <SocialLink href="https://twitter.com">
+              </SocialLink> */}
+              {/* <SocialLink href="https://twitter.com">
                 <TwitterIcon />
-              </SocialLink>
-              <SocialLink href="https://youtube.com">
+              </SocialLink> */}
+              {/* <SocialLink href="https://youtube.com">
                 <YoutubeIcon />
-              </SocialLink>
+              </SocialLink> */}
             </SocialLinksContainer>
           </CompanyColumn>
           <Column>
-            <ColumnHeading>Quick Links</ColumnHeading>
+            {/* <ColumnHeading>Legal</ColumnHeading> */}
             <LinkList>
               <LinkListItem>
-                <Link href="#">Blog</Link>
+                <Link href="#">Cursuri de japoneza</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">FAQs</Link>
+                <Link href="#">Intrebari frecvente</Link>
               </LinkListItem>
-              <LinkListItem>
-                <Link href="#">Support</Link>
-              </LinkListItem>
-              <LinkListItem>
-                <Link href="#">About Us</Link>
-              </LinkListItem>
+              {/* <LinkListItem>
+                <Link href="#">Terms of Service</Link>
+              </LinkListItem> */}
+              {/* <LinkListItem>
+                <Link href="#">Disclaimer</Link>
+              </LinkListItem> */}
             </LinkList>
           </Column>
           <Column>
-            <ColumnHeading>Product</ColumnHeading>
+            {/* <ColumnHeading>Contact</ColumnHeading> */}
             <LinkList>
               <LinkListItem>
-                <Link href="#">Log In</Link>
+                <Link href="#"> <GmailIcon style={{fontSize: '1rem'}}/> bluekitsunebi@gmail.com</Link>
+                <SocialLink href="https://www.facebook.com/vicentiu.chesca">
+                  <FacebookIcon />
+                </SocialLink>
+              </LinkListItem>
+              {/* <LinkListItem>
+                <Link href="#">FAQs</Link>
+              </LinkListItem> */}
+              {/* <LinkListItem>
+                <Link href="#">Support</Link>
+              </LinkListItem> */}
+              {/* <LinkListItem>
+                <Link href="#">About Us</Link>
+              </LinkListItem> */}
+            </LinkList>
+          </Column>
+          <Column>
+            {/* <ColumnHeading>Legal</ColumnHeading> */}
+            <LinkList>
+              <LinkListItem>
+                <Link href="#">Termenii si conditiile</Link>
               </LinkListItem>
               <LinkListItem>
-                <Link href="#">Personal</Link>
+                <Link href="#">Politica de confidentialitate</Link>
               </LinkListItem>
-              <LinkListItem>
+              {/* <LinkListItem>
                 <Link href="#">Business</Link>
               </LinkListItem>
               <LinkListItem>
                 <Link href="#">Team</Link>
-              </LinkListItem>
+              </LinkListItem> */}
             </LinkList>
           </Column>
-          <Column>
-            <ColumnHeading>Legal</ColumnHeading>
-            <LinkList>
-              <LinkListItem>
-                <Link href="#">GDPR</Link>
-              </LinkListItem>
-              <LinkListItem>
-                <Link href="#">Privacy Policy</Link>
-              </LinkListItem>
-              <LinkListItem>
-                <Link href="#">Terms of Service</Link>
-              </LinkListItem>
-              <LinkListItem>
-                <Link href="#">Disclaimer</Link>
-              </LinkListItem>
-            </LinkList>
-          </Column>
-          <Column>
+          {/* <Column>
             <ColumnHeading>Contact</ColumnHeading>
             <LinkList>
               <LinkListItem>
@@ -134,12 +138,12 @@ export default () => {
                 <Link href="#">Report Abuse</Link>
               </LinkListItem>
             </LinkList>
-          </Column>
+          </Column> */}
         </FiveColumns>
         <Divider/>
         <CopyrightAndCompanyInfoRow>
-          <CopyrightNotice>&copy; Copyright 2020, Treact Inc.</CopyrightNotice>
-          <CompanyInfo>An Internet Company.</CompanyInfo>
+          <CopyrightNotice>&copy; Copyright 2024, Kitsunebi Miyabi SRL</CopyrightNotice>
+          <CompanyInfo>Cursuri Online.</CompanyInfo>
         </CopyrightAndCompanyInfoRow>
       </Content>
     </Container>

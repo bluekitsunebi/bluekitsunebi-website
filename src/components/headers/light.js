@@ -25,8 +25,6 @@ const IconWrapper = tw.span`inline-block text-lg align-middle`;
 
 const NavLinkBase = styled.a(() => [
   tw`text-lg my-2 lg:text-sm lg:mx-6 lg:my-0 font-semibold tracking-wide transition duration-300 pb-1 border-b-2 border-transparent 
-
-  // bg-red-600 
   hocus:border-primary-500 hocus:text-primary-500`,
 ]);
 

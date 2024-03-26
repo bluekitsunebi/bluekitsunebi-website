@@ -19,10 +19,10 @@ const SwitchButton = styled.button`
   ${props => props.active && tw`bg-primary-900 text-gray-100`}
 `;
 
-const PlansContainer = tw.div`flex justify-evenly flex-col lg:flex-row items-center lg:items-stretch relative`;
+const PlansContainer = tw.div`flex justify-evenly flex-col lg:flex-row items-center lg:items-stretch relative lg:gap-8 xl:gap-16`;
 
 const Plan = styled.div`
-  ${tw`w-full max-w-sm mt-16 lg:mr-8 lg:last:mr-0 text-center px-8 rounded-lg shadow relative pt-2 text-gray-900 bg-white flex flex-col`}
+  ${tw`w-full max-w-sm mt-16 text-center px-8 rounded-lg shadow relative pt-2 text-gray-900 bg-white flex flex-col`}
   .planHighlight {
     ${tw`rounded-t-lg absolute top-0 inset-x-0 h-2`}
   }
@@ -175,22 +175,22 @@ export default ({
       duration: ["1 oră", "1 oră", "1 oră",],
       mainFeature: "Prima lecție gratis",
       features: [
-        ["adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "materiale personalizate pe nivelul grupului", 
-        "profesor cu nivel avansat de japoneză", 
-        "asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
+        "Materiale personalizate pe nivelul grupului", 
+        "Profesor cu nivel avansat de japoneză", 
+        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
         "(plata o dată la 6 lecții)",],
 
-        ["adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "materiale personalizate pe nivelul grupului", 
-        "profesor cu nivel avansat de japoneză", 
-        "asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
+        "Materiale personalizate pe nivelul grupului", 
+        "Profesor cu nivel avansat de japoneză", 
+        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
         "(plata o dată la 6 lecții)",],
 
-        ["adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "materiale personalizate pe nivelul grupului", 
-        "profesor cu nivel avansat de engleză", 
-        "asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
+        "Materiale personalizate pe nivelul grupului", 
+        "Profesor cu nivel avansat de engleză", 
+        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
         "(plata o dată la 6 lecții)",]
       ],
       featured: true,
@@ -202,10 +202,10 @@ export default ({
       duration: ["", "", ""],
       mainFeature: "Prima lecție gratis",
       features: [
-        ["curs special axat pe japoneză vorbită în anime", 
-        "pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
-        ["curs special axat pe japoneză vorbită în anime", 
-        "pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
+        ["Curs special axat pe japoneză vorbită în anime", 
+        "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
+        ["Curs special axat pe japoneză vorbită în anime", 
+        "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
         [],
       ],
       disabled: true,
@@ -215,7 +215,7 @@ export default ({
   if (!plans) plans = defaultPlans;
 
   const [activeLanguageIndex, setActiveLanguageIndex] = useState(0);
-  const [activeDurationIndex, setActiveDurationIndex] = useState(0);
+  const [activeDurationIndex, setActiveDurationIndex] = useState(1);
 
   const highlightGradientsCss = [
     css`
@@ -267,14 +267,16 @@ export default ({
                   ((index !== 0) ? <span className="duration">{plan.duration[activeLanguageIndex]}</span>
                   : <DurationSelector>
                     {durations.map((duration, durationIndex) => (
-                      <span style={{display:'flex',flexDirection:'row', gap: '0.5rem', alignItems: 'center'}}>
+                      <span 
+                        style={{display:'flex',flexDirection:'row', gap: '0.5rem', alignItems: 'center', width:'100%'}}
+                        onClick={() => setActiveDurationIndex(durationIndex)}
+                      >
                         <SelectButton 
                           active={activeDurationIndex === durationIndex} 
                           key={durationIndex}
-                          onClick={() => setActiveDurationIndex(durationIndex)}
                           >
                         </SelectButton>
-                        <span style={{textAlign:'start'}}>{duration.selectorText}</span>
+                        <span style={{textAlign:'start', width:'100%'}}>{duration.selectorText}</span>
                       </span>
 
                     ))}

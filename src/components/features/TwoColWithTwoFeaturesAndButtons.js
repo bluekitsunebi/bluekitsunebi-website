@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.js";
 
 // icons
-import { GiDiscussion } from "react-icons/gi";
+import { FaRegComments } from "react-icons/fa6";
 import { PiAirplaneTiltLight } from "react-icons/pi";
 import { PiPenNibLight } from "react-icons/pi";
 import { PiCodeLight } from "react-icons/pi";
@@ -18,9 +18,9 @@ const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 
 const ImageColumn = styled(Column)`
-  ${tw`flex-shrink-0 size-fit relative w-2/3 pl-8 pb-8  md:w-5/12 
+  ${tw`flex-shrink-0 size-fit relative w-2/3 pl-8 pb-8 min-w-64
+  md:w-5/12 
   sm:pl-16 sm:pb-16 sm:pt-0 sm:pr-0`}`;
-  // min-w-96
 
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,
@@ -70,7 +70,7 @@ const FeatureIconContainer = styled.div`
   ${props => props.isFirst ? tw`bg-primary-900` : tw`border border-primary-900`};
   ${tw`mx-auto inline-block text-center rounded-full p-2 flex-shrink-0 md:ml-0 md:mr-0`}
   svg {
-    ${props => props.isFirst ? tw`text-white` : tw`w-5 h-5 text-primary-900`}
+    ${tw`w-5 h-5 text-primary-900`}
   }
 `;
 
@@ -96,7 +96,7 @@ export default ({
    */
   const defaultFeatures = [
     {
-      Icon: GiDiscussion,
+      Icon: FaRegComments,
       description: "Vorbitor fluent de japoneză"
     },
     {
@@ -146,9 +146,9 @@ export default ({
             <Features>
               {features.map((feature, index) => (
                 <Feature key={index}>
-                  <FeatureIconContainer isFirst={index === 0}>
+                  <FeatureIconContainer>
                     {React.cloneElement(<feature.Icon />, {
-                      style: { fill: index === 0 ? "white" : "", width: "24px", height: "24px" },
+                      style: { width: "24px", height: "24px" },
                     })}
                   </FeatureIconContainer>
                   <FeatureText>

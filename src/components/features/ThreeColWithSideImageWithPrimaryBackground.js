@@ -8,8 +8,8 @@ import { SectionHeading } from "components/misc/Headings.js";
 import { IoHeart } from "react-icons/io5";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaHandSparkles } from "react-icons/fa";
-import { FaComments } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
+import { FaPenRuler } from "react-icons/fa6";
 
 const Container = tw.div`relative bg-primary-900 -mx-8 px-8 text-gray-100`;
 
@@ -73,13 +73,13 @@ export default ({
       gridColumn: "3 / span 2", 
       gridRow: "3 / span 1"
     },
-    { icon: <FaLightbulb 
+    { icon: <FaPenRuler
       style={{ fontSize: '32px' }} />, 
       title: ["personalizate pe ", "nivelul și ritmul de studiu", " al cursanților"],
-      gridColumn: "5 / span 2", 
+      gridColumn: "5 / span 2",
       gridRow: "3 / span 1"
     },
-    { icon: <FaComments 
+    { icon: <FaLightbulb 
       style={{ fontSize: '32px' }} />, 
       title: ["", "răspuns la orice întrabare", " chiar și în afara orelor de curs, în decurs de 24 de ore"],
       gridColumn: "2 / span 2", 

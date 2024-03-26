@@ -34,6 +34,7 @@ import TwoColContactUsWithIllustrationFullForm from "components/forms/TwoColCont
 import TwoColumnWithInput from "components/hero/TwoColumnWithInput";
 import FiveColumnDark from "components/footers/FiveColumnDark";
 import BackgroundAsImage from "components/hero/BackgroundAsImage";
+import GetStarted from "components/cta/GetStarted";
 
 /* Hero */
 const Row = tw.div`flex`;
@@ -154,6 +155,7 @@ export default ({
       <ThreePlans />
       <SingleCol />
       <TwoColContactUsWithIllustrationFullForm />
+      <GetStarted />
       <FiveColumnDark />
     </AnimationRevealPage>
     // <AnimationRevealPage disabled>
