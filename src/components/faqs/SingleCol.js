@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { SectionHeading } from "components/misc/Headings.js";
-import { Container, ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
 import QuestionsImage from "images/original/chibiMiyabi/faq.png";
 
-const Heading = tw(SectionHeading)`w-full text-indigo-500`;
 
+const Container = tw.div`relative mx-8`;
+const Heading = tw(SectionHeading)`w-full text-indigo-500`;
 
 const TwoColumn = tw.div`flex flex-col gap-20 md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -56,17 +56,17 @@ export default ({
     {
       question: "Cum se efectueaza plata ?",
       answer:
-        "Plata se efectueaza dupa sedinta gratis de inceput, semnarea contractului si primirea facturii, in avans pentru un numar de 6 sedinte, prin transfer bancar (gasiti datele in rubrica contact), punand numele elevului in descriere."
+        "Plata se efectuează după ședintâța gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
     },
     {
-      question: "Daca nu pot intra intr-o zi, ce se intampla cu sedinta platita ?",
+      question: "Dacă nu pot intra într-o zi, ce se întamplă cu ședința plătită ?",
       answer:
-        "Pentru cei ce au ales un program individual de studiu, este posibila mutarea acesteia in alta zi din urmatoarele 4 saptamani. Cei carora li se preda in sistem grup vor pierde din pacate sedinta platita daca motivul absentarii nu este unul strict obiectiv."
+        "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din pacăte ședința plătită dacă motivul absentării nu este unul strict obiectiv."
     },
     {
-      question: "Cum pot beneficia de asistenta oferita in afara orelor de curs ?",
+      question: "Cum pot beneficia de asistența oferită în afara orelor de curs ?",
       answer:
-        "Ne puteti pune intrebari privind limba studiata prin mail sau prin chat pe orice retea de socializare. Aveti dreptul la cate 4 intrebari deodata iar raspunsul va veni in decurs de 24 de ore."
+        "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
     },
   ],
 }) => {
@@ -79,8 +79,6 @@ export default ({
 
   return (
     <Container>
-  
-        
         <TwoColumn>
           <ImageColumn>
             <Image imageSrc={QuestionsImage}></Image>
@@ -128,7 +126,6 @@ export default ({
             </FAQSContainer>
           </TextColumn>
         </TwoColumn>
-
       <DecoratorBlob1/>
       <DecoratorBlob2 />
     </Container>

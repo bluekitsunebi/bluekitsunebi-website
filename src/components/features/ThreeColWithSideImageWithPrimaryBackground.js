@@ -11,7 +11,7 @@ import { FaHandSparkles } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
 import { FaPenRuler } from "react-icons/fa6";
 
-const Container = tw.div`relative bg-primary-900 -mx-8 px-8 text-gray-100`;
+const Container = tw.div`relative bg-primary-900 mx-0 px-8 text-gray-100`;
 
 const ThreeColumnContainer = styled.div`
   ${tw`flex flex-col items-center md:items-stretch md:flex-row flex-wrap md:justify-center max-w-screen-xl mx-auto py-20 md:py-24 xl:grid xl:grid-cols-6 md:gap-x-8 xl:gap-y-4`}
@@ -43,10 +43,9 @@ const Card = styled.div`
   .title {
     ${tw`tracking-wider font-bold text-xl leading-none`}
   }
-
-  // 
 `;
 
+const Highlight = tw.span`px-1 py-0 text-gray-200 bg-primary-1000`;
 
 export default ({
   cards = null,
@@ -106,13 +105,7 @@ export default ({
               <span className="textContainer">
                 <span className="title">
                   <span>{card.title[0]}</span>
-                  <span 
-                    style={{
-                      backgroundImage: 'linear-gradient(to bottom, transparent 50%, #1a4b6b 50%)',
-                      backgroundColor: 'transparent',
-                      padding: '0 0.2rem 0 0.2rem'
-                    }}
-                  >{card.title[1]}</span>
+                  <Highlight>{card.title[1]}</Highlight>
                   <span>{card.title[2]}</span>
                 </span>
               </span>

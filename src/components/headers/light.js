@@ -6,7 +6,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 
-import { Logo } from "images/original/logo/index.js";
+import Logo from "images/original/logo.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as CloseIcon } from "feather-icons/dist/icons/x.svg";
 
@@ -110,10 +110,13 @@ export default ({ roundedHeaderButton = false, logoLink, links, className, colla
 
   const defaultLogoLink = (
     <LogoLink href="/">
-      <div>
-      <Logo width="60" height="60"/>
-      </div>
-      Blue Kitsunebi
+      <img 
+        width="60" 
+        height="60"
+        src={Logo}
+        alt="logo"
+      />
+        Blue Kitsunebi
     </LogoLink>
   );
 

@@ -13,8 +13,10 @@ import { PiChalkboardTeacherLight } from "react-icons/pi";
 //img
 import teacher from "../../images/original/teacher.jpg";
 
-const Container = tw.div`relative`;
-const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
+const Container = tw.div`relative mx-8`;
+const TwoColumn = tw.div`flex flex-wrap flex-col justify-between max-w-screen-xl mx-auto py-20 
+sm:flex-row 
+md:py-24 md:items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 
 const ImageColumn = styled(Column)`
@@ -22,9 +24,11 @@ const ImageColumn = styled(Column)`
   md:w-5/12 
   sm:pl-16 sm:pb-16 sm:pt-0 sm:pr-0`}`;
 
+const Image = tw.div`relative flex`;
+
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,
-  props.textOnLeft ? tw`md:mr-12 lg:mr-16 md:order-first` : tw`md:ml-12 lg:ml-16 md:order-last`
+  props.textOnLeft ? tw`md:order-first md:pr-12 lg:pr-16` : tw`md:ml-12 lg:ml-16 md:order-last`
 ]);
 
 const FrameStyled = styled.div`
@@ -113,7 +117,7 @@ export default ({
     },
     {
       Icon: PiChalkboardTeacherLight,
-      description: "Experienta de predare a limbii japoneze de peste 5 ani"
+      description: "Experienta de predare a limbii japoneze de peste 6 ani"
     },
   ];
 
@@ -123,10 +127,7 @@ export default ({
     <Container>
       <TwoColumn>
         <ImageColumn>
-          <div>
-            <div style={{ 
-              position: 'relative',
-            }}>
+            <Image>
               <FrameStyled></FrameStyled>
               <div style={customStyleOuterDiv}></div>
               <div style={customStyleInnerDiv}></div>
@@ -137,8 +138,7 @@ export default ({
                 borderRadius: '10%',
                 boxShadow: '-1rem 1rem 1.5rem rgba(0, 0, 0, 0.4)' 
               }}/>
-            </div>
-          </div>
+            </Image>
         </ImageColumn>
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>

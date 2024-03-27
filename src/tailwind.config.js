@@ -3,6 +3,11 @@ module.exports = {
   important: false,
   separator: ':',
   theme: {
+    extend: {
+      width: {
+        fit: 'fit-content',
+      },
+    },
     screens: {
       sm: '640px',
       md: '768px',
@@ -26,6 +31,7 @@ module.exports = {
         700: '#318ecc',
         800: '#2b7db3',
         900: '#256b99',
+        1000: '#1a4b6b',
       },
 
       secondary: {

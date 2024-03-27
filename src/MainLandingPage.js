@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import { Rnd } from "react-rnd";
 import { motion } from "framer-motion";
@@ -35,6 +35,16 @@ import TwoColumnWithInput from "components/hero/TwoColumnWithInput";
 import FiveColumnDark from "components/footers/FiveColumnDark";
 import BackgroundAsImage from "components/hero/BackgroundAsImage";
 import GetStarted from "components/cta/GetStarted";
+import Header from "components/headers/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { setWasRendered, setIsResizing } from "store/homeSectionSlice";
+import { setColor } from "store/headerSlice";
+import { switchWasClicked } from "store/routerSlice";
+
+// SCROLL TO TOP ON PAGE RELOAD
+window.onbeforeunload = function () {
+  window.scrollTo(0, 0);
+};
 
 /* Hero */
 const Row = tw.div`flex`;
@@ -146,16 +156,135 @@ export default ({
     "Fully Customizable"
   ];
 
+  
+
+  // SCROLL TO SECTION
+
+  const headerHeight = useSelector((state) => state.header.height);
+  const headerRef = useRef(null);
+  const heroSectionRef = useRef(null);
+  const aboutSectionRef = useRef(null);
+  const whySectionRef = useRef(null);
+  const profesorSectionRef = useRef(null);
+  const coursesSectionRef = useRef(null);
+  const faqSectionRef = useRef(null);
+  const contactSectionRef = useRef(null);
+  const detailsSectionRef = useRef(null);
+
+  const dispatch = useDispatch();
+
+  const previousLocation = useSelector((state) => state.router.currentLocation);
+  const link = useSelector((state) => state.router.link);
+  const toSection = useSelector((state) => state.router.toSection);
+  const wasClicked = useSelector((state) => state.router.wasClicked);
+
+  const [isAllRendered, setIsAllRendered] = useState(false);
+  const handleComponentRender = () => {
+    if (
+      heroSectionRef.current
+    ) {
+      setIsAllRendered(true);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      wasClicked &&
+      link === "/" &&
+      previousLocation !== "/" &&
+      isAllRendered
+    ) {
+      let element;
+      if (toSection === "heroSection") {
+        element = heroSectionRef.current;
+      } else if (toSection === "aboutSection") {
+        element = aboutSectionRef.current;
+      } else if (toSection === "profesorSection") {
+        element = profesorSectionRef.current;
+      } else if (toSection === "coursesSection") {
+        element = coursesSectionRef.current;
+      } else if (toSection === "FAQsection") {
+        element = faqSectionRef.current;
+      } else if (toSection === "contactSection") {
+        element = contactSectionRef.current;
+      }
+
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        window.scrollTo({
+          top: rect.top + scrollTop - headerHeight,
+          behavior: "smooth",
+        });
+        dispatch(switchWasClicked());
+      }
+    }
+  }, [
+    isAllRendered,
+    wasClicked,
+    link,
+    previousLocation,
+    toSection,
+    headerHeight,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    dispatch(setColor("transparent"));
+  }, [window.onbeforeunload]);
+
+  useEffect(() => {
+    dispatch(setWasRendered("true"));
+  }, [isAllRendered]);
+
+  // DETECT WINDOW RESIZE
+
+  const isResizing = useSelector((state) => state.home.isResizing);
+
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  useEffect(() => {
+    const handleResizeStart = () => {
+      if (!isResizing) {
+        dispatch(setIsResizing(true));
+      }
+    };
+    const handleResizeEnd = debounce(() => {
+      if (isResizing) {
+        dispatch(setIsResizing(false));
+      }
+    }, 100);
+    window.addEventListener("resize", handleResizeStart);
+    window.addEventListener("resize", handleResizeEnd);
+    return () => {
+      window.removeEventListener("resize", handleResizeStart);
+      window.removeEventListener("resize", handleResizeEnd);
+    };
+  }, [isResizing, dispatch]);
+
   return (
     <AnimationRevealPage disabled>
-      <BackgroundAsImage />
-      <VerticalWithAlternateImageAndText />
-      <ThreeColWithSideImageWithPrimaryBackground />
-      <TwoColWithTwoFeaturesAndButtons />
-      <ThreePlans />
-      <SingleCol />
-      <TwoColContactUsWithIllustrationFullForm />
-      <GetStarted />
+      <Header ref={headerRef}/>
+      <BackgroundAsImage ref={heroSectionRef} onRender={handleComponentRender}/>
+      <VerticalWithAlternateImageAndText ref={aboutSectionRef} />
+      <ThreeColWithSideImageWithPrimaryBackground ref={whySectionRef}/>
+      <TwoColWithTwoFeaturesAndButtons ref={profesorSectionRef}/>
+      <ThreePlans ref={coursesSectionRef}/>
+      <SingleCol ref={faqSectionRef}/>
+      <TwoColContactUsWithIllustrationFullForm ref={contactSectionRef} />
+      <GetStarted ref={detailsSectionRef}/>
       <FiveColumnDark />
     </AnimationRevealPage>
     // <AnimationRevealPage disabled>

@@ -1,0 +1,53 @@
+.logoWithText {
+    display: flex;
+    align-items: center;
+    width: 20rem;
+}
+
+.logo {
+    height: 4rem;
+    margin-right: 1rem;
+}
+
+.logoName{
+    display:flex;
+    gap: 0.7rem;
+    justify-content: center;
+    color: aliceblue;
+    font-size: 2rem;
+    font-family: "Shantell Sans", "Apple Casual", "Chilanka";
+}
+
+.logoName p {
+    margin: 0;
+}
+
+@media (max-width: 550px) {
+    .logoWithText {
+        width: fit-content;
+    }
+
+    .logo {
+        height: 2.5rem;
+    }
+
+    .logoName {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .logo {
+        height: 2rem;
+    }
+
+    .logoName {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 220px) {
+    /* .logoName {
+        display: none;
+    } */
+}
