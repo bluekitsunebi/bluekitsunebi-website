@@ -196,12 +196,16 @@ useEffect(() => {
               placeholder="Email" />
 
               <Input 
-              required 
               onFocus={handleInputFocus}
               type="text" 
               autoComplete="phone" 
               name="phone" 
-              placeholder="Telefon" />
+              placeholder="Telefon" 
+              onKeyPress={(event) => {
+                if (!/[0-9+]/.test(event.key)) {
+                  event.preventDefault();
+                }
+              }} />
 
               <Textarea 
               required 
