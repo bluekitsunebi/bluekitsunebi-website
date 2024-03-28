@@ -14,7 +14,12 @@ import emailjs from "@emailjs/browser";
 import {
   setIsSend,
   setIsSending,
+  setAccord,
 } from "../../store/formSlice";
+import { FaCheckCircle } from "react-icons/fa";
+import { FaRegCircle } from "react-icons/fa";
+import { ImSpinner9 as SpinIcon } from "react-icons/im";
+import { BsFillSendCheckFill as SendIcon } from "react-icons/bs";
 
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -38,9 +43,14 @@ const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none f
 const Textarea = styled(Input).attrs({as: "textarea"})`
   ${tw`h-24`}
 `
+const Checkbox = tw.p`text-base text-gray-600 mt-5 whitespace-normal`;
+const Icon = tw.span`text-lg mr-2 w-fit h-fit text-blue-500 inline-block`;
+const Link = tw.span`hover:text-blue-500 transition duration-300 cursor-pointer`;
+
+
 const Highlight = tw.span`text-primary-500`;
 
-const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8 bg-primary-500`;
+const SubmitButton = tw(PrimaryButtonBase)` mt-8 bg-primary-500`;
 
 const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 transform: scale(-1, -1) translateX(60%);
@@ -57,10 +67,15 @@ export default function ContactSection({
   // SET SECTION Y AXIS POSITION
 
 const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const accord = useSelector((state) => state.form.accord);
 const contactSectionRef = useRef(null);
 const dispatch = useDispatch();
 let paddingBottom = 0;
 let paddingTop = 0;
+
+const handleAccord = () => {
+  dispatch(setAccord(!accord));
+}
 
 useEffect(() => {
   if (homeWasRendered === "true") {
@@ -90,6 +105,9 @@ useEffect(() => {
 
   const sendEmail = (e) => {
     e.preventDefault();
+    if (!accord) {
+      return;
+    }
     dispatch(setIsSending(true));
 
     let templateParams = {
@@ -97,6 +115,7 @@ useEffect(() => {
       lastName: e.target.elements.lastname.value,
       email: e.target.elements.email.value,
       message: e.target.elements.message.value,
+      checkbox: accord ? 'Sunt de acord' : 'Nu sunt de acord',
     };
     const templateId = `contactForm_ro`;
 
@@ -134,15 +153,22 @@ useEffect(() => {
               </Heading>
             <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
 
-              <Input type="text" name="firstname" placeholder="Prenume" />
+              <Input required type="text" autoComplete="given-name" name="firstname" placeholder="Prenume" />
 
-              <Input type="text" name="lastname" placeholder="Nume de familie" />
+              <Input required type="text" autoComplete="family-name" name="lastname" placeholder="Nume de familie" />
 
-              <Input type="email" name="email" placeholder="Email" />
+              <Input required type="email" autoComplete="email" name="email" placeholder="Email" />
 
-              <Textarea name="message" placeholder="Mesaj" />
+              <Textarea required name="message" placeholder="Mesaj" />
 
-              <SubmitButton type="submit">{!isSend ? 'Trimite' : 'Trimis'}</SubmitButton>
+              <Checkbox onClick={() => handleAccord()}>
+                <Icon>{!accord ? 
+                <FaRegCircle></FaRegCircle> : 
+                <FaCheckCircle></FaCheckCircle>
+                }</Icon>
+                Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și <Link href="#">Politica de confidentialitate</Link>
+              </Checkbox>
+              <SubmitButton type="submit">{isSend ? `${<SendIcon/>} Trimis` : isSending ? `${<SpinIcon />} Se trimite` : 'Trimite' }</SubmitButton>
             </Form>
           </TextContent>
         </TextColumn>

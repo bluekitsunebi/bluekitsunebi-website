@@ -7,6 +7,9 @@ module.exports = {
       width: {
         fit: 'fit-content',
       },
+      height: {
+        fit: 'fit-content',
+      },
       top: {
         '100': '100%',
         '30': '30%',
