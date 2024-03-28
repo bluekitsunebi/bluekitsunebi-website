@@ -31,6 +31,7 @@ function Button(props) {
   const courseLanguage = props.courseLanguage;
   const module = props.module;
   const selectedValue = props.selectedValue;
+  const behavior = props.behavior === "smooth" ? "smooth" : props.behavior === "instant" ? "instant" : "instant";
 
   // get the website language
   let language = useSelector((state) => state.websiteLanguage.language);
@@ -42,40 +43,42 @@ function Button(props) {
   const aboutSectionPosition = useSelector(
     (state) => state.aboutSection.yAxisPosition
   );
-  const contactSectionPosition = useSelector(
-    (state) => state.contactSection.yAxisPosition
+  const profesorSectionPosition = useSelector(
+    (state) => state.profesorSection.yAxisPosition
+  );
+  const coursesSectionPosition = useSelector(
+    (state) => state.coursesSection.yAxisPosition
   );
   const FAQsectionPosition = useSelector(
     (state) => state.FAQsection.yAxisPosition
   );
-  const languageCoursesSectionPosition = useSelector(
-    (state) => state.languageCoursesSection.yAxisPosition
+  const contactSectionPosition = useSelector(
+    (state) => state.contactSection.yAxisPosition
   );
-  const programmingSectionPosition = useSelector(
-    (state) => state.programmingSection.yAxisPosition
-  );
+
 
   if (section === "aboutSection") {
     sectionPosition = aboutSectionPosition - headerHeight + 1;
-  } else if (section === "contactSection") {
-    sectionPosition = contactSectionPosition - headerHeight + 1;
+  } else if (section === "profesorSection") {
+    sectionPosition = profesorSectionPosition - headerHeight + 1;
+  } else if (section === "coursesSection") {
+    sectionPosition = coursesSectionPosition - headerHeight + 1;
   } else if (section === "FAQsection") {
     sectionPosition = FAQsectionPosition - headerHeight + 1;
-  } else if (section === "languageCoursesSection") {
-    sectionPosition = languageCoursesSectionPosition - headerHeight + 1;
-  } else if (section === "programmingSection") {
-    sectionPosition = programmingSectionPosition - headerHeight + 1;
+  } else if (section === "contactSection") {
+    sectionPosition = contactSectionPosition - headerHeight + 1;
   } else if (section === "heroSection") {
     sectionPosition = 0;
   }
 
   let isOpen = useSelector((state) => state.header.isOpen);
+  const aboutSectionId = useSelector(state => state.aboutSection.id);
 
   const handleClick = () => {
     window.scroll({
       top: sectionPosition,
       left: 0,
-      behavior: "instant",
+      behavior: behavior,
     });
     dispatch(setLocation(location));
     dispatch(setLink(link));

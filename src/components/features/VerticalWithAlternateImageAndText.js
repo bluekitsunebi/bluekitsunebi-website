@@ -8,6 +8,7 @@ import read from "../../images/original/chibiMiyabi/reading.png";
 import write from "../../images/original/chibiMiyabi/writeing.png";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  setAboutSectionId,
   setHeight,
   setYaxisPosition,
 } from "store/aboutSectionSlice";
@@ -47,16 +48,21 @@ const SvgDotPattern4 = tw(
 
 
 export default function AboutSection({ onRender }) {
-  // SET SECTION Y AXIS POSITION
+// SET SECTION Y AXIS POSITION
 
-const homeWasRendered = useSelector((state) => state.home.wasRendered);
-const aboutSectionRef = useRef(null);
 const dispatch = useDispatch();
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const aboutSectionId = "about-section";
+const aboutSectionRef = useRef(null);
 let paddingBottom = 0;
 let paddingTop = 0;
 
 useEffect(() => {
   if (homeWasRendered === "true") {
+    // ---------------------------------------------------
+    // send section id to store
+    dispatch(setAboutSectionId(aboutSectionId));
+    // ---------------------------------------------------
     const computedStyle = getComputedStyle(aboutSectionRef.current);
     paddingTop = parseFloat(computedStyle.paddingTop);
     paddingBottom = parseFloat(computedStyle.paddingBottom);
@@ -69,9 +75,12 @@ useEffect(() => {
     dispatch(setYaxisPosition(yPosition));
   }
   if (typeof onRender === "function") {
+    // signals the end of rendering the section to the store
     onRender();
   }
 }, [onRender, homeWasRendered]);
+
+// ---------------------------------------------------------
 
   const cards = [
     {
@@ -94,7 +103,7 @@ useEffect(() => {
   ];
 
   return (
-    <Container>
+    <Container id={aboutSectionId} ref={aboutSectionRef}>
       <SingleColumn>
         <HeadingInfoContainer>
           <HeadingTitle>Cursuri online de japoneză</HeadingTitle>

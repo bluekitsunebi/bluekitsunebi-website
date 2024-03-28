@@ -206,8 +206,6 @@ export default function HeroSection({ onRender }) {
   let descriptionLeft = [...langData.HeroSection.description.left];
   let descriptionRight = [...langData.HeroSection.description.right];
 
-  // VIDEO FOR KANJI ANIMATION
-
   return (
       <section
       id="heroSection"
@@ -265,7 +263,8 @@ export default function HeroSection({ onRender }) {
             position="left"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="languageCoursesSection"
+            section="aboutSection"
+            behavior="smooth"
             link="/"
           />
         </div>
@@ -342,7 +341,8 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="programmingSection"
+            section="aboutSection"
+            behavior="smooth"
             link="/"
           />
         </div>
@@ -397,7 +397,8 @@ export default function HeroSection({ onRender }) {
               position="left"
               underlinedButton=""
               transform="capitalizeFirstLetter"
-              section="languageCoursesSection"
+              section="aboutSection"
+              behavior="smooth"
               link="/"
             />
           </div>
@@ -458,7 +459,8 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="programmingSection"
+            section="aboutSection"
+            behavior="smooth"
             link="/"
           />
         </div>

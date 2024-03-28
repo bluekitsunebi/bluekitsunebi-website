@@ -40,6 +40,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setWasRendered, setIsResizing } from "store/homeSectionSlice";
 import { setColor } from "store/headerSlice";
 import { switchWasClicked } from "store/routerSlice";
+// import {
+//   setAboutSectionId
+// } from "store/aboutSectionSlice";
 
 // SCROLL TO TOP ON PAGE RELOAD
 window.onbeforeunload = function () {
@@ -169,7 +172,8 @@ export default ({
   const coursesSectionRef = useRef(null);
   const faqSectionRef = useRef(null);
   const contactSectionRef = useRef(null);
-  const detailsSectionRef = useRef(null);
+  const infoSectionRef = useRef(null);
+  const footerRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -181,7 +185,16 @@ export default ({
   const [isAllRendered, setIsAllRendered] = useState(false);
   const handleComponentRender = () => {
     if (
-      heroSectionRef.current
+      headerRef.current &&
+      heroSectionRef.current &&
+      aboutSectionRef.current &&
+      whySectionRef &&
+      profesorSectionRef &&
+      coursesSectionRef &&
+      faqSectionRef &&
+      contactSectionRef &&
+      infoSectionRef &&
+      footerRef
     ) {
       setIsAllRendered(true);
     }
@@ -208,6 +221,12 @@ export default ({
       } else if (toSection === "contactSection") {
         element = contactSectionRef.current;
       }
+      //  else if (toSection === "infoSection") {
+      //   element = infoSectionRef.current;
+      // }
+      //  else if (toSection === "footer") {
+      //   element = footerRef.current;
+      // }
 
       if (element) {
         const rect = element.getBoundingClientRect();
@@ -249,18 +268,17 @@ export default ({
         clearTimeout(timeout);
         func(...args);
       };
-
       clearTimeout(timeout);
       timeout = setTimeout(later, wait);
     };
   }
 
   useEffect(() => {
-    const handleResizeStart = () => {
+    const handleResizeStart = debounce(() => {
       if (!isResizing) {
         dispatch(setIsResizing(true));
       }
-    };
+    }, 100);
     const handleResizeEnd = debounce(() => {
       if (isResizing) {
         dispatch(setIsResizing(false));
@@ -274,18 +292,29 @@ export default ({
     };
   }, [isResizing, dispatch]);
 
+  // send section ids to store
+  // const homeWasRendered = useSelector((state) => state.home.wasRendered);
+  // const aboutSectionId = "about-section";
+
+  // useEffect(() => {
+    // if (homeWasRendered === "true") {
+      // dispatch(setAboutSectionId(aboutSectionId));
+    // }
+  // }, [homeWasRendered]);
+
+
   return (
     <AnimationRevealPage disabled>
-      <Header ref={headerRef}/>
-      <BackgroundAsImage ref={heroSectionRef} onRender={handleComponentRender}/>
-      <VerticalWithAlternateImageAndText ref={aboutSectionRef} />
-      <ThreeColWithSideImageWithPrimaryBackground ref={whySectionRef}/>
-      <TwoColWithTwoFeaturesAndButtons ref={profesorSectionRef}/>
-      <ThreePlans ref={coursesSectionRef}/>
-      <SingleCol ref={faqSectionRef}/>
-      <TwoColContactUsWithIllustrationFullForm ref={contactSectionRef} />
-      <GetStarted ref={detailsSectionRef}/>
-      <FiveColumnDark />
+      <Header ref={headerRef} onRender={handleComponentRender} />
+      <BackgroundAsImage ref={heroSectionRef} onRender={handleComponentRender} />
+      <VerticalWithAlternateImageAndText ref={aboutSectionRef} onRender={handleComponentRender} />
+      <ThreeColWithSideImageWithPrimaryBackground ref={whySectionRef} onRender={handleComponentRender} />
+      <TwoColWithTwoFeaturesAndButtons ref={profesorSectionRef} onRender={handleComponentRender} />
+      <ThreePlans ref={coursesSectionRef} onRender={handleComponentRender} />
+      <SingleCol ref={faqSectionRef} onRender={handleComponentRender} />
+      <TwoColContactUsWithIllustrationFullForm ref={contactSectionRef} onRender={handleComponentRender} />
+      <GetStarted ref={infoSectionRef} onRender={handleComponentRender} />
+      <FiveColumnDark ref={footerRef} onRender={handleComponentRender} />
     </AnimationRevealPage>
     // <AnimationRevealPage disabled>
     //   <Container tw="bg-gray-100 -mx-8 -mt-8 pt-8 px-8">

@@ -1,33 +1,43 @@
 import { configureStore } from "@reduxjs/toolkit";
-import headerReducer from "./headerSlice";
-import homeReducer from "./homeSectionSlice";
-
-import heroSectionReducer from "./heroSectionSlice";
-import aboutSectionReducer from "./aboutSectionSlice";
-import contactSectionReducer from "./contactSectionSlice";
-import FAQsectionReducer from "./FAQsectionSlice";
-import languageCoursesSectionReducer from "./languageCoursesSectionSlice";
-import programmingSectionReducer from "./programmingSectionSlice";
 
 import cardSlice from "./cardSlice";
 import formSlice from "./formSlice";
-
 import routerSlice from "./routerSlice";
 import websiteLanguageSlice from "./websiteLanguageSlice";
 
+import homeReducer from "./homeSectionSlice";
+import headerReducer from "./headerSlice";
+// import footerReducer from "./footerSlice";
+
+// SECTIONS
+import heroSectionReducer from "./heroSectionSlice";
+import aboutSectionReducer from "./aboutSectionSlice";
+// import whySectionReducer from "./whySectionSlice";
+import profesorSectionReducer from "./profesorSectionSlice";
+import coursesSectionReducer from "./coursesSectionSlice";
+import FAQsectionReducer from "./FAQsectionSlice";
+import contactSectionReducer from "./contactSectionSlice";
+import infoSectionReducer from "./infoSectionSlice";
+
 export const store = configureStore({
   reducer: {
-    header: headerReducer,
-    home: homeReducer,
-    heroSection: heroSectionReducer,
-    aboutSection: aboutSectionReducer,
-    contactSection: contactSectionReducer,
-    FAQsection: FAQsectionReducer,
-    languageCoursesSection: languageCoursesSectionReducer,
-    programmingSection: programmingSectionReducer,
     card: cardSlice,
     form: formSlice,
     router: routerSlice,
     websiteLanguage: websiteLanguageSlice,
+
+    home: homeReducer,
+    header: headerReducer,
+    // footer: footerReducer,
+
+    // SECTIONS
+    heroSection: heroSectionReducer,
+    aboutSection: aboutSectionReducer,
+    // whySection: whySectionReducer,
+    profesorSection: profesorSectionReducer,
+    coursesSection: coursesSectionReducer,
+    FAQsection: FAQsectionReducer,
+    contactSection: contactSectionReducer,
+    infoSection: infoSectionReducer,
   },
 });

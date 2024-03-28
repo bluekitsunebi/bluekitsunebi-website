@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
+import { SectionHeading } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/original/chibiMiyabi/contact.png";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setHeight,
+  setYaxisPosition,
+} from "store/contactSectionSlice";
+import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
+import emailjs from "@emailjs/browser";
+import {
+  setIsSend,
+  setIsSending,
+} from "../../store/formSlice";
 
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-col md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -27,28 +38,101 @@ const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none f
 const Textarea = styled(Input).attrs({as: "textarea"})`
   ${tw`h-24`}
 `
+const Highlight = tw.span`text-primary-500`;
 
-const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8`
+const SubmitButton = tw(PrimaryButtonBase)`inline-block mt-8 bg-primary-500`;
 
-export default ({
-  heading = <>Sunteți binevenit <span tw="text-primary-500">să ne contactați</span><wbr/> oricând.</>,
-  submitButtonText = "Trimite",
+const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
+transform: scale(-1, -1) translateX(60%);
+  bottom: -15%;
+  ${tw`pointer-events-none -z-20 absolute left-0 h-64 w-64 opacity-15 text-pink-500`}
+`;
+
+export default function ContactSection({
+  onRender,
   formAction = "#",
   formMethod = "get",
   textOnLeft = true,
-}) => {
+}) {
+  // SET SECTION Y AXIS POSITION
+
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const contactSectionRef = useRef(null);
+const dispatch = useDispatch();
+let paddingBottom = 0;
+let paddingTop = 0;
+
+useEffect(() => {
+  if (homeWasRendered === "true") {
+    const computedStyle = getComputedStyle(contactSectionRef.current);
+    paddingTop = parseFloat(computedStyle.paddingTop);
+    paddingBottom = parseFloat(computedStyle.paddingBottom);
+    const totalHeight =
+    contactSectionRef.current.offsetHeight + paddingTop + paddingBottom;
+    dispatch(setHeight(totalHeight));
+    const rect = contactSectionRef.current.getBoundingClientRect();
+    const yOffset = window.pageYOffset || document.documentElement.scrollTop;
+    const yPosition = rect.top + yOffset;
+    dispatch(setYaxisPosition(yPosition));
+  }
+  if (typeof onRender === "function") {
+    onRender();
+  }
+}, [onRender, homeWasRendered]);
+
+  // -------------------------------------------------------
+
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
 
+  // -------------------------------------------------------
+  const isSend = useSelector((state) => state.form.isSend);
+  const isSending = useSelector((state) => state.form.isSending);
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    dispatch(setIsSending(true));
+
+    let templateParams = {
+      firstName: e.target.elements.firstname.value,
+      lastName: e.target.elements.lastname.value,
+      email: e.target.elements.email.value,
+      message: e.target.elements.message.value,
+    };
+    const templateId = `contactForm_ro`;
+
+    emailjs
+      .send(
+        "BlueKitsunebiForm",
+        templateId,
+        templateParams,
+        "2kpClbJCkav0Qd87S"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          dispatch(setIsSend(true));
+          dispatch(setIsSending(false));
+          e.target.reset();
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
+
   return (
-    <Container>
+    <Container ref={contactSectionRef}>
       <TwoColumn>
         <ImageColumn>
           <Image imageSrc={EmailIllustrationSrc} />
         </ImageColumn>
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>
-            <Heading>{heading}</Heading>
-            <Form action={formAction} method={formMethod}>
+            <Heading>
+               <Highlight>Contactează-ne </Highlight>
+               și vom reveni cu un mail cât de curând.
+              </Heading>
+            <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
 
               <Input type="text" name="firstname" placeholder="Prenume" />
 
@@ -58,11 +142,12 @@ export default ({
 
               <Textarea name="message" placeholder="Mesaj" />
 
-              <SubmitButton type="submit">{submitButtonText}</SubmitButton>
+              <SubmitButton type="submit">{!isSend ? 'Trimite' : 'Trimis'}</SubmitButton>
             </Form>
           </TextContent>
         </TextColumn>
       </TwoColumn>
+      <DecoratorBlob2/>
     </Container>
   );
 };

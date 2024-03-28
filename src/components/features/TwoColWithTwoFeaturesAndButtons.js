@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.js";
@@ -12,6 +12,12 @@ import { PiChalkboardTeacherLight } from "react-icons/pi";
 
 //img
 import teacher from "../../images/original/teacher.jpg";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setHeight,
+  setYaxisPosition,
+} from "store/profesorSectionSlice";
 
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-wrap flex-col justify-between max-w-screen-xl mx-auto py-20 
@@ -86,12 +92,41 @@ const Highlight = styled.span`
 `;
 
 
-export default ({
+export default function ProfesorSection({
+  onRender,
   heading = (<>Profesorul de japoneză <Highlight>Cheșca Vicențiu</Highlight>.</>
   ),
   features = null,
   textOnLeft = true
-}) => {
+}) {
+  // SET SECTION Y AXIS POSITION
+
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const profesorSectionRef = useRef(null);
+const dispatch = useDispatch();
+let paddingBottom = 0;
+let paddingTop = 0;
+
+useEffect(() => {
+  if (homeWasRendered === "true") {
+    const computedStyle = getComputedStyle(profesorSectionRef.current);
+    paddingTop = parseFloat(computedStyle.paddingTop);
+    paddingBottom = parseFloat(computedStyle.paddingBottom);
+    const totalHeight =
+    profesorSectionRef.current.offsetHeight + paddingTop + paddingBottom;
+    dispatch(setHeight(totalHeight));
+    const rect = profesorSectionRef.current.getBoundingClientRect();
+    const yOffset = window.pageYOffset || document.documentElement.scrollTop;
+    const yPosition = rect.top + yOffset;
+    dispatch(setYaxisPosition(yPosition));
+  }
+  if (typeof onRender === "function") {
+    onRender();
+  }
+}, [onRender, homeWasRendered]);
+
+// ---------------------------------------------------------
+
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
 
   /*
@@ -124,7 +159,7 @@ export default ({
   if (!features) features = defaultFeatures;
 
   return (
-    <Container>
+    <Container ref={profesorSectionRef}>
       <TwoColumn>
         <ImageColumn>
             <Image>

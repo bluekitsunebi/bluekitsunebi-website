@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 //eslint-disable-next-line
@@ -10,6 +10,13 @@ import { FaUserGroup } from "react-icons/fa6";
 import { FaHandSparkles } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
 import { FaPenRuler } from "react-icons/fa6";
+import { useSelector, 
+  // useDispatch 
+} from "react-redux";
+// import {
+//   setHeight,
+//   setYaxisPosition,
+// } from "store/whySectionSlice";
 
 const Container = tw.div`relative bg-primary-900 mx-0 px-8 text-gray-100`;
 
@@ -47,10 +54,39 @@ const Card = styled.div`
 
 const Highlight = tw.span`px-1 py-0 text-gray-200 bg-primary-1000`;
 
-export default ({
+export default function WhySection({
+  onRender,
   cards = null,
   heading = "De ce să alegi lecțiile noastre?",
-}) => {
+}) {
+// SET SECTION Y AXIS POSITION
+
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const whySectionRef = useRef(null);
+// const dispatch = useDispatch();
+// let paddingBottom = 0;
+// let paddingTop = 0;
+
+useEffect(() => {
+  // if (homeWasRendered === "true") {
+    // const computedStyle = getComputedStyle(whySectionRef.current);
+    // paddingTop = parseFloat(computedStyle.paddingTop);
+    // paddingBottom = parseFloat(computedStyle.paddingBottom);
+    // const totalHeight =
+    // whySectionRef.current.offsetHeight + paddingTop + paddingBottom;
+    // dispatch(setHeight(totalHeight));
+    // const rect = whySectionRef.current.getBoundingClientRect();
+    // const yOffset = window.pageYOffset || document.documentElement.scrollTop;
+    // const yPosition = rect.top + yOffset;
+    // dispatch(setYaxisPosition(yPosition));
+  // }
+  if (typeof onRender === "function") {
+    onRender();
+  }
+}, [onRender, homeWasRendered]);
+
+// ---------------------------------------------------------
+
   /*
    * This componets has an array of object denoting the cards defined below. Each object in the cards array can have the key (Change it according to your need, you can also add more objects to have more cards in this feature component) or you can directly pass this using the cards prop:
    *  1) imageSrc - the image shown at the top of the card
@@ -95,7 +131,7 @@ export default ({
   if (!cards) cards = defaultCards;
 
   return (
-    <Container>
+    <Container ref={whySectionRef}>
       <ThreeColumnContainer>
         <Heading>{heading}</Heading>
         {cards.map((card, i) => (

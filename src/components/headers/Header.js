@@ -72,9 +72,7 @@ export default function Header({ onRender }) {
     if (homeWasRendered === "true") {
       const style = window.getComputedStyle(headerRef.current);
       const height = parseInt(style.height);
-      const paddingTop = parseInt(style.paddingTop);
-      const paddingBottom = parseInt(style.paddingBottom);
-      const totalHeight = height + paddingTop + paddingBottom;
+      const totalHeight = height;
       dispatch(setHeight(totalHeight));
       middle = (window.innerHeight - totalHeight) / 2 + totalHeight;
     }
@@ -93,17 +91,14 @@ export default function Header({ onRender }) {
   const aboutSectionPosition = useSelector(
     (state) => state.aboutSection.yAxisPosition
   );
-  const contactSectionPosition = useSelector(
-    (state) => state.contactSection.yAxisPosition
+  const coursesSectionPosition = useSelector(
+    (state) => state.coursesSection.yAxisPosition
   );
   const FAQsectionPosition = useSelector(
     (state) => state.FAQsection.yAxisPosition
   );
-  const languageCoursesSectionPosition = useSelector(
-    (state) => state.languageCoursesSection.yAxisPosition
-  );
-  const programmingSectionPosition = useSelector(
-    (state) => state.programmingSection.yAxisPosition
+  const contactSectionPosition = useSelector(
+    (state) => state.contactSection.yAxisPosition
   );
 
   const listenScrollEvent = () => {
@@ -123,17 +118,11 @@ export default function Header({ onRender }) {
         dispatch(setUnderlined("hero"));
       } else if (
         window.scrollY + middle >= aboutSectionPosition - headerHeight &&
-        window.scrollY + middle < languageCoursesSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
+        window.scrollY + middle < coursesSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
       ) {
         dispatch(setUnderlined("about"));
       } else if (
-        window.scrollY + middle >=
-          languageCoursesSectionPosition - headerHeight &&
-        window.scrollY + middle < programmingSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
-      ) {
-        dispatch(setUnderlined("profesor"));
-      } else if (
-        window.scrollY + middle >= programmingSectionPosition - headerHeight &&
+        window.scrollY + middle >= coursesSectionPosition - headerHeight &&
         window.scrollY + middle < FAQsectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
       ) {
         dispatch(setUnderlined("courses"));
@@ -143,8 +132,7 @@ export default function Header({ onRender }) {
       ) {
         dispatch(setUnderlined("faq"));
       } else if (
-        window.scrollY + middle >=
-        contactSectionPosition - headerHeight
+        window.scrollY + middle >= contactSectionPosition - headerHeight
       ) {
         dispatch(setUnderlined("contact"));
       }
@@ -217,9 +205,9 @@ export default function Header({ onRender }) {
     >
       <div className={styles.header_phone_close}>
         {isOpen ? (
-          <CloseRoundedIcon className={styles.menu} onClick={handleMenu} />
+          <div className={`${styles.menu} ${styles.menuIconClose}`} onClick={handleMenu} ><CloseRoundedIcon/></div>
         ) : (
-          <MenuRoundedIcon className={styles.menu} onClick={handleMenu} />
+          <div className={`${styles.menu} ${styles.menuIconOpen}`} onClick={handleMenu} ><MenuRoundedIcon/></div>
         )}
         <Link to={"/"} className={styles.Logo}>
           <div onClick={handleLogoClick}>
@@ -238,15 +226,15 @@ export default function Header({ onRender }) {
 
       <div className={styles.header__phone}>
         {isOpen ? (
-          <CloseRoundedIcon
-            className={styles.menu__phone}
+          <div 
+            className={`${styles.menu__phone} ${styles.menuIconClose}`}
             onClick={handleMenu}
-          />
+          ><CloseRoundedIcon/></div>
         ) : (
-          <MenuRoundedIcon
-            className={styles.menu__phone}
+          <div
+            className={`${styles.menu__phone} ${styles.menuIconOpen}`}
             onClick={handleMenu}
-          />
+          ><MenuRoundedIcon/></div>
         )}
         <Link to={"/"} className={styles.Logo__phone}>
           <div onClick={handleLogoClick}>
@@ -277,18 +265,6 @@ export default function Header({ onRender }) {
           underlinedButton={underlineButton}
           transform="capitalizeFirstLetter"
           section="aboutSection"
-          link="/"
-        />
-
-        <Button
-          name="profesor"
-          category="header"
-          text={langData.Header.profesor}
-          type="withoutBorder"
-          position=""
-          underlinedButton={underlineButton}
-          transform="capitalizeFirstLetter"
-          section="profesorSection"
           link="/"
         />
 

@@ -22,6 +22,7 @@
     margin: 0;
 }
 
+
 @media (max-width: 550px) {
     .logoWithText {
         width: fit-content;

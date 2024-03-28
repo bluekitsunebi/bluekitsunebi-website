@@ -1,18 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  id: "",
   height: undefined,
   yAxisPosition: undefined,
 };
 
-export const aboutSectionSlice = createSlice({
-  name: "aboutSection",
+export const coursesSectionSlice = createSlice({
+  name: "coursesSection",
   initialState,
   reducers: {
-    setAboutSectionId: (state, action) => {
-      state.id = action.payload;
-    },
     setHeight: (state, action) => {
       state.height = action.payload;
     },
@@ -22,6 +18,6 @@ export const aboutSectionSlice = createSlice({
   },
 });
 
-export const { setHeight, setYaxisPosition, setAboutSectionId } = aboutSectionSlice.actions;
+export const { setHeight, setYaxisPosition } = coursesSectionSlice.actions;
 
-export default aboutSectionSlice.reducer;
+export default coursesSectionSlice.reducer;

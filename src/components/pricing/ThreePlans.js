@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -7,6 +7,11 @@ import { SectionDescription } from "components/misc/Typography.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { ReactComponent as SvgDecoratorBlob } from "images/svg-decorator-blob-6.svg";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setHeight,
+  setYaxisPosition,
+} from "store/coursesSectionSlice";
 
 const Container = tw.div`relative mx-8`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
@@ -113,7 +118,8 @@ const DecoratorBlob = styled(SvgDecoratorBlob)`
 `;
 
 
-export default ({
+export default function CoursesSection({
+  onRender,
   heading = "Cursuri cu predare în limba:",
   plans = null,
   primaryButtonText = "Înscrie-te",
@@ -128,7 +134,43 @@ export default ({
     {selectorText: "1 oră și 30 de minute"},
     {selectorText: "2 ore"},
   ]
-}) => {
+}) {
+  // ------------------------------------------------------------
+  // SET SECTION Y AXIS POSITION
+
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const coursesSectionRef = useRef(null);
+const dispatch = useDispatch();
+let paddingBottom = 0;
+let paddingTop = 0;
+
+useEffect(() => {
+  if (homeWasRendered === "true") {
+    const computedStyle = getComputedStyle(coursesSectionRef.current);
+    paddingTop = parseFloat(computedStyle.paddingTop);
+    paddingBottom = parseFloat(computedStyle.paddingBottom);
+    const totalHeight =
+    coursesSectionRef.current.offsetHeight + paddingTop + paddingBottom;
+    dispatch(setHeight(totalHeight));
+    const rect = coursesSectionRef.current.getBoundingClientRect();
+    const yOffset = window.pageYOffset || document.documentElement.scrollTop;
+    const yPosition = rect.top + yOffset;
+    dispatch(setYaxisPosition(yPosition));
+  }
+  if (typeof onRender === "function") {
+    onRender();
+  }
+}, [onRender, homeWasRendered]);
+
+  // ---------------------------------------------------------
+  // scroll to info section on register
+  const id = useSelector(state => state.infoSection.id);
+  const register = () => {
+    const element = document.getElementById(id);
+    element?.scrollIntoView({ behavior: 'smooth' });
+  };
+  // --------------------------------------------------------
+
   const defaultPlans = [
     {
       name: ["Japoneză individual", "Japoneză individual", "Engleză individual"],
@@ -239,7 +281,7 @@ export default ({
   `;
 
   return (
-    <Container>
+    <Container ref={coursesSectionRef}>
       <ContentWithPaddingXl>
         <HeaderContainer>
           <Heading>{heading}</Heading>
@@ -294,18 +336,20 @@ export default ({
               </PlanFeatures>
               <PlanAction>
                 {
-                  !plan.disabled ? 
-                  <BuyNowButton
-                  css={!plan.featured && highlightGradientsCss[index]}
-                  disabled={plan.disabled}
+                  !plan.disabled
+                  ? <BuyNowButton
+                    onClick={() => {
+                      register();
+                    }}
+                    css={!plan.featured && highlightGradientsCss[index]}
+                    disabled={plan.disabled}
                   >{primaryButtonText}
-                </BuyNowButton>
-                : 
-                <BuyNowButton__disabled
-                css={!plan.featured && highlightGradientsCss__disabled}
-                disabled={plan.disabled}
-                >{primaryButtonText__disabled}
-                </BuyNowButton__disabled>
+                  </BuyNowButton>
+                  : <BuyNowButton__disabled
+                    css={!plan.featured && highlightGradientsCss__disabled}
+                    disabled={plan.disabled}
+                  >{primaryButtonText__disabled}
+                  </BuyNowButton__disabled>
                 }
               </PlanAction>
             </Plan>

@@ -5,8 +5,8 @@
 //   yAxisPosition: undefined,
 // };
 
-// export const programmingSectionSlice = createSlice({
-//   name: "programmingSection",
+// export const whySectionSlice = createSlice({
+//   name: "whySection",
 //   initialState,
 //   reducers: {
 //     setHeight: (state, action) => {
@@ -18,6 +18,6 @@
 //   },
 // });
 
-// export const { setHeight, setYaxisPosition } = programmingSectionSlice.actions;
+// export const { setHeight, setYaxisPosition } = whySectionSlice.actions;
 
-// export default programmingSectionSlice.reducer;
+// export default whySectionSlice.reducer;

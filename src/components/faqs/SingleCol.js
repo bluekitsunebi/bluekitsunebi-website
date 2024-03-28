@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -7,6 +7,12 @@ import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chev
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
 import QuestionsImage from "images/original/chibiMiyabi/faq.png";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setHeight,
+  setYaxisPosition,
+} from "store/FAQsectionSlice";
+import { setIsResizing } from "store/homeSectionSlice";
 
 
 const Container = tw.div`relative mx-8`;
@@ -42,15 +48,16 @@ const QuestionToggleIcon = motion(styled.span`
 const Answer = motion(tw.dd`pointer-events-none text-sm sm:text-base leading-relaxed`);
 
 const DecoratorBlob1 = styled(SvgDecoratorBlob1)`
-  ${tw`pointer-events-none -z-20 absolute right-0 top-0 h-56 w-56 opacity-15 transform translate-x-2/3 -translate-y-12 text-teal-400`}
+  ${tw`pointer-events-none -z-20 absolute right-0 h-56 w-56 opacity-15 transform translate-x-2/3 -translate-y-12 text-teal-400`}
 `;
 const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
-  ${tw`pointer-events-none -z-20 absolute left-0 bottom-0 h-64 w-64 opacity-15 transform -translate-x-2/3 text-primary-500`}
+  ${tw`pointer-events-none -z-20 absolute left-0 h-64 w-64 opacity-15 transform -translate-x-2/3 text-primary-500 top-1/2`}
 `;
 
 
 
-export default ({
+export default function FAQSection({
+  onRender,
   heading = "Întrebări frecvente",
   faqs = [
     {
@@ -69,16 +76,47 @@ export default ({
         "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
     },
   ],
-}) => {
+}) {
+  // SET SECTION Y AXIS POSITION
+
+const homeWasRendered = useSelector((state) => state.home.wasRendered);
+const faqSectionRef = useRef(null);
+const dispatch = useDispatch();
+let paddingBottom = 0;
+let paddingTop = 0;
+
+useEffect(() => {
+  if (homeWasRendered === "true") {
+    const computedStyle = getComputedStyle(faqSectionRef.current);
+    paddingTop = parseFloat(computedStyle.paddingTop);
+    paddingBottom = parseFloat(computedStyle.paddingBottom);
+    const totalHeight =
+    faqSectionRef.current.offsetHeight + paddingTop + paddingBottom;
+    dispatch(setHeight(totalHeight));
+    const rect = faqSectionRef.current.getBoundingClientRect();
+    const yOffset = window.pageYOffset || document.documentElement.scrollTop;
+    const yPosition = rect.top + yOffset;
+    dispatch(setYaxisPosition(yPosition));
+  }
+  if (typeof onRender === "function") {
+    onRender();
+  }
+}, [onRender, homeWasRendered]);
+
+// ---------------------------------------------------------
+
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(null);
 
   const toggleQuestion = questionIndex => {
     if (activeQuestionIndex === questionIndex) setActiveQuestionIndex(null);
     else setActiveQuestionIndex(questionIndex);
+    dispatch(setIsResizing(true));
+    dispatch(setIsResizing(false));
   };
 
+
   return (
-    <Container>
+    <Container ref={faqSectionRef}>
         <TwoColumn>
           <ImageColumn>
             <Image imageSrc={QuestionsImage}></Image>
@@ -87,7 +125,7 @@ export default ({
             <HeaderContent>
               <Heading>{heading}</Heading>
             </HeaderContent>
-            <FAQSContainer>
+            <FAQSContainer >
               {faqs.map((faq, index) => (
                 <FAQ
                   key={index}
