@@ -155,7 +155,7 @@ useEffect(() => {
     const rect = coursesSectionRef.current.getBoundingClientRect();
     const yOffset = window.pageYOffset || document.documentElement.scrollTop;
     const yPosition = rect.top + yOffset;
-    dispatch(setYaxisPosition(yPosition));
+    dispatch(setYaxisPosition(yPosition + 90));
   }
   if (typeof onRender === "function") {
     onRender();
@@ -178,7 +178,7 @@ useEffect(() => {
         // ro
         ["90 RON", "130 RON", "170 RON",], 
         // eng
-        ["$40", "$50", "$60",], 
+        ["$40", "$54", "$70",], 
         // ja
         ["$35", "$45", "$55",],
       ],
@@ -215,7 +215,7 @@ useEffect(() => {
     {
       name: ["Japoneză grup", "Japoneză grup", "Engleză grup"],
       price: ["85 RON", "$35", "$30",],
-      duration: ["1 oră", "1 oră", "1 oră",],
+      duration: ["1 oră și 30 de minute", "1 oră și 30 de minute", "1 oră și 30 de minute",],
       mainFeature: "Prima lecție gratis",
       features: [
         ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
