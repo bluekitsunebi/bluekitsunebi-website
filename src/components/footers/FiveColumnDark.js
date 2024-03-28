@@ -125,7 +125,7 @@ useEffect(() => {
                 </Text>
               </LinkListItem>
               <LinkListItem>
-                <Facebook href="https://www.facebook.com/vicentiu.chesca" target="_blank">
+                <Facebook href="https://www.facebook.com/profile.php?id=100093026116129" target="_blank">
                   <SocialIcon>
                     <FacebookIcon />
                   </SocialIcon>
