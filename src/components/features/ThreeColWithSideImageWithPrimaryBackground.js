@@ -116,7 +116,7 @@ useEffect(() => {
     },
     { icon: <FaLightbulb 
       style={{ fontSize: '32px' }} />, 
-      title: ["", "răspuns la orice întrabare", " chiar și în afara orelor de curs, în decurs de 24 de ore"],
+      title: ["", "răspuns la orice întrebare", " chiar și în afara orelor de curs, în decurs de 24 de ore"],
       gridColumn: "2 / span 2", 
       gridRow: "4 / span 1"
     },

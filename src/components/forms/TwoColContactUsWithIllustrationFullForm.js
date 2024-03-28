@@ -133,13 +133,13 @@ useEffect(() => {
     dispatch(setIsSending(true));
 
     let templateParams = {
-      firstName: e.target.elements.firstname.value,
-      lastName: e.target.elements.lastname.value,
+      name: e.target.elements.name.value,
       email: e.target.elements.email.value,
+      phone: e.target.elements.phone.value,
       message: e.target.elements.message.value,
       checkbox: accord ? 'Sunt de acord' : 'Nu sunt de acord',
     };
-    const templateId = `contactForm_ro`;
+    const templateId = `contactForm`;
 
     emailjs
       .send(
@@ -175,29 +175,40 @@ useEffect(() => {
           <TextContent>
             <Heading>
                <Highlight>Contactează-ne </Highlight>
-               și vom reveni cu un mail cât de curând.
+               și vom reveni cu un răspuns cât de curând.
               </Heading>
             <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
 
               <Input 
               required 
               onFocus={handleInputFocus}
-              type="text" autoComplete="given-name" name="firstname" placeholder="Prenume" />
+              type="text" 
+              autoComplete="given-name" 
+              name="name" 
+              placeholder="Nume" />
 
               <Input 
               required 
               onFocus={handleInputFocus}
-              type="text" autoComplete="family-name" name="lastname" placeholder="Nume de familie" />
+              type="email" 
+              autoComplete="email" 
+              name="email" 
+              placeholder="Email" />
 
               <Input 
               required 
               onFocus={handleInputFocus}
-              type="email" autoComplete="email" name="email" placeholder="Email" />
+              type="text" 
+              autoComplete="phone" 
+              name="phone" 
+              placeholder="Telefon" />
 
               <Textarea 
               required 
               onFocus={handleInputFocus}
-              name="message" placeholder="Mesaj" />
+              type="text" 
+              name="message" 
+              placeholder="Mesaj" />
 
               <Checkbox onClick={() => handleAccord()}>
                 <Icon>{!accord ? 
