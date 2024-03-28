@@ -249,7 +249,7 @@ export default function HeroSection({ onRender }) {
           className={styles.kanjiDrawing}
         >
           <source src={kanjiDrawing} type="video/mp4" />
-          Your browser does not support the video tag.
+          Video
         </video>
         <div id="titleLeft" ref={titleLeftRef} className={styles.title}>
           <div>{titleLeft[0]}</div>
@@ -341,7 +341,7 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="aboutSection"
+            section="infoSection"
             behavior="smooth"
             link="/"
           />
@@ -378,7 +378,7 @@ export default function HeroSection({ onRender }) {
                   className={styles.kanjiDrawing}
                 >
                   <source src={kanjiDrawing} type="video/mp4" />
-                  Your browser does not support the video tag.
+                  Video
                 </video>
               </div>
               <div id="titleLeft" ref={titleLeftRef} className={styles.title}>
@@ -459,7 +459,7 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="aboutSection"
+            section="infoSection"
             behavior="smooth"
             link="/"
           />

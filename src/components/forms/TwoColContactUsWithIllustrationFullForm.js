@@ -15,6 +15,7 @@ import {
   setIsSend,
   setIsSending,
   setAccord,
+  setAccordNeeded
 } from "../../store/formSlice";
 import { FaCheckCircle } from "react-icons/fa";
 import { FaRegCircle } from "react-icons/fa";
@@ -39,18 +40,27 @@ const TextContent = tw.div`lg:py-8 text-center md:text-left`;
 const Heading = tw(SectionHeading)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight text-primary-900`;
 
 const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`
+
 const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none font-medium transition duration-300 hocus:border-primary-500 text-primary-500`
+
 const Textarea = styled(Input).attrs({as: "textarea"})`
   ${tw`h-24`}
 `
+
 const Checkbox = tw.p`text-base text-gray-600 mt-5 whitespace-normal`;
 const Icon = tw.span`text-lg mr-2 w-fit h-fit text-blue-500 inline-block`;
-const Link = tw.span`hover:text-blue-500 transition duration-300 cursor-pointer`;
-
+const Link = tw.span`hover:text-blue-500 transition duration-300 cursor-pointer underline`;
+const AccordNeeded = tw.span`block text-red-500`;
+const Show = tw.span``;
+const Hide = tw.span`text-transparent`;
 
 const Highlight = tw.span`text-primary-500`;
 
-const SubmitButton = tw(PrimaryButtonBase)` mt-8 bg-primary-500`;
+const SubmitButton = tw(PrimaryButtonBase)` mt-8 bg-primary-500 flex justify-center`;
+const SendingText = tw.span`text-lg flex flex-row gap-2`;
+const SendIconButton = tw.span`w-fit h-fit flex gap-2 `;
+const Spin = tw.span`animate-spin text-lg w-fit h-fit inline-block`;
+
 
 const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 transform: scale(-1, -1) translateX(60%);
@@ -68,6 +78,7 @@ export default function ContactSection({
 
 const homeWasRendered = useSelector((state) => state.home.wasRendered);
 const accord = useSelector((state) => state.form.accord);
+const accordNeeded = useSelector((state) => state.form.accordNeeded);
 const contactSectionRef = useRef(null);
 const dispatch = useDispatch();
 let paddingBottom = 0;
@@ -75,7 +86,15 @@ let paddingTop = 0;
 
 const handleAccord = () => {
   dispatch(setAccord(!accord));
+  if(!accord) dispatch(setAccordNeeded(false));
 }
+
+const handleInputFocus = () => {
+  if (isSend) {
+    dispatch(setIsSend(false));
+    dispatch(setIsSending(false));
+  }
+};
 
 useEffect(() => {
   if (homeWasRendered === "true") {
@@ -88,7 +107,7 @@ useEffect(() => {
     const rect = contactSectionRef.current.getBoundingClientRect();
     const yOffset = window.pageYOffset || document.documentElement.scrollTop;
     const yPosition = rect.top + yOffset;
-    dispatch(setYaxisPosition(yPosition));
+    dispatch(setYaxisPosition(yPosition + 80));
   }
   if (typeof onRender === "function") {
     onRender();
@@ -106,7 +125,10 @@ useEffect(() => {
   const sendEmail = (e) => {
     e.preventDefault();
     if (!accord) {
+      dispatch(setAccordNeeded(true));
       return;
+    } else {
+      dispatch(setAccordNeeded(false));
     }
     dispatch(setIsSending(true));
 
@@ -139,6 +161,10 @@ useEffect(() => {
       );
   };
 
+  // reset send button on focus after send.
+
+  
+
   return (
     <Container ref={contactSectionRef}>
       <TwoColumn>
@@ -153,13 +179,25 @@ useEffect(() => {
               </Heading>
             <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
 
-              <Input required type="text" autoComplete="given-name" name="firstname" placeholder="Prenume" />
+              <Input 
+              required 
+              onFocus={handleInputFocus}
+              type="text" autoComplete="given-name" name="firstname" placeholder="Prenume" />
 
-              <Input required type="text" autoComplete="family-name" name="lastname" placeholder="Nume de familie" />
+              <Input 
+              required 
+              onFocus={handleInputFocus}
+              type="text" autoComplete="family-name" name="lastname" placeholder="Nume de familie" />
 
-              <Input required type="email" autoComplete="email" name="email" placeholder="Email" />
+              <Input 
+              required 
+              onFocus={handleInputFocus}
+              type="email" autoComplete="email" name="email" placeholder="Email" />
 
-              <Textarea required name="message" placeholder="Mesaj" />
+              <Textarea 
+              required 
+              onFocus={handleInputFocus}
+              name="message" placeholder="Mesaj" />
 
               <Checkbox onClick={() => handleAccord()}>
                 <Icon>{!accord ? 
@@ -167,8 +205,15 @@ useEffect(() => {
                 <FaCheckCircle></FaCheckCircle>
                 }</Icon>
                 Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și <Link href="#">Politica de confidentialitate</Link>
+                <AccordNeeded>{accordNeeded ? <Show>(Vă rugăm completați aici)</Show> : <Hide>(Vă rugăm completați aici)</Hide>}</AccordNeeded>
               </Checkbox>
-              <SubmitButton type="submit">{isSend ? `${<SendIcon/>} Trimis` : isSending ? `${<SpinIcon />} Se trimite` : 'Trimite' }</SubmitButton>
+              <SubmitButton type="submit">
+                {isSend  
+                ? (<SendIconButton><SendIcon/>Trimis</SendIconButton>)
+                : isSending 
+                ? (<SendingText><Spin><SpinIcon/></Spin>Se trimite</SendingText>)
+                : 'Trimite'}
+              </SubmitButton>
             </Form>
           </TextContent>
         </TextColumn>

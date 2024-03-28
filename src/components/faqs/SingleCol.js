@@ -96,7 +96,7 @@ useEffect(() => {
     const rect = faqSectionRef.current.getBoundingClientRect();
     const yOffset = window.pageYOffset || document.documentElement.scrollTop;
     const yPosition = rect.top + yOffset;
-    dispatch(setYaxisPosition(yPosition));
+    dispatch(setYaxisPosition(yPosition + 40));
   }
   if (typeof onRender === "function") {
     onRender();

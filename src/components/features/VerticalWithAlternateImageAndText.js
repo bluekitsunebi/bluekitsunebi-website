@@ -72,7 +72,7 @@ useEffect(() => {
     const rect = aboutSectionRef.current.getBoundingClientRect();
     const yOffset = window.pageYOffset || document.documentElement.scrollTop;
     const yPosition = rect.top + yOffset;
-    dispatch(setYaxisPosition(yPosition));
+    dispatch(setYaxisPosition(yPosition + 40));
   }
   if (typeof onRender === "function") {
     // signals the end of rendering the section to the store

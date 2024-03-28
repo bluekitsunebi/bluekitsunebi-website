@@ -73,13 +73,19 @@ function Button(props) {
 
   let isOpen = useSelector((state) => state.header.isOpen);
   const aboutSectionId = useSelector(state => state.aboutSection.id);
+  const infoSectionId = useSelector(state => state.infoSection.id);
 
   const handleClick = () => {
-    window.scroll({
-      top: sectionPosition,
-      left: 0,
-      behavior: behavior,
-    });
+    if(section === "infoSection"){
+      const element = document.getElementById(infoSectionId);
+      element?.scrollIntoView();
+    } else {
+      window.scroll({
+        top: sectionPosition,
+        left: 0,
+        behavior: behavior,
+      });
+    }
     dispatch(setLocation(location));
     dispatch(setLink(link));
     dispatch(setSection(section));

@@ -4,6 +4,7 @@ const initialState = {
   isSend: false,
   isSending: false,
   accord: false,
+  accordNeeded: false,
   isFilling: false,
   recaptchaNeeded: false,
 };
@@ -21,6 +22,9 @@ export const formSlice = createSlice({
     setAccord: (state, action) => {
       state.accord = action.payload;
     },
+    setAccordNeeded: (state, action) => {
+      state.accordNeeded = action.payload;
+    },
     setIsFilling: (state, action) => {
       state.isFilling = action.payload;
     },
@@ -30,7 +34,7 @@ export const formSlice = createSlice({
   },
 });
 
-export const { setIsSend, setIsSending, setAccord, setIsFilling, setRecaptchaNeeded } = formSlice.actions;
+export const { setIsSend, setIsSending, setAccord, setAccordNeeded, setIsFilling, setRecaptchaNeeded } = formSlice.actions;
 
 export default formSlice.reducer;
 // 

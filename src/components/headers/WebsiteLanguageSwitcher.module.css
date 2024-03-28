@@ -9,14 +9,14 @@
 
 .dropdown,
 .websiteLangButton {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   background-color: transparent;
   border: none;
   color: var(--textLight);
 }
 
 .langIcon {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
 }
 
 .dropdown:hover,

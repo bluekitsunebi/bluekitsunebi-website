@@ -164,9 +164,9 @@ useEffect(() => {
 
   // ---------------------------------------------------------
   // scroll to info section on register
-  const id = useSelector(state => state.infoSection.id);
+  const infoSectionId = useSelector(state => state.infoSection.id);
   const register = () => {
-    const element = document.getElementById(id);
+    const element = document.getElementById(infoSectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
   // --------------------------------------------------------
