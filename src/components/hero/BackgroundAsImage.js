@@ -12,7 +12,7 @@ import {
   setDescriptionLeft__entered,
   setVideosLoaded,
 } from "store/heroSectionSlice";
-import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import { BsGearFill as SettingsRoundedIcon } from "react-icons/bs";
 import enData from "helpers/data/lang/en.json";
 import jaData from "helpers/data/lang/ja.json";
 import roData from "helpers/data/lang/ro.json";

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./WebsiteLanguageSwitcher.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setLanguage } from "store/websiteLanguageSlice";
-import TranslateRoundedIcon from '@mui/icons-material/TranslateRounded';
+import { PiTranslate as TranslateRoundedIcon } from "react-icons/pi";
 
 export default function WebsiteLanguageSwitcher() {
   let text = "";

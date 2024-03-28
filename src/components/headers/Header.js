@@ -16,8 +16,8 @@ import styles from "./Header.module.css";
 import Logo from "./Logo";
 import Button from "../hero/Button";
 import WebsiteLanguageSwitcher from "./WebsiteLanguageSwitcher";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { CgMenu as MenuRoundedIcon} from "react-icons/cg";
+import { CgClose as CloseRoundedIcon } from "react-icons/cg";
 
 import enData from "helpers/data/lang/en.json";
 import jaData from "helpers/data/lang/ja.json";
