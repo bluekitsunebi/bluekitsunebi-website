@@ -178,9 +178,9 @@ useEffect(() => {
         // ro
         ["90 RON", "130 RON", "170 RON",], 
         // eng
-        ["$38", "$54", "$68",], 
+        ["$32", "$43", "$56",], 
         // ja
-        ["$35", "$45", "$55",],
+        ["$32", "$43", "$56",],
       ],
       duration: [
         // ro
@@ -214,7 +214,7 @@ useEffect(() => {
     
     {
       name: ["Japoneză grup", "Japoneză grup", "Engleză grup"],
-      price: ["85 RON", "$35", "$30",],
+      price: ["85 RON", "$28", "$28",],
       duration: ["1 oră și 30 de minute", "1 oră și 30 de minute", "1 oră și 30 de minute",],
       mainFeature: "Prima lecție gratis",
       features: [
