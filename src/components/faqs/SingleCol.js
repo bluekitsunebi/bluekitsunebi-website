@@ -61,14 +61,14 @@ export default function FAQSection({
   heading = "Întrebări frecvente",
   faqs = [
     {
-      question: "Cum se efectueaza plata ?",
+      question: "Cum se efectuează plata ?",
       answer:
         "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
     },
     {
-      question: "Dacă nu pot intra într-o zi, ce se întamplă cu ședința plătită ?",
+      question: "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită ?",
       answer:
-        "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din pacăte ședința plătită dacă motivul absentării nu este unul strict obiectiv."
+        "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din păcate ședința plătită dacă motivul absentării nu este unul strict obiectiv."
     },
     {
       question: "Cum pot beneficia de asistența oferită în afara orelor de curs ?",

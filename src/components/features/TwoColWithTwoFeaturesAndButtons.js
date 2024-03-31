@@ -140,19 +140,19 @@ useEffect(() => {
     },
     {
       Icon: PiAirplaneTiltLight,
-      description: "Experiență ca ghid turistic și interpret pentru grupuri de turisti japonezi"
+      description: "Experiență ca ghid turistic și interpret pentru grupuri de turiști japonezi"
     },
     {
       Icon: PiPenNibLight,
-      description: "Experienta de traducere online de documente si scrieri din limba japoneza in engleza si vice-versa"
+      description: "Experiență de traducere online de documente și scrieri din limba japoneză în engleză și vice-versa"
     },
     {
       Icon: PiCodeLight,
-      description: "Experienta de colaborare cu japonezi nativi pe proiecte de dezvoltare software"
+      description: "Experiență de colaborare cu japonezi nativi pe proiecte de dezvoltare software"
     },
     {
       Icon: PiChalkboardTeacherLight,
-      description: "Experienta de predare a limbii japoneze de peste 6 ani"
+      description: "Experiență de predare a limbii japoneze de peste 6 ani"
     },
   ];
 

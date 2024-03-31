@@ -86,13 +86,13 @@ useEffect(() => {
     {
       imageSrc: talismans,
       description:
-        (<Description>Daca vrei să ajungi profesionist, să înțelegi anime fără subtitrari, planuiești să vizitezi Japonia, sau pur și simplu vrei să înveți japoneza ca hobby, ai ajuns unde trebuie. Ne mândrim cu lecțiile noastre de calitate și cu ritmul în care avansează toți cursanții noștri, iar nivelul de cunoștințe pe care îl are profesorul nostru de japoneză este net superior multor altor opțiuni de pe piață. Ideea este simplă: îți place și dorești să aloci timpul necesar ➔ progresezi cum probabil nici tu nu îți imaginezi.</Description>),
+        (<Description>Dacă vrei să ajungi profesionist, să înțelegi anime fără subtitrări, plănuiești să vizitezi Japonia, sau pur și simplu vrei să înveți japoneza ca hobby, ai ajuns unde trebuie. Ne mândrim cu lecțiile noastre de calitate și cu ritmul în care avansează toți cursanții noștri, iar nivelul de cunoștințe pe care îl are profesorul nostru de japoneză este net superior multor altor opțiuni de pe piață. Ideea este simplă: îți place și dorești să aloci timpul necesar ➔ progresezi cum probabil nici tu nu îți imaginezi.</Description>),
     },
 
     {
       imageSrc: read,
       description:
-        (<Description> Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și usor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap. <Kaomoji>(≧▽≦)</Kaomoji> Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât - poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Da-i drumul și întreabă! <Kaomoji>( ￣▽￣)b</Kaomoji></Description>),
+        (<Description> Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și ușor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap. <Kaomoji>(≧▽≦)</Kaomoji> Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât - poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Dă-i drumul și întreabă! <Kaomoji>( ￣▽￣)b</Kaomoji></Description>),
     },
 
     {

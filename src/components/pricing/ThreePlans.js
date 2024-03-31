@@ -245,9 +245,9 @@ useEffect(() => {
       duration: ["", "", ""],
       mainFeature: "Prima lecție gratis",
       features: [
-        ["Curs special axat pe japoneză vorbită în anime", 
+        ["Curs special axat pe japoneza vorbită în anime", 
         "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
-        ["Curs special axat pe japoneză vorbită în anime", 
+        ["Curs special axat pe japoneza vorbită în anime", 
         "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
         [],
       ],

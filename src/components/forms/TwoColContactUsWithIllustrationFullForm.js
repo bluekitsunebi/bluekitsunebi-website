@@ -219,7 +219,7 @@ useEffect(() => {
                 <FaRegCircle></FaRegCircle> : 
                 <FaCheckCircle></FaCheckCircle>
                 }</Icon>
-                Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și <Link href="#">Politica de confidentialitate</Link>
+                Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și <Link href="#">Politica de confidențialitate</Link>
                 <AccordNeeded>{accordNeeded ? <Show>(Vă rugăm completați aici)</Show> : <Hide>(Vă rugăm completați aici)</Hide>}</AccordNeeded>
               </Checkbox>
               <SubmitButton type="submit">

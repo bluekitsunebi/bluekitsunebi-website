@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { css } from "styled-components/macro"; //eslint-disable-line
+import { css } from "styled-components/macro";
 import { IoLogoFacebook as FacebookIcon } from "react-icons/io5";
+import { IoLogoInstagram as InstagramIcon} from "react-icons/io5";
+import { IoLogoTiktok as TiktokIcon} from "react-icons/io5";
 import { IoMail as GmailIcon } from "react-icons/io5";
 import { IoLogoWhatsapp as WhatsAppIcon } from "react-icons/io";
 import { useSelector, 
-  // useDispatch 
 } from "react-redux";
-// import {
-//   setHeight,
-//   setYaxisPosition,
-// } from "store/footerSlice";
 
 const Container = tw.div`relative bg-gray-900 text-gray-100 mx-0 mb-0 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-8 pb-8
@@ -41,8 +38,8 @@ const FirstLinkListItem = tw.li`mt-3 flex flex-wrap gap-2 sm:justify-start justi
 const UnderlinedText = tw.div`border-b-2 border-transparent hocus:text-gray-300 hocus:border-gray-100 pb-1 transition duration-300 flex gap-2 text-center sm:text-left cursor-pointer`;
 const Text = tw.span`pb-1 flex flex-wrap gap-2 cursor-default inline-block justify-center text-center sm:text-left sm:justify-normal`;
 
-const SocialIcon = tw.span`text-xl inline-block`;
-const Facebook = tw.a`hover:text-blue-600 transition duration-300 flex flex-wrap gap-2 justify-center cursor-pointer`;
+const Icon = tw.span`text-xl inline-block`;
+const SocialIcon = tw.a`text-xl inline-block transition duration-300 cursor-pointer hover:text-beige-600`;
 
 const CopyrightAndCompanyInfoRow = tw.div`pb-0 text-sm font-normal flex flex-col items-center 
 sm:flex-row sm:justify-between`;
@@ -108,7 +105,7 @@ useEffect(() => {
           <FirstColumn>
             <LinkList>
               <FirstLinkListItem>
-                  <Text><SocialIcon><WhatsAppIcon/></SocialIcon>WhatsApp</Text>
+                  <Text><Icon><WhatsAppIcon/></Icon>WhatsApp</Text>
               </FirstLinkListItem>
               <LinkListItem>
                 <Text>+40 745 984 726</Text>
@@ -120,17 +117,20 @@ useEffect(() => {
             <LinkList>
               <LinkListItem>
                 <Text>
-                  <SocialIcon><GmailIcon/></SocialIcon> 
+                  <Icon><GmailIcon/></Icon> 
                   <Breakable>bluekitsunebi@gmail.com</Breakable>
                 </Text>
               </LinkListItem>
               <LinkListItem>
-                <Facebook href="https://www.facebook.com/profile.php?id=100093026116129" target="_blank">
-                  <SocialIcon>
-                    <FacebookIcon />
-                  </SocialIcon>
-                  Facebook
-                </Facebook>                 
+                <SocialIcon href="https://www.instagram.com/bluekitsunebi?utm_source=qr&igsh=MWo0eGE1aG5menIzZw==" target="_blank">
+                  <InstagramIcon />
+                </SocialIcon>
+                <SocialIcon href="https://www.facebook.com/profile.php?id=100093026116129" target="_blank">
+                  <FacebookIcon />
+                </SocialIcon>
+                <SocialIcon href="https://www.tiktok.com/@bluekitsunebi?is_from_webapp=1&sender_device=pc" target="_blank">
+                  <TiktokIcon />
+                </SocialIcon>                    
               </LinkListItem>
             </LinkList>
           </Column>

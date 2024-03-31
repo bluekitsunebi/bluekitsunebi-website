@@ -66,9 +66,9 @@ useEffect(() => {
           <LinksContainer>
             <Details>
                 <div>Kitsunebi Miyabi SRL</div>
-                <div>Tel: <Breakable>+40745984726</Breakable></div>
+                <div>Tel: <Breakable>+40 745 984 726</Breakable></div>
                 <div>Email: <Breakable>bluekitsunebi@gmail.com</Breakable></div>
-                <div>Cont LEI: <Breakable>RO84CECEB00030RON2569171</Breakable></div>
+                <div>Cont: <Breakable>RO84CECEB00030RON2569171</Breakable></div>
                 <div>Nr. ord. registrul com.: <Breakable>J29/63/2023</Breakable></div>
                 <div>C.I.F.: <Breakable>47442947</Breakable></div>
                 <div>Sediu social: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România</div>
