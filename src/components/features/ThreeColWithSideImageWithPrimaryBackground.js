@@ -21,10 +21,10 @@ import { useSelector,
 const Container = tw.div`relative bg-primary-900 mx-0 px-8 text-gray-100`;
 
 const ThreeColumnContainer = styled.div`
-  ${tw`flex flex-col items-center md:items-stretch md:flex-row flex-wrap md:justify-center max-w-screen-xl mx-auto py-20 md:py-24 xl:grid xl:grid-cols-6 md:gap-x-8 xl:gap-y-4`}
+  ${tw`flex flex-col items-center md:items-stretch md:flex-row sm:flex-wrap md:justify-center max-w-screen-xl mx-auto py-20 md:py-24 xl:grid xl:grid-cols-6 md:gap-x-8 xl:gap-y-4`}
 `;
 
-const Heading = tw(SectionHeading)`w-full col-start-1 col-end-7 row-start-2 row-end-3 mb-10 md:mb-20`;
+const Heading = tw(SectionHeading)`sm:w-full col-start-1 col-end-7 row-start-2 row-end-3 mb-10 md:mb-20`;
 
 const Column = styled.div.attrs(props => ({
   style: {
@@ -36,7 +36,7 @@ const Column = styled.div.attrs(props => ({
 `;
 
 const Card = styled.div`
-  ${tw`flex flex-col items-center md:items-start text-center sm:text-left h-full mx-4 px-2 py-8 w-full xl:ml-0`}
+  ${tw`flex flex-col items-center md:items-start text-center sm:text-left h-full mx-4 px-2 py-8 sm:w-full xl:ml-0`}
   
   .iconContainer {
     ${tw`bg-gray-100 text-center rounded-full p-5 flex-shrink-0 
