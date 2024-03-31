@@ -63,7 +63,7 @@ export default function FAQSection({
     {
       question: "Cum se efectueaza plata ?",
       answer:
-        "Plata se efectuează după ședintâța gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
+        "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
     },
     {
       question: "Dacă nu pot intra într-o zi, ce se întamplă cu ședința plătită ?",
