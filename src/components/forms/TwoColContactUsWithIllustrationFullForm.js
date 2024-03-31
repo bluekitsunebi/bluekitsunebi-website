@@ -114,6 +114,8 @@ useEffect(() => {
   }
 }, [onRender, homeWasRendered]);
 
+const requiredErrorMessage = "Vă rugăm completați aici";
+
   // -------------------------------------------------------
 
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
@@ -160,10 +162,6 @@ useEffect(() => {
         }
       );
   };
-
-  // reset send button on focus after send.
-
-  
 
   return (
     <Container ref={contactSectionRef}>
@@ -220,7 +218,7 @@ useEffect(() => {
                 <FaCheckCircle></FaCheckCircle>
                 }</Icon>
                 Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și <Link href="#">Politica de confidențialitate</Link>
-                <AccordNeeded>{accordNeeded ? <Show>(Vă rugăm completați aici)</Show> : <Hide>(Vă rugăm completați aici)</Hide>}</AccordNeeded>
+                <AccordNeeded>{accordNeeded ? <Show>({requiredErrorMessage})</Show> : <Hide>({requiredErrorMessage})</Hide>}</AccordNeeded>
               </Checkbox>
               <SubmitButton type="submit">
                 {isSend  
