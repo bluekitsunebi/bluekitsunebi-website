@@ -7,8 +7,9 @@ import { IoLogoInstagram as InstagramIcon} from "react-icons/io5";
 import { IoLogoTiktok as TiktokIcon} from "react-icons/io5";
 import { IoMail as GmailIcon } from "react-icons/io5";
 import { IoLogoWhatsapp as WhatsAppIcon } from "react-icons/io";
-import { useSelector, 
-} from "react-redux";
+import { useSelector } from "react-redux";
+import sal from "images/original/anpc/sal.webp";
+import sol from "images/original/anpc/sol.webp";
 
 const Container = tw.div`relative bg-gray-900 text-gray-100 mx-0 mb-0 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-8 pb-8
@@ -37,12 +38,13 @@ const LinkListItem = tw.li`mt-3 flex flex-wrap gap-2 sm:justify-start justify-ce
 const FirstLinkListItem = tw.li`mt-3 flex flex-wrap gap-2 sm:justify-start justify-center xl:mt-0`;
 const UnderlinedText = tw.div`border-b-2 border-transparent hocus:text-gray-300 hocus:border-gray-100 pb-1 transition duration-300 flex gap-2 text-center sm:text-left cursor-pointer`;
 const Text = tw.span`pb-1 flex flex-wrap gap-2 cursor-default inline-block justify-center text-center sm:text-left sm:justify-normal`;
+const Utils = tw.div`flex flex-col w-fit gap-2 justify-end sm:flex-row sm:w-96`;
 
 const Icon = tw.span`text-xl inline-block`;
 const SocialIcon = tw.a`text-xl inline-block transition duration-300 cursor-pointer hover:text-beige-600`;
 
-const CopyrightAndCompanyInfoRow = tw.div`pb-0 text-sm font-normal flex flex-col items-center 
-sm:flex-row sm:justify-between`;
+const CopyrightAndCompanyInfoRow = tw.div`pb-0 text-sm font-normal flex flex-col items-center gap-2
+sm:flex-row-reverse sm:justify-between`;
 const CopyrightNotice = tw.div`w-fit text-center sm:text-left`;
 const CompanyInfo = tw.div`w-fit text-center sm:text-left`;
 
@@ -160,8 +162,19 @@ useEffect(() => {
         </FiveColumns>
         <Divider/>
         <CopyrightAndCompanyInfoRow>
-          <CopyrightNotice>&copy; Copyright 2024, Kitsunebi Miyabi SRL</CopyrightNotice>
-          <CompanyInfo>Cursuri Online de limba japoneză.</CompanyInfo>
+        <CompanyInfo>
+          <Utils>
+            <a href='https://anpc.ro/ce-este-sal/' target="_blank">
+              <img src={sal} alt='Soluționarea Alternativă a Litigiilor'></img>
+            </a>
+            <a href='https://ec.europa.eu/consumers/odr' target="_blank">
+              <img src={sol} alt='Soluționarea On-Line a Litigiilor'></img>
+            </a>
+          </Utils>
+          </CompanyInfo>
+          <CopyrightNotice>
+            &copy; Copyright 2024, Kitsunebi Miyabi SRL
+          </CopyrightNotice>
         </CopyrightAndCompanyInfoRow>
       </Content>
     </Container>
