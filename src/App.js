@@ -105,6 +105,7 @@ import MainLandingPage from "MainLandingPage.js";
 import ThankYouPage from "ThankYouPage.js";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProgrammingLandingPage from "ProgrammingLandingPage";
 
 export default function App() {
   // adjusts font based on pixel density
@@ -127,7 +128,7 @@ export default function App() {
           <Route path="/components/:type/:subtype/:name" element={<ComponentRenderer />} />
           <Route path="/components/:type/:name" element={<ComponentRenderer />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
-          <Route path="/programming" element={<MainLandingPage />} />
+          <Route path="/programming" element={<ProgrammingLandingPage />} />
           <Route path="/" element={<MainLandingPage />} />
         </Routes>
       </Router>
