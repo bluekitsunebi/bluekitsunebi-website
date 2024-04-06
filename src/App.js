@@ -127,6 +127,7 @@ export default function App() {
           <Route path="/components/:type/:subtype/:name" element={<ComponentRenderer />} />
           <Route path="/components/:type/:name" element={<ComponentRenderer />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
+          <Route path="/programming" element={<MainLandingPage />} />
           <Route path="/" element={<MainLandingPage />} />
         </Routes>
       </Router>
