@@ -21,20 +21,20 @@ import { ReactComponent as ArrowRightIcon } from "images/arrow-right-3-icon.svg"
 import heroScreenshotImageSrc from "images/demo/MainLandingPageHero.png";
 import logo from "images/logo.svg";
 import useInView from "helpers/useInView";
-import VerticalWithAlternateImageAndText from "components/features/VerticalWithAlternateImageAndText";
-import ThreeColWithSideImageWithPrimaryBackground from "components/features/ThreeColWithSideImageWithPrimaryBackground";
+import VerticalWithAlternateImageAndText from "components/programming/VerticalWithAlternateImageAndText";
+import ThreeColWithSideImageWithPrimaryBackground from "components/programming/ThreeColWithSideImageWithPrimaryBackground";
 import TwoColumnWithVideo from "components/hero/TwoColumnWithVideo";
 import TwoColContactUsWithIllustration from "components/forms/TwoColContactUsWithIllustration";
 import TwoColumnWithImage from "components/testimonials/TwoColumnWithImage";
 import TwoColumnWithFeaturesAndTestimonial from "components/hero/TwoColumnWithFeaturesAndTestimonial";
-import TwoColWithTwoFeaturesAndButtons from "components/features/TwoColWithTwoFeaturesAndButtons";
-import ThreePlans from "components/pricing/ThreePlans";
-import SingleCol from "components/faqs/SingleCol";
-import TwoColContactUsWithIllustrationFullForm from "components/forms/TwoColContactUsWithIllustrationFullForm";
+import TwoColWithTwoFeaturesAndButtons from "components/programming/TwoColWithTwoFeaturesAndButtons";
+import ThreePlans from "components/programming/ThreePlans";
+import SingleCol from "components/programming/SingleCol";
+import TwoColContactUsWithIllustrationFullForm from "components/programming/TwoColContactUsWithIllustrationFullForm";
 import TwoColumnWithInput from "components/hero/TwoColumnWithInput";
 import FiveColumnDark from "components/footers/FiveColumnDark";
 import BackgroundAsImage from "components/hero/BackgroundAsImage";
-import GetStarted from "components/cta/GetStarted";
+import GetStarted from "components/programming/GetStarted";
 import Header from "components/headers/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { setWasRendered, setIsResizing } from "store/homeSectionSlice";
@@ -306,7 +306,7 @@ export default ({
   return (
     <AnimationRevealPage disabled>
       <Header ref={headerRef} onRender={handleComponentRender} />
-      {/* <BackgroundAsImage ref={heroSectionRef} onRender={handleComponentRender} /> */}
+      <BackgroundAsImage ref={heroSectionRef} onRender={handleComponentRender} />
       <VerticalWithAlternateImageAndText ref={aboutSectionRef} onRender={handleComponentRender} />
       <ThreeColWithSideImageWithPrimaryBackground ref={whySectionRef} onRender={handleComponentRender} />
       <TwoColWithTwoFeaturesAndButtons ref={profesorSectionRef} onRender={handleComponentRender} />
