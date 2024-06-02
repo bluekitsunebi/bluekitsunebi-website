@@ -90,7 +90,6 @@ useEffect(() => {
   );
 
   const handleClick = (section) => {
-    console.log('click')
     const sectionPosition = section - headerHeight + 1;
     window.scroll({
       top: sectionPosition,

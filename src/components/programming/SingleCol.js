@@ -6,7 +6,7 @@ import { SectionHeading } from "components/misc/Headings.js";
 import { ReactComponent as ChevronDownIcon } from "feather-icons/dist/icons/chevron-down.svg";
 import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-7.svg";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
-import QuestionsImage from "images/original/chibiMiyabi/faq.png";
+import QuestionsImage from "images/original/chibiMiyabi/faq-programming.png";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setHeight,
@@ -18,7 +18,7 @@ import { setIsResizing } from "store/homeSectionSlice";
 const Container = tw.div`relative mx-8`;
 const Heading = tw(SectionHeading)`w-full text-indigo-500`;
 
-const TwoColumn = tw.div`flex flex-col gap-20 md:flex-row justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
+const TwoColumn = tw.div`flex flex-col gap-20 md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,

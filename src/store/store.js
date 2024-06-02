@@ -18,6 +18,7 @@ import coursesSectionReducer from "./coursesSectionSlice";
 import FAQsectionReducer from "./FAQsectionSlice";
 import contactSectionReducer from "./contactSectionSlice";
 import infoSectionReducer from "./infoSectionSlice";
+import authReducer from './authSlice';
 
 export const store = configureStore({
   reducer: {
@@ -39,5 +40,7 @@ export const store = configureStore({
     FAQsection: FAQsectionReducer,
     contactSection: contactSectionReducer,
     infoSection: infoSectionReducer,
+
+    auth: authReducer,
   },
 });

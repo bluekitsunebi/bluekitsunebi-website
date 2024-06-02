@@ -3,9 +3,9 @@ import styled from "styled-components";
 import tw from "twin.macro";
 import { ReactComponent as SvgDotPatternIcon } from "../../images/dot-pattern.svg";
 import { SectionHeading as HeadingTitle } from "../misc/Headings.js";
-import talismans from "../../images/original/chibiMiyabi/talismans.png";
-import read from "../../images/original/chibiMiyabi/reading.png";
-import write from "../../images/original/chibiMiyabi/writeing.png";
+import laptop from "../../images/original/chibiMiyabi/laptop.png";
+import study from "../../images/original/chibiMiyabi/study.png";
+import fight from "../../images/original/chibiMiyabi/fight.png";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setAboutSectionId,
@@ -30,7 +30,7 @@ const Image = styled.div(props => [
   tw`rounded md:w-1/2 lg:w-5/12 xl:w-1/3 flex-shrink-0 h-80 md:h-144 bg-contain bg-center bg-no-repeat mx-4 sm:mx-8 md:mx-4 lg:mx-8`
 ]);
 const Details = tw.div`mt-4 md:mt-0 md:max-w-2xl mx-4 sm:mx-8 md:mx-4 lg:mx-8`;
-const Description = tw.p`mt-2 text-base sm:text-xl leading-loose text-gray-800`;
+const Description = tw.p`mt-2 text-base sm:text-xl leading-loose text-gray-100`;
 const Kaomoji = tw.span`inline-block whitespace-nowrap w-fit`;
 
 const SvgDotPattern1 = tw(
@@ -84,21 +84,21 @@ useEffect(() => {
 
   const cards = [
     {
-      imageSrc: talismans,
+      imageSrc: laptop,
       description:
-        (<Description>Aplicatii de mobil? Site-uri web? Sau poate vrei sa inveti pentru BAC si examenul de admitere? Oricare ar fi motivul, suntem mai mult decat pregatiti sa-ti venim in ajutor. Programarea este des vazuta ca fiind un domeniu accesibil doar celor supradotati, dar in realitate oricine are un nivel mediu de inteligenta are toate sansele sa devina programator daca depune efortul necesar. Majoritatea sarcinilor unui software developer implica refolosirea si innadirea unor parti de cod deja existente sau respectarea unei structuri prestabilite, lucru care se poate invata cu destul antrenament.</Description>),
+        (<Description>Aplicații de mobil? Site-uri web? Sau poate vrei să înveți pentru BAC și examenul de admitere? Oricare ar fi motivul, suntem mai mult decât pregătiți să-ți venim în ajutor. Programarea este des văzută ca fiind un domeniu accesibil doar celor supradotați, dar în realitate oricine are un nivel mediu de inteligență are toate șansele să devină programator dacă depune efortul necesar. Majoritatea sarcinilor unui software developer implică refolosirea și innădirea unor părți de cod deja existente sau respectarea unei structuri prestabilite, lucru care se poate învăța cu destul antrenament.</Description>),
     },
 
     {
-      imageSrc: read,
+      imageSrc: study,
       description:
-        (<Description>Lectiile noastre sunt concepute de programatori cu experienta reala in domeniu si care au cunostinte intr-o varietate mare de limbaje si tehnologii folosite in prezent de majoritatea companiilor din intreaga lume. Limbajele predate in cursurile noastre depind de telul fiecaruia: celor care vor sa invete pentru examenele de bacalaureat si de admitere li se va preda C++, pe cand celor care vor o cariera in domeniu li se vor preda HTML, CSS, Javascript si ulterior React. Motivul pentru care am ales Javascript ca si limbaj pe care sa-l predam este versatilitatea acestuia. Acesta se foloseste atat pentru partea de server si comunicare cu baza de date cat si pentru partea de interfata, cu care interactioneaza userul. Stiind Javasctipt ai cele mai multe porti deschise pentru a obtine primul tau job in domeniul IT.</Description>),
+        (<Description>Lecțiile noastre sunt concepute de programatori cu experiență reală în domeniu și care au cunoștințe într-o varietate mare de limbaje și tehnologii folosite în prezent de majoritatea companiilor din întreaga lume. Limbajele predate în cursurile noastre depind de țelul fiecăruia: celor care vor să învețe pentru examenele de bacalaureat și de admitere li se va preda C++, pe când celor care vor o carieră în domeniu li se vor preda HTML, CSS, Javascript și ulterior React. Motivul pentru care am ales Javascript ca și limbaj pe care să-l predăm este versatilitatea acestuia. Acesta se folosește atât pentru partea de server și comunicare cu baza de date cât și pentru partea de interfață, cu care interacționează userul. Știind Javasctipt ai cele mai multe porți deschise pentru a obține primul tău job în domeniul IT.</Description>),
     },
 
     {
-      imageSrc: write,
+      imageSrc: fight,
       description:
-        (<Description>O mare parte din timpul unui software developer este ocupata de remedierea diverselor erori aparute in urma procesului de dezvoltare. Odata cu experienta, depistarea partii de cod care produce eroarea devine ceva instinctiv, dar la inceput este usor sa te pierzi nestiind cum sa continui. Suntem aici sa-ti dam o mana de ajutor in lupta contra oricaror erori intampini de-a lungul procesului de invatare, deci stai fara griji!</Description>),
+        (<Description>O mare parte din timpul unui software developer este ocupată de remedierea diverselor erori apărute în urma procesului de dezvoltare. Odată cu experiența, depistarea părții de cod care produce eroarea devine ceva instinctiv, dar la început este ușor să te pierzi neștiind cum să continui. Suntem aici să-ți dăm o mână de ajutor în lupta contra oricăror erori întâmpini de-a lungul procesului de învățare, deci stai fără griji!</Description>),
     }
   ];
 
@@ -111,7 +111,7 @@ useEffect(() => {
 
         <Content>
           {cards.map((card, i) => (
-            <Card key={i} reversed={i % 2 === 1}>
+            <Card key={i} reversed={i % 2 === 0}>
               <Image imageSrc={card.imageSrc} />
               <Details>
                 {card.description}

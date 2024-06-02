@@ -152,13 +152,11 @@ const requiredErrorMessage = "Vă rugăm completați aici";
       )
       .then(
         (result) => {
-          console.log(result.text);
           dispatch(setIsSend(true));
           dispatch(setIsSending(false));
           e.target.reset();
         },
         (error) => {
-          console.log(error.text);
         }
       );
   };

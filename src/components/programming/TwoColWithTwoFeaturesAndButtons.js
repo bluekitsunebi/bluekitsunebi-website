@@ -11,7 +11,7 @@ import { PiCloudArrowUpLight } from "react-icons/pi";
 import { PiCodeLight } from "react-icons/pi";
 
 //img
-import teacher from "../../images/original/teacher.jpg";
+import teacher from "../../images/original/teacher-programming.png";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -21,20 +21,20 @@ import {
 
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-wrap flex-col justify-between max-w-screen-xl mx-auto py-20 
-sm:flex-row 
+sm:flex-row-reverse
 md:py-24 md:items-center`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 
 const ImageColumn = styled(Column)`
   ${tw`flex-shrink-0 size-fit relative w-2/3 pl-8 pb-8 min-w-64
   md:w-5/12 
-  sm:pl-16 sm:pb-16 sm:pt-0 sm:pr-0`}`;
+  sm:pr-16 sm:pb-16 sm:pt-0 sm:pl-0`}`;
 
 const Image = tw.div`relative flex`;
 
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,
-  props.textOnLeft ? tw`md:order-first md:pr-12 lg:pr-16` : tw`md:ml-12 lg:ml-16 md:order-last`
+  props.textOnLeft ? tw`md:order-first md:pl-12 lg:pl-16` : tw`md:ml-12 lg:ml-16 md:order-last`
 ]);
 
 const FrameStyled = styled.div`
@@ -44,12 +44,12 @@ const FrameStyled = styled.div`
   z-index: -2;
   border-radius: 10%;
   top: 10%;
-  right: 15%;
+  left: 15%;
 `;
 const customStyleOuterDiv = {
   top: '15%',
   height: '80%',
-  right: '0',
+  left: '0',
   width: '110%',
   position: 'absolute',
   zIndex: '-1',
@@ -59,7 +59,7 @@ const customStyleOuterDiv = {
 const customStyleInnerDiv = {
   top: '15%',
   height: '100%',
-  right: '2rem',
+  left: '2rem',
   width: '75%',
   position: 'absolute',
   zIndex: '-1',
@@ -67,14 +67,14 @@ const customStyleInnerDiv = {
   borderRadius: '10%',
 };
 
-const TextContent = tw.div`lg:py-8 text-center md:text-left`;
+const TextContent = tw.div`lg:py-8 flex flex-col md:items-end text-center md:text-left`;
 
 const Heading = tw(
   SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-left leading-tight text-secondary-500`;
+)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-secondary-500`;
 
 const Features = tw.div`mt-8 max-w-sm mx-auto md:mx-0`;
-const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row`;
+const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row-reverse`;
 
 const FeatureIconContainer = styled.div`
   ${props => props.isFirst ? tw`bg-primary-900` : tw`border border-primary-900`};
@@ -84,7 +84,7 @@ const FeatureIconContainer = styled.div`
   }
 `;
 
-const FeatureText = tw.div`mt-4 md:mt-0 md:ml-4 text-center md:text-left mx-auto`;
+const FeatureText = tw.div`mt-4 md:mt-0 md:mr-4 text-center md:text-left mx-auto`;
 const FeatureDescription = tw.div`mt-1 text-sm text-gray-900`;
 
 const Highlight = styled.span`
@@ -136,23 +136,23 @@ useEffect(() => {
   const defaultFeatures = [
     {
       Icon: PiCubeThin,
-      description: "experienta de lucru ca programator pe 5+ proiecte reale (dintre care 2 de lunga durata)"
+      description: "experiență de lucru ca programator pe 5+ proiecte reale (dintre care 2 de lungă durată)"
     },
     {
       Icon: FaReact,
-      description: "experienta de lucru cu cele mai utilizate tehnologii front-end (React, Angular, Redux, Tailwind CSS etc.)"
+      description: "experiență de lucru cu cele mai utilizate tehnologii front-end (React, Angular, Redux, Tailwind CSS etc.)"
     },
     {
       Icon: PiShareNetworkLight,
-      description: "experienta de lucru in medii de dezvoltare bazate pe microservicii"
+      description: "experiență de lucru în medii de dezvoltare bazate pe microservicii"
     },
     {
       Icon: PiCloudArrowUpLight,
-      description: "experienta in lansare de site-uri in regim serverless"
+      description: "experiență în lansare de site-uri în regim serverless"
     },
     {
       Icon: PiCodeLight,
-      description: "studii in domeniul pedagogiei si al informaticii"
+      description: "studii în domeniul pedagogiei și al informaticii"
     },
   ];
 
@@ -171,7 +171,7 @@ useEffect(() => {
               alt="teacher photo" 
               style={{ 
                 borderRadius: '10%',
-                boxShadow: '-1rem 1rem 1.5rem rgba(0, 0, 0, 0.4)' 
+                boxShadow: '1rem 1rem 1.5rem rgba(0, 0, 0, 0.4)' 
               }}/>
             </Image>
         </ImageColumn>

@@ -159,10 +159,10 @@ export default function Header({ onRender }) {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.height = "100vh";
+      // document.body.style.height = "100vh";
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.height = "auto";
+      // document.body.style.height = "auto";
       document.body.style.overflow = "visible";
     }
   }, [isOpen]);

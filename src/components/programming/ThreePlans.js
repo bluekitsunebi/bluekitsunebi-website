@@ -162,9 +162,9 @@ useEffect(() => {
       features: [
         "Cursuri pentru viitorii dezvoltatori web", 
         "Predate de un programator cu experiență", 
-        "Veți învăța HTML, CSS, limbajul JavaScript și framework-urile React și Angular", 
-        "Veți afla care sunt cele mai bune practici din industrie",
-        "La finalul acestor cursuri, veți lansa propriul website și veți avea un portofoliu personal cu proiecte",
+        "Vei învăța HTML, CSS, limbajul JavaScript și framework-urile React și Angular", 
+        "Vei afla care sunt cele mai bune practici din industrie",
+        "La finalul acestor cursuri, vei lansa propriul website și vei avea un portofoliu personal cu proiecte",
         "(plata o dată la 6 lecții)"
       ],
       featured: false,

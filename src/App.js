@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GlobalStyles from 'styles/GlobalStyles';
 import { css } from "styled-components/macro"; //eslint-disable-line
 
@@ -71,7 +71,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 // import ContactUsForm from "components/forms/TwoColContactUsWithIllustration.js";
 // import SubscribeNewsLetterForm from "components/forms/SimpleSubscribeNewsletter.js";
 //
-import GetStarted from "components/cta/GetStarted.js";
+
 // import GetStarted from "components/cta/GetStartedLight.js";
 // import DownloadApp from "components/cta/DownloadApp.js";
 
@@ -91,7 +91,6 @@ import GetStarted from "components/cta/GetStarted.js";
 // import HostingCloudLandingPage from "demos/HostingCloudLandingPage.js";
 
 /* Inner Pages */
-// import LoginPage from "pages/Login.js";
 // import SignupPage from "pages/Signup.js";
 // import PricingPage from "pages/Pricing.js";
 // import AboutUsPage from "pages/AboutUs.js";
@@ -100,12 +99,52 @@ import GetStarted from "components/cta/GetStarted.js";
 // import TermsOfServicePage from "pages/TermsOfService.js";
 // import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
+import GetStarted from "components/cta/GetStarted.js";
 import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
 import ThankYouPage from "ThankYouPage.js";
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import styled from 'styled-components';
 import ProgrammingLandingPage from "ProgrammingLandingPage";
+import LoginPage from "pages/Login.js";
+import LearnKanjiPage from "pages/LearnKanjiPage.js";
+import ProtectedRoute from 'components/login/ProtectedRoute';
+import { useDispatch } from 'react-redux';
+import { logout } from 'store/authSlice';
+
+
+function Wrapper() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const [hasVisitedApp, setHasVisitedApp] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname === '/app' && !hasVisitedApp) {
+      setHasVisitedApp(true);
+    }
+    if(location.pathname !== '/app' && hasVisitedApp){
+      dispatch(logout());
+      setHasVisitedApp(false);
+    }
+  }, [location, dispatch]);
+  
+  return (
+    <>
+      <GlobalStyles pathname={location.pathname}/>
+      <Routes>
+        <Route path="/" element={<MainLandingPage />} />
+        <Route path="/programming" element={<ProgrammingLandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/app" element={
+          <ProtectedRoute>
+            <LearnKanjiPage />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </>
+  );
+}
 
 export default function App() {
   // adjusts font based on pixel density
@@ -119,20 +158,10 @@ export default function App() {
   // If you want to disable the animation just use the disabled `prop` like below on your page's component
   // return <AnimationRevealPage disabled>xxxxxxxxxx</AnimationRevealPage>;
 
-
   return (
-    <>
-      <GlobalStyles />
-      <Router>
-        <Routes>
-          {/* <Route path="/components/:type/:subtype/:name" element={<ComponentRenderer />} /> */}
-          {/* <Route path="/components/:type/:name" element={<ComponentRenderer />} /> */}
-          {/* <Route path="/thank-you" element={<ThankYouPage />} /> */}
-          <Route path="/programming" element={<ProgrammingLandingPage />} />
-          <Route path="/" element={<MainLandingPage />} />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Wrapper />
+    </Router>
   );
 }
 

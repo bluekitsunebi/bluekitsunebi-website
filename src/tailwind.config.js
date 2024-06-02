@@ -28,6 +28,8 @@ module.exports = {
       black: '#000',
       white: '#fff',
 
+      // japanese courses page
+
       primary: {
         100: '#8bd1ff',
         200: '#77c9ff',
@@ -64,6 +66,22 @@ module.exports = {
         800: '#b3a699',
         900: '#998e83',
       },
+
+      // programming courses page
+
+      teal: {
+        100: '',
+        200: '',
+        300: '',
+        400: '',
+        500: '',
+        600: '',
+        700: '',
+        800: '',
+        900: '',
+      },
+
+      // ------------------------
 
       gray: {
         "lightest": "#fff",
