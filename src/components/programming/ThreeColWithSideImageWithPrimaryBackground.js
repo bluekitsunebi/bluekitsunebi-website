@@ -18,7 +18,7 @@ import { useSelector,
 //   setYaxisPosition,
 // } from "store/whySectionSlice";
 
-const Container = tw.div`relative bg-primary-900 mx-0 px-8 text-gray-100`;
+const Container = tw.div`relative bg-bluePr-500 mx-0 px-8 text-gray-100`;
 
 const ThreeColumnContainer = styled.div`
   ${tw`flex flex-col items-center md:items-stretch md:flex-row sm:flex-wrap md:justify-center max-w-screen-xl mx-auto py-20 md:py-24 xl:grid xl:grid-cols-6 md:gap-x-8 xl:gap-y-4`}
@@ -40,7 +40,7 @@ const Card = styled.div`
   
   .iconContainer {
     ${tw`bg-gray-100 text-center rounded-full p-5 flex-shrink-0 
-      text-primary-500`}
+      text-bluePr-500`}
   }
 
   .textContainer {
@@ -52,7 +52,7 @@ const Card = styled.div`
   }
 `;
 
-const Highlight = tw.span`px-1 py-0 text-gray-200 bg-primary-1000`;
+const Highlight = tw.span`px-1 py-0 text-bluePr-500 bg-bluePr-200`;
 
 export default function WhySection({
   onRender,

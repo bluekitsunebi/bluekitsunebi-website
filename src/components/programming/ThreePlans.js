@@ -15,7 +15,7 @@ import {
 
 const Container = tw.div`relative mx-8`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
-const Heading = tw(SectionHeading)`w-full text-primary-900`;
+const Heading = tw(SectionHeading)`w-full text-navyPr-100`;
 const PlansContainer = tw.div`flex justify-evenly flex-col lg:flex-row items-center lg:items-stretch relative lg:gap-8 xl:gap-16`;
 
 const Plan = styled.div`

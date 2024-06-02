@@ -17,7 +17,7 @@ const Container = tw.div`relative mx-8`;
 
 const SingleColumn = tw.div`max-w-screen-xl mx-auto py-20 lg:py-24`;
 
-const HeadingInfoContainer = tw.div`flex flex-col items-center`;
+const HeadingInfoContainer = tw.div`flex flex-col items-center text-navyPr-100`;
 
 const Content = tw.div`mt-12`;
 
@@ -35,16 +35,16 @@ const Kaomoji = tw.span`inline-block whitespace-nowrap w-fit`;
 
 const SvgDotPattern1 = tw(
   SvgDotPatternIcon
-)`absolute top-0 left-0 transform -translate-x-20 rotate-90 translate-y-8 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
+)`absolute top-0 left-0 transform -translate-x-20 rotate-90 translate-y-8 -z-10 opacity-50 text-bluePr-500 fill-current w-24`;
 const SvgDotPattern2 = tw(
   SvgDotPatternIcon
-)`absolute top-0 right-0 transform translate-x-20 rotate-45 translate-y-24 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
+)`absolute top-0 right-0 transform translate-x-20 rotate-45 translate-y-24 -z-10 opacity-50 text-bluePr-500 fill-current w-24`;
 const SvgDotPattern3 = tw(
   SvgDotPatternIcon
-)`absolute bottom-0 left-0 transform -translate-x-20 rotate-45 -translate-y-8 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
+)`absolute bottom-0 left-0 transform -translate-x-20 rotate-45 -translate-y-8 -z-10 opacity-50 text-bluePr-500 fill-current w-24`;
 const SvgDotPattern4 = tw(
   SvgDotPatternIcon
-)`absolute bottom-0 right-0 transform translate-x-20 rotate-90 -translate-y-24 -z-10 opacity-50 text-secondary-500 fill-current w-24`;
+)`absolute bottom-0 right-0 transform translate-x-20 rotate-90 -translate-y-24 -z-10 opacity-50 text-bluePr-500 fill-current w-24`;
 
 
 export default function AboutSection({ onRender }) {

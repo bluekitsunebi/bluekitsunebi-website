@@ -32,7 +32,7 @@ import ThreePlans from "components/programming/ThreePlans";
 import SingleCol from "components/programming/SingleCol";
 import TwoColContactUsWithIllustrationFullForm from "components/programming/TwoColContactUsWithIllustrationFullForm";
 import TwoColumnWithInput from "components/hero/TwoColumnWithInput";
-import FiveColumnDark from "components/footers/FiveColumnDark";
+import FiveColumnDark from "components/programming/FiveColumnDark";
 import BackgroundAsImage from "components/hero/BackgroundAsImage";
 import GetStarted from "components/programming/GetStarted";
 import Header from "components/headers/Header";

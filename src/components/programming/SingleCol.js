@@ -16,7 +16,7 @@ import { setIsResizing } from "store/homeSectionSlice";
 
 
 const Container = tw.div`relative mx-8`;
-const Heading = tw(SectionHeading)`w-full text-indigo-500`;
+const Heading = tw(SectionHeading)`w-full text-white`;
 
 const TwoColumn = tw.div`flex flex-col gap-20 md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
@@ -36,7 +36,9 @@ const ImageColumn = tw(Column)`md:w-5/12 flex-shrink-0 h-80 md:h-auto`;
 const HeaderContent = tw.div``;
 
 const FAQSContainer = tw.dl`mt-12 max-w-4xl relative`;
-const FAQ = tw.div`cursor-pointer select-none mt-5 px-8 sm:px-10 py-5 sm:py-4 rounded-lg text-gray-800 hover:text-gray-900 bg-indigo-200 hover:bg-indigo-300 transition duration-300`;
+const FAQ = tw.div`cursor-pointer select-none mt-5 px-8 sm:px-10 py-5 sm:py-4 rounded-lg text-gray-800 hover:text-gray-900 
+bg-bluePr-100 hover:bg-bluePr-200 
+transition duration-300`;
 const Question = tw.dt`flex justify-between items-center`;
 const QuestionText = tw.span`text-lg lg:text-xl font-semibold`;
 const QuestionToggleIcon = motion(styled.span`
