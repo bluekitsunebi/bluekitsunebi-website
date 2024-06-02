@@ -250,10 +250,6 @@ export default ({
   ]);
 
   useEffect(() => {
-    dispatch(setColor("transparent"));
-  }, [window.onbeforeunload]);
-
-  useEffect(() => {
     dispatch(setWasRendered("true"));
   }, [isAllRendered]);
 

@@ -11,7 +11,7 @@ import { PiCloudArrowUpLight } from "react-icons/pi";
 import { PiCodeLight } from "react-icons/pi";
 
 //img
-import teacher from "../../images/original/teacher-programming.png";
+import teacher from "../../images/original/teacher-programming.webp";
 
 import { useSelector, useDispatch } from "react-redux";
 import {

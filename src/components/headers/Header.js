@@ -9,14 +9,12 @@ import {
   closeMenu,
   setSlideDown,
   setWasAnimated,
-  setPreviousLocation,
-  setCurrentLocation,
 } from "store/headerSlice";
 import styles from "./Header.module.css";
 import Logo from "./Logo";
 import Button from "../hero/Button";
 import WebsiteLanguageSwitcher from "./WebsiteLanguageSwitcher";
-import { CgMenu as MenuRoundedIcon} from "react-icons/cg";
+import { CgMenu as MenuRoundedIcon } from "react-icons/cg";
 import { CgClose as CloseRoundedIcon } from "react-icons/cg";
 
 import enData from "helpers/data/lang/en.json";
@@ -31,36 +29,14 @@ export default function Header({ onRender }) {
   let videosLoaded = useSelector((state) => state.heroSection.videosLoaded);
   let slideDown = useSelector((state) => state.header.slideDown);
   let wasAnimated = useSelector((state) => state.header.wasAnimated);
-  let currentLocation = useSelector((state) => state.header.currentLocation);
-  let previousLocation = useSelector((state) => state.header.previousLocation);
-  let headerAnimation =
-    location !== "/"
-      ? false
-      : previousLocation !== "/" && previousLocation
-      ? false
-      : true;
-
-  useEffect(() => {
-    dispatch(setCurrentLocation(location));
-  }, []);
+  let headerAnimation = true;
 
   useEffect(() => {
     if (!wasAnimated && videosLoaded) {
       dispatch(setWasAnimated(true));
       dispatch(setSlideDown(true));
     }
-  }, [videosLoaded, wasAnimated, slideDown, location]);
-
-  useEffect(() => {
-    dispatch(setPreviousLocation(currentLocation));
-    dispatch(setCurrentLocation(location));
-  }, [location]);
-
-  useEffect(() => {
-    if (previousLocation && previousLocation !== "/" && location === "/") {
-      headerAnimation = false;
-    }
-  }, [previousLocation]);
+  }, [videosLoaded, wasAnimated, slideDown]);
 
   // ---------------------------------------------------------
 
@@ -102,47 +78,47 @@ export default function Header({ onRender }) {
   );
 
   const listenScrollEvent = () => {
-    if (location === "/") {
-      window.scrollY > 0
-        ? dispatch(setColor("var(--navyShadow50)"))
-        : dispatch(setColor("transparent"));
-    } else {
-      dispatch(setColor("var(--navyShadow50)"));
-    }
+    window.scrollY > 0
+      ? dispatch(setColor("var(--navyShadow50)"))
+      : dispatch(setColor("transparent"));
 
-    if (location === "/") {
-      if (
-        window.scrollY + middle >= 0 &&
-        window.scrollY + middle < aboutSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
-      ) {
-        dispatch(setUnderlined("hero"));
-      } else if (
-        window.scrollY + middle >= aboutSectionPosition - headerHeight &&
-        window.scrollY + middle < coursesSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
-      ) {
-        dispatch(setUnderlined("about"));
-      } else if (
-        window.scrollY + middle >= coursesSectionPosition - headerHeight &&
-        window.scrollY + middle < FAQsectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
-      ) {
-        dispatch(setUnderlined("courses"));
-      } else if (
-        window.scrollY + middle >= FAQsectionPosition - headerHeight &&
-        window.scrollY + middle < contactSectionPosition - headerHeight - ((window.innerHeight - headerHeight) / 2)
-      ) {
-        dispatch(setUnderlined("faq"));
-      } else if (
-        window.scrollY + middle >= contactSectionPosition - headerHeight
-      ) {
-        dispatch(setUnderlined("contact"));
-      }
-    } else if (
-      location.match(/individual-custom-japanese.*/) ||
-      location.match(/group-custom-japanese.*/) ||
-      location.match(/individual-custom-english.*/) ||
-      location.match(/group-custom-english.*/)
+    if (
+      window.scrollY + middle >= 0 &&
+      window.scrollY + middle <
+        aboutSectionPosition -
+          headerHeight -
+          (window.innerHeight - headerHeight) / 2
     ) {
-      dispatch(setUnderlined("language"));
+      dispatch(setUnderlined("hero"));
+    } else if (
+      window.scrollY + middle >= aboutSectionPosition - headerHeight &&
+      window.scrollY + middle <
+        coursesSectionPosition -
+          headerHeight -
+          (window.innerHeight - headerHeight) / 2
+    ) {
+      dispatch(setUnderlined("about"));
+    } else if (
+      window.scrollY + middle >= coursesSectionPosition - headerHeight &&
+      window.scrollY + middle <
+        FAQsectionPosition -
+          headerHeight -
+          (window.innerHeight - headerHeight) / 2
+    ) {
+      dispatch(setUnderlined("courses"));
+    } else if (
+      window.scrollY + middle >= FAQsectionPosition - headerHeight &&
+      window.scrollY + middle <
+        contactSectionPosition -
+          headerHeight -
+          (window.innerHeight - headerHeight) / 2
+    ) {
+      dispatch(setUnderlined("faq"));
+    } else if (
+      window.scrollY + middle >=
+      contactSectionPosition - headerHeight
+    ) {
+      dispatch(setUnderlined("contact"));
     }
   };
 
@@ -205,9 +181,19 @@ export default function Header({ onRender }) {
     >
       <div className={styles.header_phone_close}>
         {isOpen ? (
-          <div className={`${styles.menu} ${styles.menuIconClose}`} onClick={handleMenu} ><CloseRoundedIcon/></div>
+          <div
+            className={`${styles.menu} ${styles.menuIconClose}`}
+            onClick={handleMenu}
+          >
+            <CloseRoundedIcon />
+          </div>
         ) : (
-          <div className={`${styles.menu} ${styles.menuIconOpen}`} onClick={handleMenu} ><MenuRoundedIcon/></div>
+          <div
+            className={`${styles.menu} ${styles.menuIconOpen}`}
+            onClick={handleMenu}
+          >
+            <MenuRoundedIcon />
+          </div>
         )}
         <Link to={"/"} className={styles.Logo}>
           <div onClick={handleLogoClick}>
@@ -226,15 +212,19 @@ export default function Header({ onRender }) {
 
       <div className={styles.header__phone}>
         {isOpen ? (
-          <div 
+          <div
             className={`${styles.menu__phone} ${styles.menuIconClose}`}
             onClick={handleMenu}
-          ><CloseRoundedIcon/></div>
+          >
+            <CloseRoundedIcon />
+          </div>
         ) : (
           <div
             className={`${styles.menu__phone} ${styles.menuIconOpen}`}
             onClick={handleMenu}
-          ><MenuRoundedIcon/></div>
+          >
+            <MenuRoundedIcon />
+          </div>
         )}
         <Link to={"/"} className={styles.Logo__phone}>
           <div onClick={handleLogoClick}>
@@ -253,20 +243,33 @@ export default function Header({ onRender }) {
           underlinedButton={underlineButton}
           transform="capitalizeFirstLetter"
           section="heroSection"
+        />
+
+        <Button
+          name="about"
+          category="header"
+          text={langData.Header.japanese}
+          type="withoutBorder"
+          position=""
+          underlinedButton={underlineButton}
+          transform="capitalizeFirstLetter"
+          section="aboutSection"
+          behavior="instant"
           link="/"
         />
 
         <Button
           name="about"
           category="header"
-          text={langData.Header.about}
+          text={langData.Header.programming}
           type="withoutBorder"
           position=""
           underlinedButton={underlineButton}
           transform="capitalizeFirstLetter"
           section="aboutSection"
-          link="/"
-        />
+          behavior="instant"
+          link="/programming"
+        ></Button>
 
         <Button
           name="courses"
@@ -277,7 +280,6 @@ export default function Header({ onRender }) {
           underlinedButton={underlineButton}
           transform="capitalizeFirstLetter"
           section="coursesSection"
-          link="/"
         ></Button>
 
         <Button
@@ -289,7 +291,6 @@ export default function Header({ onRender }) {
           underlinedButton={underlineButton}
           transform="uppercase"
           section="FAQsection"
-          link="/"
         ></Button>
 
         <Button
@@ -301,7 +302,6 @@ export default function Header({ onRender }) {
           underlinedButton={underlineButton}
           transform="capitalizeFirstLetter"
           section="contactSection"
-          link="/"
         ></Button>
         <div className={isOpen ? styles.show : styles.hide}>
           <WebsiteLanguageSwitcher />

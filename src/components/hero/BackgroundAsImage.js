@@ -341,9 +341,9 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="infoSection"
+            section="aboutSection"
             behavior="smooth"
-            link="/"
+            link="/programming"
           />
         </div>
       </div>
@@ -459,9 +459,9 @@ export default function HeroSection({ onRender }) {
             position="right"
             underlinedButton=""
             transform="capitalizeFirstLetter"
-            section="infoSection"
+            section="aboutSection"
             behavior="smooth"
-            link="/"
+            link="/programming"
           />
         </div>
       </div>

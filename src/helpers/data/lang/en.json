@@ -24,13 +24,14 @@
   },
 
   "Header": {
-    "hero": "hero",
-    "about": "about",
-    "language": "japanese courses",
-    "programming": "software development",
-    "faq": "faq",
+    "hero": "home",
+    "japanese": "Japanese courses",
+    "programming": "programming courses",
+    "courses": "prices",
+    "faq": "FAQ",
     "contact": "contact"
   },
+
 
   "AboutSection": {
     "title": "About us",

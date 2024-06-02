@@ -24,11 +24,11 @@
   },
 
   "Header": {
-    "home": "ホームページ",
-    "about": "私たちについて",
-    "language": "日本語のコース",
-    "programming": "ソフトウェア開発",
-    "faq": "よくある質問",
+    "hero": "ホーム",
+    "japanese": "日本語コース",
+    "programming": "プログラミングコース",
+    "courses": "料金",
+    "faq": "FAQ",
     "contact": "お問い合わせ"
   },
 

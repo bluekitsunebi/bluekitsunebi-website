@@ -7,8 +7,6 @@ const initialState = {
   isOpen: false,
   slideDown: false,
   wasAnimated: false,
-  previousLocation: false,
-  currentLocation: false,
 };
 
 export const headerSlice = createSlice({
@@ -42,12 +40,6 @@ export const headerSlice = createSlice({
     setWasAnimated: (state, action) => {
       state.wasAnimated = action.payload;
     },
-    setPreviousLocation: (state, action) => {
-      state.previousLocation = action.payload;
-    },
-    setCurrentLocation: (state, action) => {
-      state.currentLocation = action.payload;
-    },
   },
 });
 
@@ -59,8 +51,6 @@ export const {
   closeMenu,
   setSlideDown,
   setWasAnimated,
-  setPreviousLocation,
-  setCurrentLocation,
 } = headerSlice.actions;
 
 export default headerSlice.reducer;

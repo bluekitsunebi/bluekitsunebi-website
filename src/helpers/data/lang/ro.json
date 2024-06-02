@@ -25,7 +25,8 @@
 
   "Header": {
     "hero": "acasă",
-    "about": "cursuri japoneză",
+    "japanese": "cursuri japoneză",
+    "programming": "meditații informatică",
     "courses": "prețuri",
     "faq": "FAQ",
     "contact": "contact"

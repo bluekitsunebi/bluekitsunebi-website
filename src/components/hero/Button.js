@@ -2,13 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Button.module.css";
-import {
-  setLocation,
-  setLink,
-  setSection,
-  switchWasClicked,
-} from "store/routerSlice";
-import { setMenu, closeMenu } from "store/headerSlice";
+import { setSection, switchWasClicked } from "store/routerSlice";
+import { closeMenu } from "store/headerSlice";
 import enData from "helpers/data/lang/en.json";
 import jaData from "helpers/data/lang/ja.json";
 import roData from "helpers/data/lang/ro.json";
@@ -26,12 +21,14 @@ function Button(props) {
   const underlinedButton = props.underlinedButton;
   const transform = props.transform;
   const section = props.section;
-  const link = props.link === undefined ? "*" : props.link;
+  const link = props.link;
   const category = props.category;
-  const courseLanguage = props.courseLanguage;
-  const module = props.module;
-  const selectedValue = props.selectedValue;
-  const behavior = props.behavior === "smooth" ? "smooth" : props.behavior === "instant" ? "instant" : "instant";
+  const behavior =
+    props.behavior === "smooth"
+      ? "smooth"
+      : props.behavior === "instant"
+      ? "instant"
+      : "instant";
 
   // get the website language
   let language = useSelector((state) => state.websiteLanguage.language);
@@ -56,7 +53,6 @@ function Button(props) {
     (state) => state.contactSection.yAxisPosition
   );
 
-
   if (section === "aboutSection") {
     sectionPosition = aboutSectionPosition - headerHeight + 1;
   } else if (section === "profesorSection") {
@@ -71,23 +67,13 @@ function Button(props) {
     sectionPosition = 0;
   }
 
-  let isOpen = useSelector((state) => state.header.isOpen);
-  const aboutSectionId = useSelector(state => state.aboutSection.id);
-  const infoSectionId = useSelector(state => state.infoSection.id);
-
   const handleClick = () => {
-    if(section === "infoSection"){
-      const element = document.getElementById(infoSectionId);
-      element?.scrollIntoView();
-    } else {
-      window.scroll({
-        top: sectionPosition,
-        left: 0,
-        behavior: behavior,
-      });
-    }
-    dispatch(setLocation(location));
-    dispatch(setLink(link));
+    console.log(link)
+    window.scroll({
+      top: sectionPosition,
+      left: 0,
+      behavior: link && link !== location ? 'instant' : behavior,
+    });
     dispatch(setSection(section));
     dispatch(switchWasClicked());
     if (category === "header" && window.innerWidth <= 1540) {
@@ -95,11 +81,10 @@ function Button(props) {
     }
   };
 
+  
+
   return (
-    // courseLanguage = props.courseLanguage;
-    // const module = props.module;
-    // const selectedValue
-    <Link to={`${link}?time=${selectedValue}`}>
+    <Link to={link ? link : "#"}>
       <button
         className={`
           ${styles.Button}
@@ -110,7 +95,14 @@ function Button(props) {
           ${type === "greyedOut" && styles.button__greyedOut}
           ${position === "left" && styles.left}
           ${position === "right" && styles.right}
-          ${name === underlinedButton && styles.underline}
+          ${
+            name === underlinedButton &&
+            
+            ((link && location === link) || (!link))
+            
+            
+            && styles.underline
+          }
           ${transform === "capitalize" && styles.capitalize}
           ${
             transform === "capitalizeFirstLetter" &&
