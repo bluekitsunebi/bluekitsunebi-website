@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { globalStyles } from 'twin.macro';
 
-const blue = '#211C6A';
+const blue = '#0d244b';
 const beige = '#ffedda';
 
 const GlobalStyles = createGlobalStyle`

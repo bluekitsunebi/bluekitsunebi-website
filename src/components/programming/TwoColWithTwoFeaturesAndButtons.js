@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.js";
 
 // icons
-import { PiCubeThin } from "react-icons/pi";
+import { PiCube } from "react-icons/pi";
 import { FaReact } from "react-icons/fa";
-import { PiShareNetworkLight } from "react-icons/pi";
-import { PiCloudArrowUpLight } from "react-icons/pi";
-import { PiCodeLight } from "react-icons/pi";
+import { PiShareNetwork } from "react-icons/pi";
+import { PiCloudArrowUp } from "react-icons/pi";
+import { PiCode } from "react-icons/pi";
 
 //img
 import teacher from "../../images/original/teacher-programming.webp";
@@ -38,7 +38,7 @@ const TextColumn = styled(Column)((props) => [
 ]);
 
 const FrameStyled = styled.div`
-  ${tw`absolute bg-yellowPr-500 h-10 rounded-3xl`};
+  ${tw`absolute  bg-darkBlue-500 h-10 rounded-3xl`};
   height: 100%;
   width: 100%;
   z-index: -2;
@@ -47,7 +47,7 @@ const FrameStyled = styled.div`
 `;
 
 const ProfilePhoto = styled.div`
-  ${tw`overflow-hidden rounded-3xl p-8 bg-bluePr-500`};
+  ${tw`overflow-hidden rounded-3xl p-8 bg-lightBlue-500`};
   box-shadow: 1rem 1rem 1.5rem rgba(0, 0, 0, 0.4);
 `;
 
@@ -60,7 +60,7 @@ const customStyleOuterDiv = {
   zIndex: "-1",
   border: "3px solid",
   borderRadius: "1.5rem",
-  borderColor: "#59B4C3",
+  borderColor: "#9372b3",
 };
 const customStyleInnerDiv = {
   top: "15%",
@@ -71,33 +71,33 @@ const customStyleInnerDiv = {
   zIndex: "-1",
   border: "3px solid",
   borderRadius: "1.5rem",
-  borderColor: "#59B4C3",
+  borderColor: "#bd93e6",
 };
 
 const TextContent = tw.div`lg:py-8 flex flex-col md:items-end text-center md:text-left`;
 
 const Heading = tw(
   SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-yellowPr-500`;
+)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-lightBlue-400`;
+
+const Highlight = styled.span`
+  ${tw`text-gray-200`}
+`;
 
 const Features = tw.div`mt-8 max-w-sm mx-auto md:mx-0`;
 const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row-reverse`;
 
 const FeatureIconContainer = styled.div`
   ${() =>
-    tw`border border-bluePr-400`};
+    tw`border border-2 border-lightPurple-500`};
   ${tw`mx-auto inline-block text-center rounded-full p-2 flex-shrink-0 md:ml-0 md:mr-0`}
   svg {
-    ${tw`w-5 h-5 text-bluePr-400`}
+    ${tw`w-5 h-5 text-lightPurple-500`}
   }
 `;
 
 const FeatureText = tw.div`mt-4 md:mt-0 md:mr-4 text-center md:text-left mx-auto`;
 const FeatureDescription = tw.div`mt-1 text-sm text-gray-100`;
-
-const Highlight = styled.span`
-  ${tw`text-bluePr-500`}
-`;
 
 export default function ProfesorSection({
   onRender,
@@ -145,7 +145,7 @@ export default function ProfesorSection({
    */
   const defaultFeatures = [
     {
-      Icon: PiCubeThin,
+      Icon: PiCube,
       description:
         "experiență de lucru ca programator pe 5+ proiecte reale (dintre care 2 de lungă durată)",
     },
@@ -155,16 +155,16 @@ export default function ProfesorSection({
         "experiență de lucru cu cele mai utilizate tehnologii front-end (React, Angular, Redux, Tailwind CSS etc.)",
     },
     {
-      Icon: PiShareNetworkLight,
+      Icon: PiShareNetwork,
       description:
         "experiență de lucru în medii de dezvoltare bazate pe microservicii",
     },
     {
-      Icon: PiCloudArrowUpLight,
+      Icon: PiCloudArrowUp,
       description: "experiență în lansare de site-uri în regim serverless",
     },
     {
-      Icon: PiCodeLight,
+      Icon: PiCode,
       description: "studii în domeniul pedagogiei și al informaticii",
     },
   ];

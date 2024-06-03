@@ -11,7 +11,7 @@ import {
   setInfoSectionId
 } from "store/infoSectionSlice";
 
-const PrimaryBackgroundContainer = tw.div`py-20 lg:py-24 bg-bluePr-500 rounded-lg relative`
+const PrimaryBackgroundContainer = tw.div`py-20 lg:py-24 bg-lightBlue-500 rounded-lg relative`
 const Row = tw.div`px-8 max-w-screen-lg mx-auto flex items-center relative z-1 flex-col lg:flex-row text-center lg:text-left`;
 
 const ColumnContainer = tw.div`lg:w-1/2 max-w-lg`
@@ -23,8 +23,8 @@ const Details = tw.div`w-full sm:w-auto text-sm sm:text-base font-bold text-whit
 const Breakable = tw.span`break-words`;
 
 const DecoratorBlobContainer = tw.div`absolute inset-0 overflow-hidden rounded-lg`;
-const DecoratorBlob1 = tw(SvgDecoratorBlob1)`absolute bottom-0 left-0 w-80 h-80 transform -translate-x-20 translate-y-32 text-bluePr-300 opacity-50`;
-const DecoratorBlob2 = tw(SvgDecoratorBlob1)`absolute top-0 right-0 w-80 h-80 transform  translate-x-20 -translate-y-64 text-bluePr-300 opacity-50`;
+const DecoratorBlob1 = tw(SvgDecoratorBlob1)`absolute bottom-0 left-0 w-80 h-80 transform -translate-x-20 translate-y-32 text-darkPurple-500 opacity-50`;
+const DecoratorBlob2 = tw(SvgDecoratorBlob1)`absolute top-0 right-0 w-80 h-80 transform  translate-x-20 -translate-y-64 text-darkPurple-500 opacity-50`;
 
 
 export default function InfoSection({

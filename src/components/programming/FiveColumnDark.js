@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import sal from "images/original/anpc/sal.webp";
 import sol from "images/original/anpc/sol.webp";
 
-const Container = tw.div`relative bg-navyPr-700 text-gray-500 mx-0 mb-0 px-8`;
+const Container = tw.div`relative bg-darkBlue-800 text-gray-500 mx-0 mb-0 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-8 pb-8
 sm:pt-8 
 md:pt-0
@@ -139,7 +139,7 @@ useEffect(() => {
           <Column>
             <LinkList>
               <LinkListItem>
-                <UnderlinedText onClick={() => handleClick(aboutSectionPosition)}>Cursuri de japoneză</UnderlinedText>
+                <UnderlinedText onClick={() => handleClick(aboutSectionPosition)}>Meditații Informatică</UnderlinedText>
               </LinkListItem>
               <LinkListItem>
                 <UnderlinedText onClick={() => handleClick(FAQsectionPosition)}>Întrebări frecvente</UnderlinedText>

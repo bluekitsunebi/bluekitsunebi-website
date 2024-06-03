@@ -200,14 +200,15 @@ export default function Header({ onRender }) {
             <Logo />
           </div>
         </Link>
-        <div
+        <div></div>
+        {/* <div
           className={`${styles.WebsiteLanguageSwitcher_phone} ${
             !isOpen ? styles.show : styles.hide
           }`}
         >
           <WebsiteLanguageSwitcher />
         </div>
-        <div className={isOpen ? styles.show : styles.hide}></div>
+        <div className={isOpen ? styles.show : styles.hide}></div> */}
       </div>
 
       <div className={styles.header__phone}>
@@ -303,17 +304,18 @@ export default function Header({ onRender }) {
           transform="capitalizeFirstLetter"
           section="contactSection"
         ></Button>
-        <div className={isOpen ? styles.show : styles.hide}>
+        {/* <div className={isOpen ? styles.show : styles.hide}>
           <WebsiteLanguageSwitcher />
-        </div>
+        </div> */}
       </nav>
-      <div
+      <div></div>
+      {/* <div
         className={`${styles.WebsiteLanguageSwitcher_pc} ${
           !isOpen ? styles.show : styles.hide
         }`}
       >
         <WebsiteLanguageSwitcher />
-      </div>
+      </div> */}
     </header>
   );
 }

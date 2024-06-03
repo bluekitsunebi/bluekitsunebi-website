@@ -18,7 +18,7 @@ import { useSelector,
 //   setYaxisPosition,
 // } from "store/whySectionSlice";
 
-const Container = tw.div`relative bg-bluePr-500 mx-0 px-8 text-gray-100`;
+const Container = tw.div`relative bg-darkPurple-700 mx-0 px-8 text-gray-300`;
 
 const ThreeColumnContainer = styled.div`
   ${tw`flex flex-col items-center md:items-stretch md:flex-row sm:flex-wrap md:justify-center max-w-screen-xl mx-auto py-20 md:py-24 xl:grid xl:grid-cols-6 md:gap-x-8 xl:gap-y-4`}
@@ -39,8 +39,8 @@ const Card = styled.div`
   ${tw`flex flex-col items-center md:items-start text-center sm:text-left h-full mx-4 px-2 py-8 sm:w-full xl:ml-0`}
   
   .iconContainer {
-    ${tw`bg-gray-100 text-center rounded-full p-5 flex-shrink-0 
-      text-bluePr-500`}
+    ${tw`bg-gray-300 text-center rounded-full p-5 flex-shrink-0 
+      text-darkPurple-500`}
   }
 
   .textContainer {
@@ -52,7 +52,7 @@ const Card = styled.div`
   }
 `;
 
-const Highlight = tw.span`px-1 py-0 text-bluePr-500 bg-bluePr-200`;
+// const Highlight = tw.span`text-darkBlue-500`;
 
 export default function WhySection({
   onRender,
@@ -104,7 +104,7 @@ useEffect(() => {
     },
     { icon: <FaUserGroup 
       style={{ fontSize: '32px' }} />, 
-      title: ["ședințe ", "individuale sau de grup"],
+      title: ["ședințe ", "pentru BAC, admitere sau carieră"],
       gridColumn: "3 / span 2", 
       gridRow: "3 / span 1"
     },
@@ -141,7 +141,7 @@ useEffect(() => {
               <span className="textContainer">
                 <span className="title">
                   <span>{card.title[0]}</span>
-                  <Highlight>{card.title[1]}</Highlight>
+                  <span>{card.title[1]}</span>
                   <span>{card.title[2]}</span>
                 </span>
               </span>

@@ -22,44 +22,48 @@ import { BsFillSendCheckFill as SendIcon } from "react-icons/bs";
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-col md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
-const ImageColumn = tw(Column)`md:w-5/12 flex-shrink-0 h-80 md:h-auto`;
+const ImageColumn = tw(Column)`md:w-4/12 flex-shrink-0 h-80 md:h-auto`;
 const TextColumn = styled(Column)((props) => [
-  tw`md:w-7/12 mt-16 md:mt-0`,
+  tw`md:w-8/12 mt-16 md:mt-0`,
   props.textOnLeft
     ? tw`md:ml-12 lg:ml-16 md:order-first`
     : tw`md:ml-12 lg:ml-16 md:order-last`,
 ]);
 
 const Image = styled.div((props) => [
+  tw`rounded bg-contain bg-no-repeat bg-center h-full max-w-96`,
   `background-image: url("${props.imageSrc}");`,
-  tw`rounded bg-contain bg-no-repeat bg-center h-full`,
 ]);
 const TextContent = tw.div`lg:py-8 md:text-left flex flex-col md:items-end `;
 
 const Heading = tw(
   SectionHeading
-)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-bluePr-200`;
+)`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-gray-100`;
 
-const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-sm mx-auto md:mx-0`;
+const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-lg mx-auto md:mx-0`;
 
-const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none font-medium transition duration-300 hocus:border-bluePr-500 text-bluePr-500`;
+const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none font-medium transition duration-300 hocus:border-lightBlue-500 text-lightBlue-500`;
 
 const Textarea = styled(Input).attrs({ as: "textarea" })`
   ${tw`h-24`}
 `;
 
 const Checkbox = tw.p`text-base text-gray-600 mt-5 whitespace-normal`;
-const Icon = tw.span`text-lg mr-2 w-fit h-fit text-bluePr-500 inline-block cursor-pointer select-none`;
-const Link = tw.span`hover:text-bluePr-500 transition duration-300 cursor-pointer underline`;
+const Icon = tw.span`text-lg mr-2 w-fit h-fit text-lightBlue-500 inline-block cursor-pointer select-none`;
+const Link = tw.span`hover:text-lightBlue-500 transition duration-300 cursor-pointer underline`;
+const PolicyText = tw.span``;
+
+
+
 const AccordNeeded = tw.span`block text-red-500`;
 const Show = tw.span``;
 const Hide = tw.span`text-transparent select-none`;
 
-const Highlight = tw.span`text-bluePr-500`;
+const Highlight = tw.span`text-lightBlue-500`;
 
 const SubmitButton = tw(
   PrimaryButtonBase
-)` mt-8 bg-bluePr-500 hover:bg-bluePr-600 flex justify-center`;
+)` mt-8 bg-lightBlue-500 hover:bg-lightBlue-600 flex justify-center`;
 const SendingText = tw.span`text-lg flex flex-row gap-2`;
 const SendIconButton = tw.span`w-fit h-fit flex gap-2 `;
 const Spin = tw.span`animate-spin text-lg w-fit h-fit inline-block`;
@@ -222,8 +226,10 @@ export default function ContactSection({
                     <FaCheckCircle></FaCheckCircle>
                   )}
                 </Icon>
-                Sunt de acord cu <Link href="#">Termenii și condițiile</Link> și{" "}
-                <Link href="#">Politica de confidențialitate</Link>
+                <PolicyText>
+                  Sunt de acord cu <Link href="#">Termenii și condițiile</Link>{" "}
+                  și <Link href="#">Politica de confidențialitate</Link>
+                </PolicyText>
                 <AccordNeeded>
                   {accordNeeded ? (
                     <Show>({requiredErrorMessage})</Show>

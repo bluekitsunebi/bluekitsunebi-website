@@ -15,7 +15,7 @@ import {
 
 const Container = tw.div`relative mx-8`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
-const Heading = tw(SectionHeading)`w-full text-navyPr-100`;
+const Heading = tw(SectionHeading)`w-full text-gray-200`;
 const PlansContainer = tw.div`flex justify-evenly flex-col lg:flex-row items-center lg:items-stretch relative lg:gap-8 xl:gap-16`;
 
 const Plan = styled.div`
@@ -178,8 +178,8 @@ useEffect(() => {
 
   const highlightGradientsCss = [
     css`
-      background: rgb(56, 178, 172);
-      background: linear-gradient(115deg, rgba(56, 178, 172, 1) 0%, rgba(129, 230, 217, 1) 100%);
+      background: rgb(19, 141, 222);
+      background: linear-gradient(115deg, rgba(19, 141, 222, 1) 0%, rgba(137, 198, 239, 1) 100%);
     `,
     css`
       background: rgb(56, 178, 172);
@@ -192,8 +192,8 @@ useEffect(() => {
   ];
 
   const highlightGradientsCss__disabled = css`
-    background: rgb(160, 174, 192);
-    background: linear-gradient(115deg, rgba(160, 174, 192, 1) 0%, rgba(203, 213, 224, 1) 100%);
+    background: rgb(98, 52, 131);
+    background: linear-gradient(115deg, rgba(98, 52, 131, 1) 0%, rgba(177, 154, 193, 1) 100%);
   `;
 
   return (

@@ -15,10 +15,10 @@ import {
 import { setIsResizing } from "store/homeSectionSlice";
 
 
-const Container = tw.div`relative mx-8`;
-const Heading = tw(SectionHeading)`w-full text-white`;
+const Container = tw.div`relative mx-0 px-8 bg-darkPurple-700`;
+const Heading = tw(SectionHeading)`w-full text-gray-200`;
 
-const TwoColumn = tw.div`flex flex-col gap-20 md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
+const TwoColumn = tw.div`flex flex-col gap-4 md:gap-20 md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-16 md:py-24`;
 const Column = tw.div`w-full max-w-md mx-auto md:max-w-none md:mx-0`;
 const TextColumn = styled(Column)(props => [
   tw`md:w-7/12 mt-16 md:mt-0`,
@@ -37,7 +37,7 @@ const HeaderContent = tw.div``;
 
 const FAQSContainer = tw.dl`mt-12 max-w-4xl relative`;
 const FAQ = tw.div`cursor-pointer select-none mt-5 px-8 sm:px-10 py-5 sm:py-4 rounded-lg text-gray-800 hover:text-gray-900 
-bg-bluePr-100 hover:bg-bluePr-200 
+bg-gray-200 hover:bg-lightPurple-100 
 transition duration-300`;
 const Question = tw.dt`flex justify-between items-center`;
 const QuestionText = tw.span`text-lg lg:text-xl font-semibold`;
@@ -63,17 +63,17 @@ export default function FAQSection({
   heading = "Întrebări frecvente",
   faqs = [
     {
-      question: "Cum se efectuează plata ?",
+      question: "Cum se efectuează plata?",
       answer:
         "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
     },
     {
-      question: "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită ?",
+      question: "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită?",
       answer:
         "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din păcate ședința plătită dacă motivul absentării nu este unul strict obiectiv."
     },
     {
-      question: "Cum pot beneficia de asistența oferită în afara orelor de curs ?",
+      question: "Cum pot beneficia de asistența oferită în afara orelor de curs?",
       answer:
         "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
     },
