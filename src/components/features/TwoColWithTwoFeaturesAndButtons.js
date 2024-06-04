@@ -5,10 +5,10 @@ import { SectionHeading } from "components/misc/Headings.js";
 
 // icons
 import { FaRegComments } from "react-icons/fa6";
-import { PiAirplaneTiltLight } from "react-icons/pi";
-import { PiPenNibLight } from "react-icons/pi";
-import { PiCodeLight } from "react-icons/pi";
-import { PiChalkboardTeacherLight } from "react-icons/pi";
+import { PiAirplaneTilt } from "react-icons/pi";
+import { PiPenNib } from "react-icons/pi";
+import { PiCode } from "react-icons/pi";
+import { PiChalkboardTeacher } from "react-icons/pi";
 
 //img
 import teacher from "../../images/original/teacher.jpg";
@@ -77,7 +77,7 @@ const Features = tw.div`mt-8 max-w-sm mx-auto md:mx-0`;
 const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row`;
 
 const FeatureIconContainer = styled.div`
-  ${props => props.isFirst ? tw`bg-primary-900` : tw`border border-primary-900`};
+  ${tw`border border-2 border-primary-900`};
   ${tw`mx-auto inline-block text-center rounded-full p-2 flex-shrink-0 md:ml-0 md:mr-0`}
   svg {
     ${tw`w-5 h-5 text-primary-900`}
@@ -94,7 +94,7 @@ const Highlight = styled.span`
 
 export default function ProfesorSection({
   onRender,
-  heading = (<>Profesorul de japoneză <Highlight>Cheșca Vicențiu</Highlight>.</>
+  heading = (<>Profesorul de japoneză <Highlight>Cheșca Vicențiu</Highlight></>
   ),
   features = null,
   textOnLeft = true
@@ -139,19 +139,19 @@ useEffect(() => {
       description: "Vorbitor fluent de japoneză"
     },
     {
-      Icon: PiAirplaneTiltLight,
+      Icon: PiAirplaneTilt,
       description: "Experiență ca ghid turistic și interpret pentru grupuri de turiști japonezi"
     },
     {
-      Icon: PiPenNibLight,
+      Icon: PiPenNib,
       description: "Experiență de traducere online de documente și scrieri din limba japoneză în engleză și vice-versa"
     },
     {
-      Icon: PiCodeLight,
+      Icon: PiCode,
       description: "Experiență de colaborare cu japonezi nativi pe proiecte de dezvoltare software"
     },
     {
-      Icon: PiChalkboardTeacherLight,
+      Icon: PiChalkboardTeacher,
       description: "Experiență de predare a limbii japoneze de peste 6 ani"
     },
   ];

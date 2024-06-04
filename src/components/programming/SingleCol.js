@@ -75,7 +75,7 @@ export default function FAQSection({
     {
       question: "Cum pot beneficia de asistența oferită în afara orelor de curs?",
       answer:
-        "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
+        "Ne puteți pune întrebări privind materia studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
     },
   ],
 }) {
