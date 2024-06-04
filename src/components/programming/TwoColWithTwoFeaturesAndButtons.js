@@ -103,7 +103,7 @@ export default function ProfesorSection({
   onRender,
   heading = (
     <>
-      Profesorul de informatică <Highlight>Teodorescu Cezara</Highlight>.
+      Profesorul de informatică <Highlight>Teodorescu Cezara</Highlight>
     </>
   ),
   features = null,
@@ -147,7 +147,7 @@ export default function ProfesorSection({
     {
       Icon: PiCube,
       description:
-        "experiență de lucru ca programator pe 5+ proiecte reale (dintre care 2 de lungă durată)",
+        "experiență de lucru ca programator pe mai mult de 5 proiecte reale (dintre care 2 de lungă durată)",
     },
     {
       Icon: FaReact,
