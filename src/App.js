@@ -107,11 +107,11 @@ import ThankYouPage from "ThankYouPage.js";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import ProgrammingLandingPage from "ProgrammingLandingPage";
-import LoginPage from "pages/Login.js";
-import LearnKanjiPage from "pages/LearnKanjiPage.js";
+import LoginPage from "pages/app/Login.js";
+import LearnPage from "pages/app/LearnPage.js";
 import ProtectedRoute from 'components/login/ProtectedRoute';
 import { useDispatch } from 'react-redux';
-import { logout } from 'store/authSlice';
+import { logout } from 'store/app/authSlice';
 
 
 function Wrapper() {
@@ -138,7 +138,7 @@ function Wrapper() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/app" element={
           <ProtectedRoute>
-            <LearnKanjiPage />
+            <LearnPage />
           </ProtectedRoute>
         } />
       </Routes>

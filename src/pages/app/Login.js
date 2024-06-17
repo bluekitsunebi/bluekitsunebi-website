@@ -5,11 +5,11 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/original/logo2.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 import initSqlJs from "sql.js";
-import dataBase from "../db/kanji_vocab_database.db";
+import dataBase from "../../db/kanji_vocab_database.db";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginSuccess } from "store/authSlice";
+import { loginSuccess } from "store/app/authSlice";
 import bcrypt from "bcryptjs";
 
 const Container = styled.div`

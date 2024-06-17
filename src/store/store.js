@@ -18,7 +18,10 @@ import coursesSectionReducer from "./coursesSectionSlice";
 import FAQsectionReducer from "./FAQsectionSlice";
 import contactSectionReducer from "./contactSectionSlice";
 import infoSectionReducer from "./infoSectionSlice";
-import authReducer from './authSlice';
+
+// APP
+import authReducer from './app/authSlice';
+import studySettingsReducer from './app/studySettingsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -41,6 +44,8 @@ export const store = configureStore({
     contactSection: contactSectionReducer,
     infoSection: infoSectionReducer,
 
+    // APP
     auth: authReducer,
+    studySettings: studySettingsReducer,
   },
 });
