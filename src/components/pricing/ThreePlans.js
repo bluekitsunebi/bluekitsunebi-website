@@ -163,10 +163,10 @@ useEffect(() => {
 }, [onRender, homeWasRendered]);
 
   // ---------------------------------------------------------
-  // scroll to info section on register
-  const infoSectionId = useSelector(state => state.infoSection.id);
+  // scroll to contact section on register
+  const contactSectionId = useSelector(state => state.contactSection.id);
   const register = () => {
-    const element = document.getElementById(infoSectionId);
+    const element = document.getElementById(contactSectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
   // --------------------------------------------------------

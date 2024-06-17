@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   height: undefined,
   yAxisPosition: undefined,
+  id: "",
 };
 
 export const contactSectionSlice = createSlice({
@@ -15,9 +16,12 @@ export const contactSectionSlice = createSlice({
     setYaxisPosition: (state, action) => {
       state.yAxisPosition = action.payload;
     },
+    setContactSectionId: (state, action) => {
+      state.id = action.payload;
+    },
   },
 });
 
-export const { setHeight, setYaxisPosition } = contactSectionSlice.actions;
+export const { setHeight, setYaxisPosition, setContactSectionId } = contactSectionSlice.actions;
 
 export default contactSectionSlice.reducer;

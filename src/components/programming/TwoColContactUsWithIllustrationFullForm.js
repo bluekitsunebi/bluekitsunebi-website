@@ -5,7 +5,11 @@ import { SectionHeading } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import EmailIllustrationSrc from "images/original/chibiMiyabi/contact-programming.png";
 import { useSelector, useDispatch } from "react-redux";
-import { setHeight, setYaxisPosition } from "store/contactSectionSlice";
+import {
+  setHeight,
+  setYaxisPosition,
+  setContactSectionId,
+} from "store/contactSectionSlice";
 import { ReactComponent as SvgDecoratorBlob2 } from "images/svg-decorator-blob-8.svg";
 import emailjs from "@emailjs/browser";
 import {
@@ -40,7 +44,13 @@ const Heading = tw(
   SectionHeading
 )`mt-4 font-black text-left text-3xl sm:text-4xl lg:text-5xl text-center md:text-right leading-tight text-gray-100`;
 
-const Form = tw.form`mt-8 md:mt-10 text-sm flex flex-col max-w-lg mx-auto md:mx-0`;
+const Form = tw.form`mt-8 md:mt-5 text-sm flex flex-col max-w-sm mx-auto md:mx-0`;
+
+const Variants = tw.div`w-full text-white text-lg mt-10 flex flex-col gap-10 mx-auto md:mx-0 max-w-96`;
+
+const Phone = tw.div`flex gap-2 text-lg justify-center md:justify-start`;
+
+const Divider = tw.div`w-full h-1 bg-gray-600 rounded`;
 
 const Input = tw.input`mt-6 first:mt-0 border-b-2 py-3 px-2 focus:outline-none font-medium transition duration-300 hocus:border-lightBlue-500 text-lightBlue-500`;
 
@@ -48,12 +58,10 @@ const Textarea = styled(Input).attrs({ as: "textarea" })`
   ${tw`h-24`}
 `;
 
-const Checkbox = tw.p`text-base text-gray-600 mt-5 whitespace-normal`;
+const Checkbox = tw.p`text-base text-white mt-5 whitespace-normal select-none`;
 const Icon = tw.span`text-lg mr-2 w-fit h-fit text-lightBlue-500 inline-block cursor-pointer select-none`;
 const Link = tw.span`hover:text-lightBlue-500 transition duration-300 cursor-pointer underline`;
 const PolicyText = tw.span``;
-
-
 
 const AccordNeeded = tw.span`block text-red-500`;
 const Show = tw.span``;
@@ -89,6 +97,23 @@ export default function ContactSection({
   const dispatch = useDispatch();
   let paddingBottom = 0;
   let paddingTop = 0;
+
+  // ---------------------------------------------------------
+  // set contact section id
+
+  const contactSectionId = "contact-section";
+  useEffect(() => {
+    if (homeWasRendered === "true") {
+      // send section id to store
+      dispatch(setContactSectionId(contactSectionId));
+    }
+    if (typeof onRender === "function") {
+      // signals the end of rendering the section to the store
+      onRender();
+    }
+  }, [onRender, homeWasRendered]);
+
+  // ---------------------------------------------------------
 
   const handleAccord = () => {
     dispatch(setAccord(!accord));
@@ -167,7 +192,7 @@ export default function ContactSection({
   };
 
   return (
-    <Container ref={contactSectionRef}>
+    <Container ref={contactSectionRef} id={contactSectionId}>
       <TwoColumn>
         <ImageColumn>
           <Image imageSrc={EmailIllustrationSrc} />
@@ -178,6 +203,14 @@ export default function ContactSection({
               <Highlight>Contactează-ne </Highlight>
               și vom reveni cu un răspuns cât de curând.
             </Heading>
+            <Variants>
+              <Phone>
+                Telefon:
+                <Highlight>+40 745 984 726</Highlight>
+              </Phone>
+              <Divider></Divider>
+              <span>Sau trimite un mail</span>
+            </Variants>
             <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
               <Input
                 required
