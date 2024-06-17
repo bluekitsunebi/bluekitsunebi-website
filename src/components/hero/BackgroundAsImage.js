@@ -11,20 +11,19 @@ import {
   setTitleLeft__entered,
   setDescriptionLeft__entered,
   setVideosLoaded,
+  setHalfAnimation,
 } from "store/heroSectionSlice";
 import { BsGearFill as SettingsRoundedIcon } from "react-icons/bs";
 import enData from "helpers/data/lang/en.json";
 import jaData from "helpers/data/lang/ja.json";
 import roData from "helpers/data/lang/ro.json";
 
-
 import tw from "twin.macro";
 
 import styled from "styled-components";
 
 const Container = styled.div`
-  ${tw`w-screen h-screen`}
-  ;
+  ${tw`w-screen h-screen`};
 `;
 
 export default function HeroSection({ onRender }) {
@@ -145,50 +144,64 @@ export default function HeroSection({ onRender }) {
   let isEntered__descriptionLeft = useSelector(
     (state) => state.heroSection.descriptionLeft__entered
   );
-
-  let halfAnimation = "middle";
+  let halfAnimation = useSelector(
+    (state) => state.heroSection.halfAnimation
+  );
 
   if (
-    isEntered__backgroundLeft === "false" ||
-    isEntered__titleLeft === "false" ||
-    isEntered__descriptionLeft === "false"
+    isEntered__backgroundLeft ||
+    isEntered__titleLeft ||
+    isEntered__descriptionLeft
   ) {
-    halfAnimation = "expand";
+    dispatch(setHalfAnimation("expand"));
   } else if (
-    isEntered__hero === "false" &&
-    isEntered__backgroundLeft === "true" &&
-    isEntered__titleLeft === "true" &&
-    isEntered__descriptionLeft === "true"
+    isEntered__hero &&
+    !isEntered__backgroundLeft &&
+    !isEntered__titleLeft &&
+    !isEntered__descriptionLeft
   ) {
-    halfAnimation = "contract";
-  } else if (isEntered__hero === "true") {
-    halfAnimation = "middle";
+    dispatch(setHalfAnimation("contract"));
+  } else {
+    dispatch(setHalfAnimation("middle"));
   }
 
+  useEffect(() => {
+    console.log("----------------------------")
+    if(isEntered__hero) {console.log("hero")} else console.log("leave hero");
+    if(isEntered__backgroundLeft) {console.log("background Left")} else console.log("leave background Left");
+    if(isEntered__titleLeft) {console.log("title Left")} else console.log("leave title Left");
+    if(isEntered__descriptionLeft) {console.log("description Left")} else console.log("leave description Left");
+  }, [
+    isEntered__hero,
+    isEntered__backgroundLeft,
+    isEntered__titleLeft,
+    isEntered__descriptionLeft,
+  ]);
+
   const handleMouseEnter__hero = () => {
-    dispatch(setHeroSection__entered("false"));
+    dispatch(setHeroSection__entered(true));
   };
   const handleMouseLeave__hero = () => {
-    dispatch(setHeroSection__entered("true"));
+    dispatch(setHeroSection__entered(false));
   };
 
   const handleMouseEnter__left = () => {
-    dispatch(setBackgroundLeft__entered("false"));
+    dispatch(setBackgroundLeft__entered(true));
   };
   const handleMouseLeave__left = () => {
-    dispatch(setBackgroundLeft__entered("true"));
+    dispatch(setBackgroundLeft__entered(false));
   };
   const handleMouseEnter__titleLeft = () => {
-    dispatch(setTitleLeft__entered("false"));
+    dispatch(setTitleLeft__entered(true));
   };
   const handleMouseLeave__titleLeft = () => {
-    dispatch(setTitleLeft__entered("true"));
+    dispatch(setTitleLeft__entered(false));
   };
   const handleMouseEnter__descriptionLeft = () => {
-    dispatch(setDescriptionLeft__entered("false"));
+    dispatch(setDescriptionLeft__entered(true));
   };
   const handleMouseLeave__descriptionLeft = () => {
-    dispatch(setDescriptionLeft__entered("true"));
+    dispatch(setDescriptionLeft__entered(false));
   };
 
   useEffect(() => {
@@ -207,13 +220,14 @@ export default function HeroSection({ onRender }) {
   let descriptionRight = [...langData.HeroSection.description.right];
 
   return (
-      <section
+    <section
       id="heroSection"
       ref={heroSectionRef}
       className={styles.heroSection}
       onMouseEnter={handleMouseEnter__hero}
       onMouseLeave={handleMouseLeave__hero}
     >
+      {/* ------------------------ LEFT ---------------------------- */}
       <div
         id="halfBackgroundLeft"
         ref={halfBackgroundLeftRef}
@@ -231,9 +245,17 @@ export default function HeroSection({ onRender }) {
         ${styles.titleImageContainer}
         ${styles.titleImageContainer__left}
         ${
-          isEntered__hero === "false"
+          (isEntered__hero && (
+          isEntered__backgroundLeft ||
+          isEntered__titleLeft ||
+          isEntered__descriptionLeft))
+          ? styles.pushTitleLeft
+          : ((isEntered__hero &&
+            (!isEntered__backgroundLeft &&
+              !isEntered__titleLeft &&
+              !isEntered__descriptionLeft))
             ? styles.pushTitleLeft
-            : styles.pullTitleLeft
+            : '')
         }
         `}
         ref={titleImageContainer__leftRef}
@@ -266,6 +288,7 @@ export default function HeroSection({ onRender }) {
             section="aboutSection"
             behavior="smooth"
             link="/"
+            resetAnimation={true}
           />
         </div>
       </div>
@@ -274,9 +297,9 @@ export default function HeroSection({ onRender }) {
         className={`
             ${styles.description} ${styles.description__left}
             ${
-              isEntered__backgroundLeft === "false" ||
-              isEntered__titleLeft === "false" ||
-              isEntered__descriptionLeft === "false"
+              isEntered__backgroundLeft ||
+              isEntered__titleLeft ||
+              isEntered__descriptionLeft
                 ? styles.show
                 : styles.hide
             }
@@ -297,11 +320,18 @@ export default function HeroSection({ onRender }) {
             ${styles.titleImageContainer}
             ${styles.titleImageContainer__right}
             ${
-              isEntered__hero === "false"
+              (isEntered__hero &&
+              !isEntered__backgroundLeft &&
+              !isEntered__titleLeft &&
+              !isEntered__descriptionLeft)
+              ? styles.pushTitleRight
+              : ((isEntered__hero &&
+                (isEntered__backgroundLeft ||
+                  isEntered__titleLeft ||
+                  isEntered__descriptionLeft))
                 ? styles.pushTitleRight
-                : styles.pullTitleRight
+                : styles.pullTitleRight)
             }
-            
         `}
         ref={titleImageContainer__rightRef}
       >
@@ -344,6 +374,7 @@ export default function HeroSection({ onRender }) {
             section="aboutSection"
             behavior="smooth"
             link="/programming"
+            resetAnimation={true}
           />
         </div>
       </div>
@@ -359,9 +390,17 @@ export default function HeroSection({ onRender }) {
                 ${styles.titleImageContainer__mobile}
                 ${styles.titleImageContainer__left}
                 ${
-                  isEntered__hero === "false"
+                  (isEntered__hero && (
+                  isEntered__backgroundLeft ||
+                  isEntered__titleLeft ||
+                  isEntered__descriptionLeft))
+                  ? styles.pushTitleLeft
+                  : ((isEntered__hero &&
+                    (!isEntered__backgroundLeft &&
+                      !isEntered__titleLeft &&
+                      !isEntered__descriptionLeft))
                     ? styles.pushTitleLeft
-                    : styles.pullTitleLeft
+                    : '')
                 }
               `}
               ref={titleImageContainer__leftRef}
@@ -400,6 +439,7 @@ export default function HeroSection({ onRender }) {
               section="aboutSection"
               behavior="smooth"
               link="/"
+              resetAnimation={true}
             />
           </div>
         </div>
@@ -413,9 +453,17 @@ export default function HeroSection({ onRender }) {
             ${styles.titleImageContainer__mobile}
             ${styles.titleImageContainer__right}
             ${
-              isEntered__hero === "false"
-                ? styles.pushTitleRight
-                : styles.pullTitleRight
+              (isEntered__hero &&
+              !isEntered__backgroundLeft &&
+              !isEntered__titleLeft &&
+              !isEntered__descriptionLeft)
+              ? styles.pushTitleRight
+              : ((isEntered__hero &&
+                (isEntered__backgroundLeft ||
+                  isEntered__titleLeft ||
+                  isEntered__descriptionLeft))
+                ? styles.pullTitleRight
+                : '')
             }
             
         `}
@@ -462,6 +510,7 @@ export default function HeroSection({ onRender }) {
             section="aboutSection"
             behavior="smooth"
             link="/programming"
+            resetAnimation={true}
           />
         </div>
       </div>
@@ -473,10 +522,10 @@ export default function HeroSection({ onRender }) {
         className={`
             ${styles.description}  ${styles.description__right}
             ${
-              isEntered__hero === "false" &&
-              isEntered__backgroundLeft === "true" &&
-              isEntered__titleLeft === "true" &&
-              isEntered__descriptionLeft === "true"
+              isEntered__hero &&
+              (!isEntered__backgroundLeft &&
+              !isEntered__titleLeft &&
+              !isEntered__descriptionLeft)
                 ? styles.show
                 : styles.hide
             }
@@ -490,4 +539,4 @@ export default function HeroSection({ onRender }) {
       </ul>
     </section>
   );
-};
+}

@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  heroSection__entered: "true",
-  backgroundLeft__entered: "true",
-  titleLeft__entered: "true",
-  descriptionLeft__entered: "true",
+  heroSection__entered: false,
+  backgroundLeft__entered: false,
+  titleLeft__entered: false,
+  descriptionLeft__entered: false,
   videosLoaded: false,
+  halfAnimation: "middle",
 };
 
 export const heroSectionSlice = createSlice({
@@ -27,6 +28,9 @@ export const heroSectionSlice = createSlice({
     setVideosLoaded: (state, action) => {
       state.videosLoaded = action.payload;
     },
+    setHalfAnimation: (state, action) => {
+      state.halfAnimation = action.payload;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   setDescriptionLeft__entered,
   setHeroSection__entered,
   setVideosLoaded,
+  setHalfAnimation,
 } = heroSectionSlice.actions;
 
 export default heroSectionSlice.reducer;

@@ -205,7 +205,7 @@ export default function ContactSection({
             </Heading>
             <Variants>
               <Phone>
-                Telefon:
+              Telefon / WhatsApp:
                 <Highlight>+40 745 984 726</Highlight>
               </Phone>
               <Divider></Divider>
