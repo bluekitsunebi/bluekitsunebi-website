@@ -165,19 +165,6 @@ export default function HeroSection({ onRender }) {
     dispatch(setHalfAnimation("middle"));
   }
 
-  useEffect(() => {
-    console.log("----------------------------")
-    if(isEntered__hero) {console.log("hero")} else console.log("leave hero");
-    if(isEntered__backgroundLeft) {console.log("background Left")} else console.log("leave background Left");
-    if(isEntered__titleLeft) {console.log("title Left")} else console.log("leave title Left");
-    if(isEntered__descriptionLeft) {console.log("description Left")} else console.log("leave description Left");
-  }, [
-    isEntered__hero,
-    isEntered__backgroundLeft,
-    isEntered__titleLeft,
-    isEntered__descriptionLeft,
-  ]);
-
   const handleMouseEnter__hero = () => {
     dispatch(setHeroSection__entered(true));
   };
