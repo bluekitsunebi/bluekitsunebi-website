@@ -4,14 +4,12 @@
   height: 100vh;
   background-position: bottom;
   position: relative;
-  background-color: red;
 }
 
 .heroSection,
 .halfBackgroundLeft {
   background-color: black;
   background-size: cover;
-  background-color: blue;
 }
 
 .halfBackground {
@@ -48,18 +46,16 @@
 }
 
 .heroSection::before {
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-    var(--hero-bg); */
-    background-color: yellow;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    var(--hero-bg);
   background-position: right;
   width: 80vw;
   margin-left: 20vw;
 }
 
 .halfBackgroundLeft::before {
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    var(--half-left-bg); */
-    background-color: purple;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    var(--half-left-bg);
 }
 
 /* ---------------------------------------------------------------- */
@@ -68,13 +64,11 @@
 .description,
 .button__mobile {
   transition: opacity 0.35s ease-in-out 0.35s;
-  background-color: aqua;
 }
 
 .titleImageContainer,
 .titleImageContainer__mobile,
 .button__mobile {
-  background-color:violet;
   opacity: 0;
 }
 
@@ -82,7 +76,6 @@
 .titleImageContainer__mobile {
   transition: opacity 0.35s ease-in-out 0.35s, left 0.2s linear,
     right 0.2s linear;
-    background-color:tomato;
 }
 
 [data-video-loaded="true"][data-video2-loaded="true"] .titleImageContainer,
@@ -123,13 +116,11 @@
 .titleImageContainer__left {
   left: 25vw;
   transform: translate(-50%);
-  background-color: green;
 }
 
 .titleImageContainer__right {
   right: 25vw;
   transform: translate(50%);
-  background-color: orange;
 }
 
 .coverContainer {
@@ -139,14 +130,12 @@
   min-width: fit-content;
   border-radius: 50%;
   display: flex;
-  
 }
 
 .coverLeft {
   background-color: var(--cinnabarTint10);
   justify-content: center;
   overflow: hidden;
-  
 }
 
 .coverRight {
@@ -215,7 +204,6 @@
 
 .description__left {
   left: 27vw;
-  
 }
 
 .description__right {
@@ -545,7 +533,6 @@
     height: 50vh;
     display: flex;
     flex-direction: column;
-    background-color: turquoise;
   }
 
   .titleImageContainer {
@@ -558,7 +545,6 @@
     justify-content: space-evenly;
     align-items: center;
     padding-top: 80px;
-    background-color: tan;
   }
 
   .coverBottom__mobile {
@@ -567,7 +553,6 @@
     flex-direction: row-reverse;
     justify-content: space-evenly;
     align-items: center;
-    background-color: springgreen;
   }
 
   .titleImageContainer__mobile {
@@ -576,7 +561,6 @@
     height: fit-content;
     width: fit-content;
     margin: 0;
-    background-color: slateblue;
   }
 
   .halfBackgroundLeft {
