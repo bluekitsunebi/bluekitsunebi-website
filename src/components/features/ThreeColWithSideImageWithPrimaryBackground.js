@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-//eslint-disable-next-line
 import { SectionHeading } from "components/misc/Headings.js";
 
 // icons
@@ -10,13 +9,7 @@ import { FaUserGroup } from "react-icons/fa6";
 import { FaHandSparkles } from "react-icons/fa";
 import { FaLightbulb } from "react-icons/fa";
 import { FaPenRuler } from "react-icons/fa6";
-import { useSelector, 
-  // useDispatch 
-} from "react-redux";
-// import {
-//   setHeight,
-//   setYaxisPosition,
-// } from "store/whySectionSlice";
+import { useSelector } from "react-redux";
 
 const Container = tw.div`relative bg-primary-900 mx-0 px-8 text-gray-100`;
 
@@ -63,23 +56,8 @@ export default function WhySection({
 
 const homeWasRendered = useSelector((state) => state.home.wasRendered);
 const whySectionRef = useRef(null);
-// const dispatch = useDispatch();
-// let paddingBottom = 0;
-// let paddingTop = 0;
 
 useEffect(() => {
-  // if (homeWasRendered === "true") {
-    // const computedStyle = getComputedStyle(whySectionRef.current);
-    // paddingTop = parseFloat(computedStyle.paddingTop);
-    // paddingBottom = parseFloat(computedStyle.paddingBottom);
-    // const totalHeight =
-    // whySectionRef.current.offsetHeight + paddingTop + paddingBottom;
-    // dispatch(setHeight(totalHeight));
-    // const rect = whySectionRef.current.getBoundingClientRect();
-    // const yOffset = window.pageYOffset || document.documentElement.scrollTop;
-    // const yPosition = rect.top + yOffset;
-    // dispatch(setYaxisPosition(yPosition));
-  // }
   if (typeof onRender === "function") {
     onRender();
   }
@@ -87,13 +65,6 @@ useEffect(() => {
 
 // ---------------------------------------------------------
 
-  /*
-   * This componets has an array of object denoting the cards defined below. Each object in the cards array can have the key (Change it according to your need, you can also add more objects to have more cards in this feature component) or you can directly pass this using the cards prop:
-   *  1) imageSrc - the image shown at the top of the card
-   *  2) title - the title of the card
-   *  3) description - the description of the card
-   *  If a key for a particular card is not provided, a default value is used
-   */
 
   const defaultCards = [
     { icon: <IoHeart style={{ fontSize: '32px' }} />, 

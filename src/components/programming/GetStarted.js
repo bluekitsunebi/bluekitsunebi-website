@@ -30,10 +30,6 @@ const DecoratorBlob2 = tw(SvgDecoratorBlob1)`absolute top-0 right-0 w-80 h-80 tr
 export default function InfoSection({
   onRender,
   text = "Informații",
-  // primaryLinkText = "Get Started",
-  // primaryLinkUrl = "http://timerse.com",
-  // secondaryLinkText = "Contact Us",
-  // secondaryLinkUrl = "http://google.com",
   pushDownFooter = true
 }) {
   
