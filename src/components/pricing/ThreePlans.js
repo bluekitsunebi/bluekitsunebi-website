@@ -18,7 +18,7 @@ const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
 
 const Heading = tw(SectionHeading)`w-full text-primary-900`;
 
-const LanguageSwitcher = tw.div`flex flex-col gap-2 w-auto border-2 rounded-3xl px-1 py-1 mt-8 border-primary-900 sm:flex-row sm:rounded-full`;
+const Switcher = tw.div`flex flex-col gap-2 w-auto border-2 rounded-3xl px-1 py-1 mt-8 border-primary-900 sm:flex-row sm:rounded-full`;
 
 const SwitchButton = styled.button`
   ${tw`sm:w-32 px-4 sm:px-8 py-3 rounded-3xl sm:rounded-full focus:outline-none text-sm font-bold text-gray-700 transition duration-300`}
@@ -124,7 +124,7 @@ export default function CoursesSection({
   plans = null,
   primaryButtonText = "Înscrie-te",
   primaryButtonText__disabled = "În curând",
-  languages = [
+  categories = [
     {switcherText: "Română"},
     {switcherText: "Engleză"},
     {switcherText: "Japoneză"},
@@ -257,7 +257,7 @@ useEffect(() => {
 
   if (!plans) plans = defaultPlans;
 
-  const [activeLanguageIndex, setActiveLanguageIndex] = useState(0);
+  const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
   const [activeDurationIndex, setActiveDurationIndex] = useState(1);
 
   const highlightGradientsCss = [
@@ -285,29 +285,29 @@ useEffect(() => {
       <ContentWithPaddingXl>
         <HeaderContainer>
           <Heading>{heading}</Heading>
-          <LanguageSwitcher>
-            {languages.map((language, index) => (
-              <SwitchButton active={activeLanguageIndex === index} key={index} onClick={() => setActiveLanguageIndex(index)}>{language.switcherText}</SwitchButton>
+          <Switcher>
+            {categories.map((category, index) => (
+              <SwitchButton active={activeCategoryIndex === index} key={index} onClick={() => setActiveCategoryIndex(index)}>{category.switcherText}</SwitchButton>
             ))}
-          </LanguageSwitcher>
+          </Switcher>
         </HeaderContainer>
         <PlansContainer>
           {plans.map((plan, index) => (
-            (activeLanguageIndex == defaultPlans.length-1 && index == defaultPlans.length-1) ? "" :
+            (activeCategoryIndex == defaultPlans.length-1 && index == defaultPlans.length-1) ? "" :
             <Plan key={index} featured={plan.featured}>
               {!plan.featured && <div className="planHighlight" css={highlightGradientsCss[index % highlightGradientsCss.length]} />}
               <PlanHeader>
-                <span className={`name ${plan.disabled &&'disabled'}`}>{plan.name[activeLanguageIndex]}</span>
+                <span className={`name ${plan.disabled &&'disabled'}`}>{plan.name[activeCategoryIndex]}</span>
                 {
-                plan.price[activeLanguageIndex] && 
+                plan.price[activeCategoryIndex] && 
                 <span className="price">{
                   (index !== 0)
-                  ? plan.price[activeLanguageIndex] 
-                  : plan.price[activeLanguageIndex][activeDurationIndex]
+                  ? plan.price[activeCategoryIndex] 
+                  : plan.price[activeCategoryIndex][activeDurationIndex]
                 }</span>
                 }
-                {plan.duration[activeLanguageIndex] &&
-                  ((index !== 0) ? <span className="duration">{plan.duration[activeLanguageIndex]}</span>
+                {plan.duration[activeCategoryIndex] &&
+                  ((index !== 0) ? <span className="duration">{plan.duration[activeCategoryIndex]}</span>
                   : <DurationSelector>
                     {durations.map((duration, durationIndex) => (
                       <span 
@@ -328,7 +328,7 @@ useEffect(() => {
               </PlanHeader>
               <PlanFeatures>
                 <span className="feature mainFeature">{plan.mainFeature}</span>
-                {plan.features[activeLanguageIndex].map((feature, index) => (
+                {plan.features[activeCategoryIndex].map((feature, index) => (
                   <span key={index} className="feature">
                     {feature}
                   </span>

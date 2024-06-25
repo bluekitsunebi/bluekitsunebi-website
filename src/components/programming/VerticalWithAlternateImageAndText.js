@@ -12,7 +12,7 @@ import {
   setHeight,
   setYaxisPosition,
 } from "store/aboutSectionSlice";
-import usePreloadImages from 'hooks/usePreloadImages';
+// import usePreloadImages from 'hooks/usePreloadImages';
 
 const Container = tw.div`relative mx-8`;
 
@@ -58,7 +58,7 @@ const aboutSectionRef = useRef(null);
 let paddingBottom = 0;
 let paddingTop = 0;
 
-usePreloadImages([laptop, study, fight]);
+// const imagesLoaded = usePreloadImages([laptop, study, fight]);
 
 useEffect(() => {
   if (homeWasRendered === "true") {

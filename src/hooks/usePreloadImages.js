@@ -1,12 +1,24 @@
-import { useEffect } from 'react';
+// import { useEffect, useState } from 'react';
 
-const usePreloadImages = (imageUrls) => {
-  useEffect(() => {
-    imageUrls.forEach((url) => {
-      const img = new Image();
-      img.src = url;
-    });
-  }, [imageUrls]);
-};
+// const usePreloadImages = (imageUrls) => {
+//   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-export default usePreloadImages;
+//   useEffect(() => {
+//     const loadImage = (url) => {
+//       return new Promise((resolve, reject) => {
+//         const img = new Image();
+//         img.src = url;
+//         img.onload = resolve;
+//         img.onerror = reject;
+//       });
+//     };
+
+//     Promise.all(imageUrls.map(loadImage))
+//       .then(() => setImagesLoaded(true))
+//       .catch((err) => console.error('Failed to load images', err));
+//   }, [imageUrls]);
+
+//   return imagesLoaded;
+// };
+
+// export default usePreloadImages;
