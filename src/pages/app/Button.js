@@ -3,17 +3,26 @@ import tw from "twin.macro";
 import styled, { css } from "styled-components";
 
 const ButtonWrapper = styled.div`
-  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full`}
+  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit`}
   ${({ isSelected }) =>
     isSelected &&
     css`
       ${tw`bg-primary-500 text-white border-transparent`}
     `}
-    ${({ isLessonSelector }) =>
-    isLessonSelector &&
+
+  
+  ${({ isLessonSelector, isSelected }) =>
+    isLessonSelector && !isSelected &&
     css`
-      ${tw`sm:w-fit sm:flex-wrap`}
+      ${tw`sm:w-fit`}
     `}
+  ${({ isLessonSelector, isSelected }) =>
+    isLessonSelector &&
+    isSelected &&
+    css`
+      ${tw`flex flex-row w-full gap-5`}
+    `}
+
   ${({ isLevelSelector }) =>
     isLevelSelector &&
     css`

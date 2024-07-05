@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setStudyLevel,
   setStudyType,
-  setStudyLesson,
-  setResponseStudyLessons,
   setResponseQuizLessons,
 } from "store/app/studySettingsSlice";
 import Content from "./Content";
@@ -22,32 +20,12 @@ import Button from "./Button";
 
 const LearnKanjiPage = () => {
   const dispatch = useDispatch();
-
   const levels = useSelector((state) => state.studySettings.levels);
-  const responseStudyLessons = useSelector(
-    (state) => state.studySettings.responseStudyLessons
-  );
   const responseQuizLessons = useSelector(
     (state) => state.studySettings.responseQuizLessons
   );
 
   useEffect(() => {
-    dispatch(
-      setResponseStudyLessons([
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-        { id: 7 },
-        { id: 8 },
-        { id: 9 },
-        { id: 10 },
-        { id: 11 },
-        { id: 12 },
-      ])
-    );
     dispatch(
       setResponseQuizLessons({
         N5: {
@@ -77,7 +55,7 @@ const LearnKanjiPage = () => {
   const action = useSelector((state) => state.studySettings.action);
   const studyLevel = useSelector((state) => state.studySettings.studyLevel);
   const studyType = useSelector((state) => state.studySettings.studyType);
-  const studyLesson = useSelector((state) => state.studySettings.studyLesson);
+
   const quizSettings = useSelector((state) => state.studySettings.quizSettings);
 
   const handleSetStudyType = (type) => {
@@ -85,9 +63,6 @@ const LearnKanjiPage = () => {
   };
   const handleSetStudyLevel = (level) => {
     dispatch(setStudyLevel(level));
-  };
-  const handleSetStudyLesson = (lessons) => {
-    dispatch(setStudyLesson(lessons));
   };
 
   return (
@@ -167,20 +142,11 @@ const LearnKanjiPage = () => {
               </>
             )
           )}
-        {action === "study" && (
-          <LessonSelector show={action === "study" && studyType}>
-            {responseStudyLessons.map((lesson) => (
-              <Button
-              key={lesson.id}
-              onClick={() => handleSetStudyLesson(lesson.id)}
-              isSelected={studyLesson === lesson.id}
-              isLessonSelector
-              >
-                Lesson {lesson.id}
-              </Button>
-            ))}
-          </LessonSelector>
-        )}
+          {action === "study" && (
+            <LessonSelector
+              show={action === "study" && studyType}
+            ></LessonSelector>
+          )}
         </PrimarySettings>
       </Card>
     </Content>
