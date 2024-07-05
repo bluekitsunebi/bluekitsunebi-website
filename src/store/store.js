@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 import cardSlice from "./cardSlice";
 import formSlice from "./formSlice";
@@ -21,6 +21,7 @@ import infoSectionReducer from "./infoSectionSlice";
 
 // APP
 import authReducer from './app/authSlice';
+import databaseReducer from './app/databaseSlice';
 import studySettingsReducer from './app/studySettingsSlice';
 
 export const store = configureStore({
@@ -46,6 +47,12 @@ export const store = configureStore({
 
     // APP
     auth: authReducer,
+    database: databaseReducer,
     studySettings: studySettingsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+      immutableCheck: false,
+    }),
 });

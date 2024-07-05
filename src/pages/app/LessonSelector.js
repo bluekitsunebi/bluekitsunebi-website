@@ -58,80 +58,44 @@ const CaretUp = styled(IoCaretUpCircleOutline)`
 
 const LessonSelector = ({ show }) => {
   const dispatch = useDispatch();
+  const database = useSelector((state) => state.database.database);
 
   useEffect(() => {
-    dispatch(
-      setResponseStudyLessons([
-        {
-          id: 1,
-          kanjis: [
-            { id: 1, kanji: "日" },
-            { id: 2, kanji: "一" },
-            { id: 3, kanji: "国" },
-            { id: 4, kanji: "人" },
-            { id: 5, kanji: "年" },
-          ],
-        },
-        {
-          id: 2,
-          kanjis: [
-            { id: 6, kanji: "大" },
-            { id: 7, kanji: "十" },
-            { id: 8, kanji: "二" },
-            { id: 9, kanji: "本" },
-            { id: 10, kanji: "中" },
-          ],
-        },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-        { id: 7 },
-        { id: 8 },
-        { id: 9 },
-        { id: 10 },
-        { id: 11 },
-        { id: 12 },
-        { id: 13 },
-        { id: 14 },
-        { id: 15 },
-        { id: 16 },
-        { id: 17 },
-        { id: 18 },
-        { id: 19 },
-        { id: 20 },
-        { id: 21 },
-        { id: 22 },
-        { id: 23 },
-        { id: 24 },
-        { id: 25 },
-        { id: 26 },
-        { id: 27 },
-        { id: 28 },
-        { id: 29 },
-        { id: 30 },
-        { id: 31 },
-        { id: 32 },
-        { id: 33 },
-        { id: 34 },
-        { id: 35 },
-        { id: 36 },
-        { id: 37 },
-        { id: 38 },
-        { id: 39 },
-        { id: 40 },
-        { id: 41 },
-        { id: 42 },
-        { id: 43 },
-        { id: 44 },
-        { id: 45 },
-        { id: 46 },
-        { id: 47 },
-        { id: 48 },
-        { id: 49 },
-        { id: 50 },
-      ])
-    );
+    try {
+      const query = `
+      SELECT 
+    kl.level, 
+    kl.id_lesson, 
+    '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
+FROM 
+    (SELECT DISTINCT level, id_lesson, id_kanji FROM kanji_lessons) kl
+JOIN 
+    kanjis k ON kl.id_kanji = k.id
+GROUP BY 
+    kl.level, 
+    kl.id_lesson
+ORDER BY 
+    kl.level DESC, 
+    kl.id_lesson ASC;
+      `;
+      const stmt = database.prepare(query);
+      const lessons = [];
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        const kanjis = JSON.parse(row.kanjis);
+        console.log(row);
+        lessons.push({
+          id: row.id_lesson,
+          level: row.level,
+          kanjis: kanjis,
+        });
+      }
+      console.log("lessons: ", lessons);
+      dispatch(setResponseStudyLessons(lessons));
+      stmt.free();
+    } catch (error) {
+      console.error("Failed to load lessons from database", error);
+    }
   }, []);
   const responseStudyLessons = useSelector(
     (state) => state.studySettings.responseStudyLessons
@@ -152,10 +116,15 @@ const LessonSelector = ({ show }) => {
         (lesson) =>
           (!studyLesson ||
             (studyLesson && (studyLesson === lesson.id || showAllLessons))) && (
-            <LessonContainer isSelected={studyLesson === lesson.id}>
+            <LessonContainer
+              isSelected={studyLesson === lesson.id}
+              key={`${lesson.id} ${lesson.level}`}
+            >
               <Button
-                key={lesson.id}
-                onClick={() => {handleSetStudyLesson(lesson.id); handleShowAllLessons()}}
+                onClick={() => {
+                  handleSetStudyLesson(lesson.id);
+                  handleShowAllLessons();
+                }}
                 isSelected={studyLesson === lesson.id}
                 isLessonSelector
               >
@@ -163,7 +132,9 @@ const LessonSelector = ({ show }) => {
                 <KanjisContainer>
                   {studyLesson === lesson.id &&
                     lesson?.kanjis &&
-                    lesson.kanjis.map((kanji) => <Kanji>{kanji.kanji}</Kanji>)}
+                    lesson.kanjis.map((kanji) => (
+                      <Kanji key={`${lesson.id} ${lesson.level} ${kanji.id}`}>{kanji.kanji}</Kanji>
+                    ))}
                 </KanjisContainer>
               </Button>
               {studyLesson && studyLesson === lesson.id && (

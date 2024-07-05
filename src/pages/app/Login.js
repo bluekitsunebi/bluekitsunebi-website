@@ -6,8 +6,11 @@ import logo from "images/original/logo2.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 import initSqlJs from "sql.js";
 import dataBase from "../../db/kanji_vocab_database.db";
+import {
+  setDatabase
+} from "store/app/databaseSlice";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginSuccess } from "store/app/authSlice";
 import bcrypt from "bcryptjs";
@@ -53,7 +56,7 @@ const Message = styled.div`
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [db, setDb] = useState(null);
+  const database = useSelector((state) => state.database.database);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState(false);
@@ -67,14 +70,14 @@ const LoginPage = () => {
       const db = new SQL.Database(
         new Uint8Array(await (await fetch(dataBase)).arrayBuffer())
       );
-      setDb(db);
+      dispatch(setDatabase(db));
     };
     loadDataBase();
   }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    if (!db) {
+    if (!database) {
       setDisplayMessage(true);
       setMessage("Could not login");
       return;
@@ -82,7 +85,7 @@ const LoginPage = () => {
 
     try {
       const query = `SELECT * FROM users WHERE user = ?`;
-      const stmt = db.prepare(query);
+      const stmt = database.prepare(query);
       stmt.bind([username]);
       if (stmt.step()) {
         const user = stmt.getAsObject();
