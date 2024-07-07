@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
 
 const ActionSelectorWrapper = styled.div`
-  ${tw`flex flex-col s:flex-row gap-4 justify-between w-full s:min-w-17rem`}
+  ${tw`flex flex-col s:flex-row s:gap-4 justify-between w-full s:min-w-17rem`}
 `;
 
 const ActionSelector = () => {
@@ -21,12 +21,16 @@ const ActionSelector = () => {
       <Button
         onClick={() => handleSetAction("study")}
         isSelected={action === "study"}
+        isDual
+        isFirst
       >
         Study
       </Button>
       <Button
         onClick={() => handleSetAction("quiz")}
         isSelected={action === "quiz"}
+        isDual
+        isLast
       >
         Quiz
       </Button>

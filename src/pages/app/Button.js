@@ -63,6 +63,16 @@ const ButtonWrapper = styled.div`
     css`
       ${tw`font-normal`}
     `}
+  ${({ isDual, isFirst, isLast }) =>
+    isDual && isFirst
+      ? css`
+          ${tw`rounded-b-none s:rounded border-b-0 s:border-b`}
+        `
+      : isDual &&
+        isLast &&
+        css`
+          ${tw`rounded-t-none s:rounded`}
+        `}
 `;
 
 const Button = ({
@@ -76,6 +86,7 @@ const Button = ({
   monochrome,
   children,
   fontsizeNormal,
+  isDual,
 }) => {
   return (
     <ButtonWrapper
@@ -88,6 +99,7 @@ const Button = ({
       begin={begin}
       monochrome={monochrome}
       fontsizeNormal={fontsizeNormal}
+      isDual={isDual}
     >
       {children}
     </ButtonWrapper>

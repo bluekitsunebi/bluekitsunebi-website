@@ -79,7 +79,9 @@ const LearnKanjiPage = () => {
                     key={level}
                     onClick={() => {
                       handleSetStudyLevel(level);
-                      studyLevel && studyLevel !== level && dispatch(setStudyLesson(null));
+                      studyLevel &&
+                        studyLevel !== level &&
+                        dispatch(setStudyLesson(null));
                     }}
                     isSelected={studyLevel === level}
                     isLevelSelector
@@ -94,12 +96,16 @@ const LearnKanjiPage = () => {
                 <Button
                   onClick={() => handleSetStudyType("kanji")}
                   isSelected={studyType === "kanji"}
+                  isDual
+                  isFirst
                 >
                   Kanji
                 </Button>
                 <Button
                   onClick={() => handleSetStudyType("vocabulary")}
                   isSelected={studyType === "vocabulary"}
+                  isDual
+                  isLast
                 >
                   Vocabulary
                 </Button>
@@ -147,9 +153,7 @@ const LearnKanjiPage = () => {
             )
           )}
           {(action === "study" || !action) && (
-            <LessonSelector
-              show={studyType}
-            ></LessonSelector>
+            <LessonSelector show={studyType}></LessonSelector>
           )}
         </PrimarySettings>
       </Card>

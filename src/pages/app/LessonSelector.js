@@ -19,7 +19,7 @@ import {
 
 const LessonSelectorWrapper = styled.div`
   ${tw`
-  flex flex-col gap-10 h-128 overflow-y-auto p-8 w-full border border-primary-500 justify-start bg-white`}
+  flex flex-col gap-10 min-h-144 h-144 s:min-h-128 s:h-128 overflow-y-auto p-8 w-full border border-primary-500 justify-start bg-white`}
   ${({ show }) =>
     !show &&
     css`
@@ -46,7 +46,12 @@ const LessonSelectorWrapper = styled.div`
 `;
 
 const SelectedLesson = styled.div`
-  ${tw`flex flex-row h-fit items-center gap-2 w-full`}
+  ${tw`flex s:flex-row h-fit items-center gap-2 w-full
+  flex-col`}
+`;
+
+const NameAndExpand = styled.div`
+  ${tw`flex flex-row gap-2 w-full items-center`}
 `;
 
 const LessonName = styled.span`
@@ -59,12 +64,20 @@ const LessonName = styled.span`
 `;
 
 const Icon = styled.div`
-  ${tw`text-gray-600 w-8 h-8 cursor-pointer`}
+  ${tw`text-gray-600 cursor-pointer`}
   ${({ hide }) =>
     hide &&
     css`
       ${tw`opacity-0 cursor-default pointer-events-none`}
     `}
+`;
+
+const DesktopIcon = styled.div`
+  ${tw`hidden s:inline-block`}
+`;
+
+const MobileIcon = styled.div`
+  ${tw`s:hidden`}
 `;
 
 const CaretDown = styled(IoCaretDownCircleOutline)`
@@ -73,6 +86,10 @@ const CaretDown = styled(IoCaretDownCircleOutline)`
 
 const CaretUp = styled(IoCaretUpCircleOutline)`
   ${tw`w-8 h-8`}
+`;
+
+const MobileBrowseLessons = styled.div`
+  ${tw`flex flex-row w-full s:w-fit justify-between`}
 `;
 
 const PreviousIcon = styled(Previous)`
@@ -113,7 +130,7 @@ const KanjiList = styled.div`
 
 const ShowAllKanji = styled.div`
   ${tw`
-    w-fit
+    w-full s:w-fit
   `}
 `;
 
@@ -182,6 +199,7 @@ const LessonSelector = ({ show }) => {
 
   const handleSetStudyLesson = (lessons) => {
     dispatch(setStudyLesson(lessons));
+    setShowAllLessons(false);
     dispatch(setShowAllKanjis(false));
   };
   const handleShowAllLessons = (showAll) => {
@@ -205,33 +223,55 @@ const LessonSelector = ({ show }) => {
     <LessonSelectorWrapper show={show}>
       {studyLesson && (
         <SelectedLesson>
-          <Icon hide={studyLesson === 1}>
-            <PreviousIcon
-              onClick={() => handleSetStudyLesson(studyLesson - 1)}
-            ></PreviousIcon>
-          </Icon>
-
-          <Button
-            onClick={() => {
-              handleShowAllLessons(!showAllLessons);
-              handleSetStudyLesson(studyLesson);
-            }}
-            monochrome
-          >
-            <LessonName isSelected={studyLesson}>
-              Selected: Lesson {studyLesson}
-            </LessonName>
-          </Button>
-          {studyLesson && (
-            <Icon onClick={() => handleShowAllLessons(!showAllLessons)}>
-              {!showAllLessons ? <CaretDown></CaretDown> : <CaretUp></CaretUp>}
+          <MobileBrowseLessons>
+            <Icon hide={studyLesson === 1}>
+              <PreviousIcon
+                onClick={() => handleSetStudyLesson(studyLesson - 1)}
+              ></PreviousIcon>
             </Icon>
-          )}
-          <Icon hide={studyLesson === responseStudyLessons[studyLevel]?.length}>
-            <NextIcon
-              onClick={() => handleSetStudyLesson(studyLesson + 1)}
-            ></NextIcon>
-          </Icon>
+            <MobileIcon>
+              <Icon
+                hide={studyLesson === responseStudyLessons[studyLevel]?.length}
+              >
+                <NextIcon
+                  onClick={() => handleSetStudyLesson(studyLesson + 1)}
+                ></NextIcon>
+              </Icon>
+            </MobileIcon>
+          </MobileBrowseLessons>
+
+          <NameAndExpand>
+            <Button
+              onClick={() => {
+                handleShowAllLessons(!showAllLessons);
+                handleSetStudyLesson(studyLesson);
+              }}
+              monochrome
+            >
+              <LessonName isSelected={studyLesson}>
+                Selected: Lesson {studyLesson}
+              </LessonName>
+            </Button>
+            {studyLesson && (
+              <Icon onClick={() => handleShowAllLessons(!showAllLessons)}>
+                {!showAllLessons ? (
+                  <CaretDown></CaretDown>
+                ) : (
+                  <CaretUp></CaretUp>
+                )}
+              </Icon>
+            )}
+          </NameAndExpand>
+
+          <DesktopIcon>
+            <Icon
+              hide={studyLesson === responseStudyLessons[studyLevel]?.length}
+            >
+              <NextIcon
+                onClick={() => handleSetStudyLesson(studyLesson + 1)}
+              ></NextIcon>
+            </Icon>
+          </DesktopIcon>
         </SelectedLesson>
       )}
 
@@ -267,7 +307,9 @@ const LessonSelector = ({ show }) => {
         <KanjisContainer>
           <ShowAllKanji>
             <Button monochrome onClick={() => handleShowAllKanjis()}>
-              {!showAllKanjis ? `Show all kanji for ${studyLevel}` : `Show kanji only for Lesson ${studyLesson}`}
+              {!showAllKanjis
+                ? `Show all kanji for ${studyLevel}`
+                : `Show kanji only for Lesson ${studyLesson}`}
             </Button>
           </ShowAllKanji>
           <KanjiList>
