@@ -68,7 +68,6 @@ function Button(props) {
   }
 
   const handleClick = () => {
-    console.log(link)
     window.scroll({
       top: sectionPosition,
       left: 0,

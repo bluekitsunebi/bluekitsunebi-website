@@ -20,6 +20,7 @@ import contactSectionReducer from "./contactSectionSlice";
 import infoSectionReducer from "./infoSectionSlice";
 
 // APP
+import appReducer from './app/appSlice';
 import authReducer from './app/authSlice';
 import databaseReducer from './app/databaseSlice';
 import studySettingsReducer from './app/studySettingsSlice';
@@ -46,6 +47,7 @@ export const store = configureStore({
     infoSection: infoSectionReducer,
 
     // APP
+    app: appReducer,
     auth: authReducer,
     database: databaseReducer,
     studySettings: studySettingsReducer,

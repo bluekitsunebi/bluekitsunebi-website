@@ -1,15 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  // study
+
   levels: ["N5", "N4", "N3", "N2", "N1"],
-  responseStudyLessons: [],
+  responseStudyLessons: {
+    N5: [],
+    N4: [],
+    N3: [],
+    N2: [],
+    N1: [],
+  },
   responseQuizLessons: [],
 
   action: null, // study, quiz
 
   studyLevel: null, // N5->N1
   studyType: null, // vocabulary, kanji
-  studyLesson: null, // [number]
+  studyLesson: null, // number
+
+  showAllKanjis: false, // LessonSelector
+
+  // quiz
 
   quizSettings: {
     N5: {
@@ -76,7 +88,10 @@ export const studySettingsSlice = createSlice({
   reducers: {
     //lessons
     setResponseStudyLessons(state, action) {
-      state.responseStudyLessons = action.payload;
+      const {lessons, level} = action.payload;
+      console.log('lessons: ', lessons);
+      console.log('level: ', level);
+      state.responseStudyLessons[level] = lessons;
     },
     setResponseQuizLessons(state, action) {
       state.responseQuizLessons = action.payload;
@@ -99,6 +114,11 @@ export const studySettingsSlice = createSlice({
     setQuizSettings(state, action) {
       state.quizSettings = action.payload;
     },
+    setShowAllKanjis(state, action) {
+      console.log(action.payload)
+      state.showAllKanjis = action.payload;
+      console.log('state showAllKanjis: ', state.showAllKanjis);
+    }, // LessonSelector
     // quiz
     levelDisplay(state, action) {
       const level = action.payload;
@@ -163,6 +183,7 @@ export const {
   setStudyLevel,
   setStudyType,
   setStudyLesson,
+  setShowAllKanjis, // LessonSelector
   // quiz
   setQuizSettings,
   levelDisplay,

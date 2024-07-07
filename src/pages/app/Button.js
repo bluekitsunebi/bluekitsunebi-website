@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import styled, { css } from "styled-components";
 
 const ButtonWrapper = styled.div`
-  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit`}
+  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none`}
   ${({ isSelected }) =>
     isSelected &&
     css`
@@ -12,7 +12,8 @@ const ButtonWrapper = styled.div`
 
   
   ${({ isLessonSelector, isSelected }) =>
-    isLessonSelector && !isSelected &&
+    isLessonSelector &&
+    !isSelected &&
     css`
       ${tw`sm:w-fit`}
     `}
@@ -43,6 +44,25 @@ const ButtonWrapper = styled.div`
     css`
       ${tw`w-fit`}
     `}
+  ${({ monochrome }) =>
+    monochrome &&
+    css`
+      ${tw`
+      bg-white 
+      text-gray-700 
+      
+      border-gray-500 
+      
+      hover:text-gray-700
+      hover:border-transparent
+      hover:bg-gray-200 
+      `}
+    `}
+  ${({ fontsizeNormal }) =>
+    fontsizeNormal &&
+    css`
+      ${tw`font-normal`}
+    `}
 `;
 
 const Button = ({
@@ -53,7 +73,9 @@ const Button = ({
   isFirst,
   isLast,
   begin,
+  monochrome,
   children,
+  fontsizeNormal,
 }) => {
   return (
     <ButtonWrapper
@@ -64,6 +86,8 @@ const Button = ({
       isFirst={isFirst}
       isLast={isLast}
       begin={begin}
+      monochrome={monochrome}
+      fontsizeNormal={fontsizeNormal}
     >
       {children}
     </ButtonWrapper>

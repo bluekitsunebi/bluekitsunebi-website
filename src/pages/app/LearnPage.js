@@ -4,6 +4,7 @@ import {
   setStudyLevel,
   setStudyType,
   setResponseQuizLessons,
+  setStudyLesson,
 } from "store/app/studySettingsSlice";
 import Content from "./Content";
 import Card from "./Card";
@@ -70,13 +71,16 @@ const LearnKanjiPage = () => {
       <Card>
         <PrimarySettings>
           <ActionSelector />
-          {action === "study" ? (
+          {action !== "quiz" ? (
             <>
-              <LevelSelector>
+              <LevelSelector show={action}>
                 {levels.map((level, index) => (
                   <Button
                     key={level}
-                    onClick={() => handleSetStudyLevel(level)}
+                    onClick={() => {
+                      handleSetStudyLevel(level);
+                      studyLevel && studyLevel !== level && dispatch(setStudyLesson(null));
+                    }}
                     isSelected={studyLevel === level}
                     isLevelSelector
                     isFirst={index === 0}
@@ -86,7 +90,7 @@ const LearnKanjiPage = () => {
                   </Button>
                 ))}
               </LevelSelector>
-              <TypeSelector show={action === "study" && studyLevel}>
+              <TypeSelector show={studyLevel}>
                 <Button
                   onClick={() => handleSetStudyType("kanji")}
                   isSelected={studyType === "kanji"}
@@ -142,9 +146,9 @@ const LearnKanjiPage = () => {
               </>
             )
           )}
-          {action === "study" && (
+          {(action === "study" || !action) && (
             <LessonSelector
-              show={action === "study" && studyType}
+              show={studyType}
             ></LessonSelector>
           )}
         </PrimarySettings>
