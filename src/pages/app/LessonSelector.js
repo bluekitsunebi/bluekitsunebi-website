@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setResponseStudyLessons,
   setStudyLesson,
+  setStudyKanji,
   setShowAllKanjis,
 } from "store/app/studySettingsSlice";
+import { setPage } from "store/app/appSlice";
 import Button from "./Button";
 import {
   IoCaretDownCircleOutline,
@@ -151,8 +153,6 @@ const LessonSelector = ({ show }) => {
     (state) => state.studySettings.showAllKanjis
   );
 
-  useEffect(() => {}, [responseStudyLessons]);
-
   const getLessons = async (level = studyLevel) => {
     if (level && responseStudyLessons[level].length === 0) {
       try {
@@ -217,6 +217,11 @@ const LessonSelector = ({ show }) => {
     setGetAllLessons(true);
     setShowAllLessons(false);
     dispatch(setShowAllKanjis(!showAllKanjis));
+  };
+
+  const goToKanjiPage = (idKanji) => {
+    dispatch(setPage("study"));
+    dispatch(setStudyKanji(idKanji));
   };
 
   return (
@@ -317,7 +322,7 @@ const LessonSelector = ({ show }) => {
               ? responseStudyLessons[studyLevel]
                   .find((lesson) => lesson.id === studyLesson)
                   ?.kanjis.map((kanji) => (
-                    <Kanji key={`${kanji.id}`}>
+                    <Kanji key={`${kanji.id}`} onClick={() => goToKanjiPage(kanji.id)}>
                       <Button monochrome fontsizeNormal>
                         {kanji.kanji}
                       </Button>
@@ -325,7 +330,7 @@ const LessonSelector = ({ show }) => {
                   ))
               : responseStudyLessons[studyLevel].map((kanjiLesson) =>
                   kanjiLesson.kanjis.map((kanji) => (
-                    <Kanji key={`${kanji.id}`}>
+                    <Kanji key={`${kanji.id}`} onClick={() => goToKanjiPage(kanji.id)}>
                       <Button monochrome fontsizeNormal>
                         {kanji.kanji}
                       </Button>

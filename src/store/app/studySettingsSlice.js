@@ -18,6 +18,7 @@ const initialState = {
   studyLevel: null, // N5->N1
   studyType: null, // vocabulary, kanji
   studyLesson: null, // number
+  studyKanji: null,
 
   showAllKanjis: false, // LessonSelector
 
@@ -111,6 +112,9 @@ export const studySettingsSlice = createSlice({
     setStudyLesson(state, action) {
       state.studyLesson = action.payload;
     },
+    setStudyKanji(state, action) {
+      state.studyKanji = action.payload;
+    },
     setQuizSettings(state, action) {
       state.quizSettings = action.payload;
     },
@@ -183,6 +187,7 @@ export const {
   setStudyLevel,
   setStudyType,
   setStudyLesson,
+  setStudyKanji,
   setShowAllKanjis, // LessonSelector
   // quiz
   setQuizSettings,

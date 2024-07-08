@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  page: "auth", // auth, settings, 
+  page: "learningSettings", // learningSettings, study 
 };
 
 export const appSlice = createSlice({

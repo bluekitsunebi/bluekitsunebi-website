@@ -108,7 +108,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import styled from 'styled-components';
 import ProgrammingLandingPage from "ProgrammingLandingPage";
 import LoginPage from "pages/app/Login.js";
-import LearnPage from "pages/app/LearnPage.js";
+import KanjiApp from "pages/app/KanjiApp.js";
 import ProtectedRoute from 'components/login/ProtectedRoute';
 import { useDispatch } from 'react-redux';
 import { logout } from 'store/app/authSlice';
@@ -138,7 +138,7 @@ function Wrapper() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/app" element={
           <ProtectedRoute>
-            <LearnPage />
+            <KanjiApp />
           </ProtectedRoute>
         } />
       </Routes>
