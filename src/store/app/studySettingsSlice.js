@@ -90,8 +90,6 @@ export const studySettingsSlice = createSlice({
     //lessons
     setResponseStudyLessons(state, action) {
       const {lessons, level} = action.payload;
-      console.log('lessons: ', lessons);
-      console.log('level: ', level);
       state.responseStudyLessons[level] = lessons;
     },
     setResponseQuizLessons(state, action) {
@@ -119,9 +117,7 @@ export const studySettingsSlice = createSlice({
       state.quizSettings = action.payload;
     },
     setShowAllKanjis(state, action) {
-      console.log(action.payload)
       state.showAllKanjis = action.payload;
-      console.log('state showAllKanjis: ', state.showAllKanjis);
     }, // LessonSelector
     // quiz
     levelDisplay(state, action) {

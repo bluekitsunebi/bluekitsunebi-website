@@ -197,9 +197,9 @@ const LessonSelector = ({ show }) => {
 
   const [getAllLessons, setGetAllLessons] = useState(false);
 
-  const handleSetStudyLesson = (lessons) => {
-    dispatch(setStudyLesson(lessons));
-    setShowAllLessons(false);
+  const handleSetStudyLesson = (lessonId, showAllLessons = false) => {
+    dispatch(setStudyLesson(lessonId));
+    setShowAllLessons(showAllLessons);
     dispatch(setShowAllKanjis(false));
   };
   const handleShowAllLessons = (showAll) => {
@@ -248,8 +248,7 @@ const LessonSelector = ({ show }) => {
           <NameAndExpand>
             <Button
               onClick={() => {
-                handleShowAllLessons(!showAllLessons);
-                handleSetStudyLesson(studyLesson);
+                handleSetStudyLesson(studyLesson, !showAllLessons);
               }}
               monochrome
             >
@@ -321,7 +320,7 @@ const LessonSelector = ({ show }) => {
             {!showAllKanjis
               ? responseStudyLessons[studyLevel]
                   .find((lesson) => lesson.id === studyLesson)
-                  ?.kanjis.map((kanji) => (
+                  .kanjis.map((kanji) => (
                     <Kanji key={`${kanji.id}`} onClick={() => goToKanjiPage(kanji.id)}>
                       <Button monochrome fontsizeNormal>
                         {kanji.kanji}

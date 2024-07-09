@@ -73,6 +73,15 @@ const ButtonWrapper = styled.div`
         css`
           ${tw`rounded-t-none s:rounded`}
         `}
+  ${({ full }) => 
+    full && 
+      css`
+        ${tw`bg-primary-500 text-white border-0
+         hover:bg-primary-600 
+         hover:text-white 
+         hover:border-0
+         `}`
+  }
 `;
 
 const Button = ({
@@ -87,6 +96,8 @@ const Button = ({
   children,
   fontsizeNormal,
   isDual,
+  transparent,
+  full,
 }) => {
   return (
     <ButtonWrapper
@@ -100,6 +111,8 @@ const Button = ({
       monochrome={monochrome}
       fontsizeNormal={fontsizeNormal}
       isDual={isDual}
+      transparent={transparent}
+      full={full}
     >
       {children}
     </ButtonWrapper>

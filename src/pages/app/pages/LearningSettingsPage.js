@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import tw from "twin.macro";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setStudyLevel,
@@ -65,96 +67,102 @@ const LearningSettingsPage = () => {
     dispatch(setStudyLevel(level));
   };
 
+  const LearnSettingsContainer = styled.div`
+    ${tw``}
+  `;
+
   return (
-    <Card>
-      <PrimarySettings>
-        <ActionSelector />
-        {action !== "quiz" ? (
-          <>
-            <LevelSelector show={action}>
-              {levels.map((level, index) => (
-                <Button
-                  key={level}
-                  onClick={() => {
-                    handleSetStudyLevel(level);
-                    studyLevel &&
-                      studyLevel !== level &&
-                      dispatch(setStudyLesson(null));
-                  }}
-                  isSelected={studyLevel === level}
-                  isLevelSelector
-                  isFirst={index === 0}
-                  isLast={index === 4}
-                >
-                  {level}
-                </Button>
-              ))}
-            </LevelSelector>
-            <TypeSelector show={studyLevel}>
-              <Button
-                onClick={() => handleSetStudyType("kanji")}
-                isSelected={studyType === "kanji"}
-                isDual
-                isFirst
-              >
-                Kanji
-              </Button>
-              <Button
-                onClick={() => handleSetStudyType("vocabulary")}
-                isSelected={studyType === "vocabulary"}
-                isDual
-                isLast
-              >
-                Vocabulary
-              </Button>
-            </TypeSelector>
-          </>
-        ) : (
-          action === "quiz" && (
+
+      <Card>
+        <PrimarySettings>
+          <ActionSelector />
+          {action !== "quiz" ? (
             <>
-              <QuizListWrapper>
-                {levels.map((level) => (
-                  <QuizLevel key={level} level={level}>
-                    <QuizType level={level} type="kanji">
-                      {responseQuizLessons[level].kanji.map((lesson) => (
-                        <QuizLesson
-                          key={lesson.id}
-                          level={level}
-                          type="kanji"
-                          lesson={lesson}
-                          isSelected={quizSettings[level].kanji.lessons.some(
-                            (obj) => obj.id === lesson.id
-                          )}
-                        />
-                      ))}
-                    </QuizType>
-                    <QuizType level={level} type="vocabulary">
-                      {responseQuizLessons[level].vocabulary.map((lesson) => (
-                        <QuizLesson
-                          key={lesson.id}
-                          level={level}
-                          type="vocabulary"
-                          lesson={lesson}
-                          isSelected={quizSettings[
-                            level
-                          ].vocabulary.lessons.some(
-                            (obj) => obj.id === lesson.id
-                          )}
-                        />
-                      ))}
-                    </QuizType>
-                  </QuizLevel>
+              <LevelSelector show={action}>
+                {levels.map((level, index) => (
+                  <Button
+                    key={level}
+                    onClick={() => {
+                      handleSetStudyLevel(level);
+                      studyLevel &&
+                        studyLevel !== level &&
+                        dispatch(setStudyLesson(null));
+                    }}
+                    isSelected={studyLevel === level}
+                    isLevelSelector
+                    isFirst={index === 0}
+                    isLast={index === 4}
+                  >
+                    {level}
+                  </Button>
                 ))}
-              </QuizListWrapper>
-              <Button begin>Start</Button>
+              </LevelSelector>
+              <TypeSelector show={studyLevel}>
+                <Button
+                  onClick={() => handleSetStudyType("kanji")}
+                  isSelected={studyType === "kanji"}
+                  isDual
+                  isFirst
+                >
+                  Kanji
+                </Button>
+                <Button
+                  onClick={() => handleSetStudyType("vocabulary")}
+                  isSelected={studyType === "vocabulary"}
+                  isDual
+                  isLast
+                >
+                  Vocabulary
+                </Button>
+              </TypeSelector>
             </>
-          )
-        )}
-        {(action === "study" || !action) && (
-          <LessonSelector show={studyType}></LessonSelector>
-        )}
-      </PrimarySettings>
-    </Card>
+          ) : (
+            action === "quiz" && (
+              <>
+                <QuizListWrapper>
+                  {levels.map((level) => (
+                    <QuizLevel key={level} level={level}>
+                      <QuizType level={level} type="kanji">
+                        {responseQuizLessons[level].kanji.map((lesson) => (
+                          <QuizLesson
+                            key={lesson.id}
+                            level={level}
+                            type="kanji"
+                            lesson={lesson}
+                            isSelected={quizSettings[level].kanji.lessons.some(
+                              (obj) => obj.id === lesson.id
+                            )}
+                          />
+                        ))}
+                      </QuizType>
+                      <QuizType level={level} type="vocabulary">
+                        {responseQuizLessons[level].vocabulary.map((lesson) => (
+                          <QuizLesson
+                            key={lesson.id}
+                            level={level}
+                            type="vocabulary"
+                            lesson={lesson}
+                            isSelected={quizSettings[
+                              level
+                            ].vocabulary.lessons.some(
+                              (obj) => obj.id === lesson.id
+                            )}
+                          />
+                        ))}
+                      </QuizType>
+                    </QuizLevel>
+                  ))}
+                </QuizListWrapper>
+                <Button begin>Start</Button>
+              </>
+            )
+          )}
+          {(action === "study" || !action) && (
+            <LessonSelector show={studyType}></LessonSelector>
+          )}
+        </PrimarySettings>
+      </Card>
+
   );
 };
 

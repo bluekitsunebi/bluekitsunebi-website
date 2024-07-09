@@ -8,6 +8,7 @@ const CardWrapper = styled.div`
     w-full
     max-w-screen-lg 
     rounded-2xl 
+    my-auto
     
     
     flex 

@@ -595,6 +595,7 @@ module.exports = {
     }),
     minHeight: (theme) => ({
       '0': '0',
+      '15r': '15rem',
       '30r': '30rem',
       '35r': '35rem',
       '40r': '40rem',

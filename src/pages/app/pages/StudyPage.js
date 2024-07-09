@@ -1,19 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
-import styled from "styled-components";
-import {
-  PiArrowCircleLeft as Previous,
-  PiArrowCircleRight as Next,
-} from "react-icons/pi";
+import styled, { css } from "styled-components";
+import { FaAngleLeft as Previous, FaAngleRight as Next } from "react-icons/fa6";
 import Button from "../Button";
+import { setPage } from "store/app/appSlice";
+import { setStudyKanji } from "store/app/studySettingsSlice";
 
 const StudyPage = () => {
+  const dispatch = useDispatch();
   const database = useSelector((state) => state.database.database);
   const level = useSelector((state) => state.studySettings.studyLevel);
   const lessonId = useSelector((state) => state.studySettings.studyLesson);
   const kanjiId = useSelector((state) => state.studySettings.studyKanji);
+  const responseStudyLessons = useSelector(
+    (state) => state.studySettings.responseStudyLessons
+  );
   const [kanjiData, setKanjiData] = useState(null);
+
+  const getKanjiList = () => {
+    const lesson = responseStudyLessons[level].find(
+      (lesson) => lesson.id === lessonId
+    );
+    return lesson.kanjis;
+  };
+
+  const kanjiList = getKanjiList();
+
+  const getCurrentKajiIndex = () => {
+    return kanjiList.findIndex((kanji) => kanji.id === kanjiId);
+  };
+
+  const [currentKanjiIndex, setCurrentKanjiIndex] = useState(
+    getCurrentKajiIndex()
+  );
+  const [lessonDone, setLessonDone] = useState(false);
 
   const getKanjiData = () => {
     try {
@@ -39,7 +60,6 @@ const StudyPage = () => {
       const stmt = database.prepare(query);
       while (stmt.step()) {
         const row = stmt.getAsObject();
-        console.log(row);
         setKanjiData({
           level: level,
           id_lesson: lessonId,
@@ -47,6 +67,7 @@ const StudyPage = () => {
           words: JSON.parse(row.words),
         });
       }
+
       stmt.free();
     } catch (error) {
       console.error(
@@ -58,56 +79,180 @@ const StudyPage = () => {
 
   useEffect(() => {
     getKanjiData();
-  }, []);
+  }, [currentKanjiIndex]);
 
-  useEffect(() => {
-    console.log("kanjiData: ", kanjiData);
-  }, [kanjiData]);
+  const previousKanji = () => {
+    if (currentKanjiIndex > 0 && !lessonDone) {
+      dispatch(setStudyKanji(kanjiList[currentKanjiIndex - 1].id));
+      setCurrentKanjiIndex(currentKanjiIndex - 1);
+    } else if (lessonDone) {
+      setLessonDone(false);
+    }
+  };
+
+  const nextKanji = () => {
+    if (currentKanjiIndex !== -1 && currentKanjiIndex < kanjiList.length - 1) {
+      dispatch(setStudyKanji(kanjiList[currentKanjiIndex + 1].id));
+      setCurrentKanjiIndex(currentKanjiIndex + 1);
+    } else if (
+      currentKanjiIndex !== -1 &&
+      currentKanjiIndex === kanjiList.length - 1
+    ) {
+      setLessonDone(true);
+    }
+  };
 
   const StudyPageContainer = styled.div`
-    ${tw`w-full h-full flex flex-col`}
+    ${tw`w-full h-full flex flex-col gap-20`}
+  `;
+
+  const BackButton = styled.div`
+    ${tw`w-fit`}
+  `;
+
+  const KanjiContainer = styled.div`
+    ${tw`flex flex-row gap-20 text-center w-full justify-between items-center min-h-15r`}
   `;
 
   const Icon = styled.div`
-    ${tw`text-gray-600 cursor-pointer`}
+    ${tw`text-primary-300 cursor-pointer border rounded-full border-primary-300 p-1 transition-colors duration-300
+
+    hover:bg-primary-300 
+    hover:text-white
+    active:bg-primary-300 
+    active:text-white
+    focus:bg-primary-300 
+    focus:text-white
+    `}
+    border-width: 0.5rem;
+    ${({ hide }) =>
+      hide &&
+      css`
+        ${tw`opacity-0 cursor-default pointer-events-none`}
+      `}
   `;
 
   const PreviousIcon = styled(Previous)`
-    ${tw`w-8 h-8`}
+    ${tw`w-16 h-16`}
   `;
 
   const NextIcon = styled(Next)`
-    ${tw`w-8 h-8`}
+    ${tw`w-16 h-16`}
   `;
+
+  const KanjiSymbol = styled.div`
+    ${tw`font-thin text-gray-800`}
+    font-size: 10rem;
+  `;
+
+  const KanjiDetails = styled.div`
+    ${tw`w-full flex flex-col items-center gap-20`}
+  `;
+
+  const MainDetails = styled.div`
+    ${tw`w-fit flex flex-col gap-2 border border-gray-500 rounded p-8 border-4`}
+  `;
+
+  const TitleContainer = styled.div`
+    ${tw`flex flex-col items-center text-gray-800`}
+  `;
+
+  const Title = styled.div`
+    ${tw`text-6xl`}
+  `;
+
+  const WordsContainer = styled.div`
+    ${tw`w-full flex flex-col gap-8 border border-gray-500 rounded p-8 border-4`}
+  `;
+
+  const WordsListContainer = styled.div`
+    ${tw`flex flex-row justify-evenly gap-8`}
+  `;
+
+  const WordsList = styled.div`
+    ${tw`w-full flex flex-col gap-2`}
+  `;
+
+  const StartQuizContainer = styled.div`
+    ${tw`h-full w-full flex flex-row justify-center`}
+  `;
+
+  const StartQuizButtonContainer = styled.div`
+    ${tw`h-full w-fit`}
+  `;
+
+
+  
 
   return (
     <StudyPageContainer>
-      {kanjiData && (
-        <>
-          <Button>Back to lessons</Button>
-          <Icon>
-            <PreviousIcon>Previous</PreviousIcon>
-          </Icon>
-          <Icon>
-            <NextIcon>Next</NextIcon>
-          </Icon>
+      <BackButton>
+        <Button onClick={() => dispatch(setPage("learningSettings"))} full>
+          Back to lessons
+        </Button>
+      </BackButton>
+      <KanjiContainer>
+        <Icon hide={currentKanjiIndex === 0}>
+          <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>
+        </Icon>
+        {!lessonDone ? (
+          <KanjiSymbol>{kanjiData?.kanji.kanji}</KanjiSymbol>
+        ) : (
+          <TitleContainer>
+            <Title>Lesson done.</Title>
+            <Title>Ready for the quiz?</Title>
+          </TitleContainer>
+        )}
+        <Icon hide={lessonDone}>
+          <NextIcon onClick={() => nextKanji()}></NextIcon>
+        </Icon>
+      </KanjiContainer>
 
-          <div>{kanjiData.kanji.kanji}</div>
+      {!lessonDone ? (
+        <KanjiDetails>
+          <MainDetails>
+            <div>meanings: {kanjiData?.kanji.meanings}</div>
 
-          <div>meanings: {kanjiData.kanji.meanings}</div>
+            {kanjiData?.kanji.kun_readings.length !== 0 && (
+              <div>kun: {kanjiData?.kanji.kun_readings.join(", ")}</div>
+            )}
+            {kanjiData?.kanji.on_readings.length !== 0 && (
+              <div>on: {kanjiData?.kanji.on_readings.join(", ")}</div>
+            )}
+          </MainDetails>
 
-          <div>kun: {kanjiData.kanji.kun_readings}</div>
-          <div>on: {kanjiData.kanji.on_readings}</div>
-
-          <div>words:</div>
-          
-          <div>
-            {kanjiData?.kanji?.words?.length !== 0 && kanjiData?.kanji?.words?.length[0].word}
-            {/* {kanjiData?.kanji?.words?.length !== 0 && kanjiData.kanji.words.map((word) => (
-              <div>{word.word} - {word.reading} = {word.meanings}</div>
-            ))} */}
-          </div>
-        </>
+          {kanjiData?.words?.length !== 0 && (
+            <WordsContainer>
+              <div>words:</div>
+              <WordsListContainer>
+                <WordsList>
+                  {kanjiData?.words
+                    .slice(0, Math.ceil(kanjiData?.words.length / 2))
+                    .map((word) => (
+                      <div key={word.id}>
+                        {word.word} ({word.reading}) = {word.meanings}
+                      </div>
+                    ))}
+                </WordsList>
+                <WordsList>
+                  {kanjiData?.words
+                    .slice(Math.ceil(kanjiData?.words.length / 2))
+                    .map((word) => (
+                      <div key={word.id}>
+                        {word.word} ({word.reading}) = {word.meanings}
+                      </div>
+                    ))}
+                </WordsList>
+              </WordsListContainer>
+            </WordsContainer>
+          )}
+        </KanjiDetails>
+      ) : (
+        <StartQuizContainer>
+          <StartQuizButtonContainer>
+            <Button full>start quiz</Button>
+          </StartQuizButtonContainer>
+        </StartQuizContainer>
       )}
     </StudyPageContainer>
   );
