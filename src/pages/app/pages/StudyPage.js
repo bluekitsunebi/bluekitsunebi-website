@@ -103,15 +103,23 @@ const StudyPage = () => {
   };
 
   const StudyPageContainer = styled.div`
-    ${tw`w-full h-full flex flex-col gap-20`}
+    ${tw`w-full h-full flex flex-col gap-10 items-center text-3xl`}
+  `;
+
+  const BackButtonContainer = styled.div`
+    ${tw`w-full mr-auto`}
   `;
 
   const BackButton = styled.div`
     ${tw`w-fit`}
   `;
 
+  const Card = styled.div`
+    ${tw`flex flex-col gap-5 rounded-3xl bg-white px-16 py-8 max-w-screen-lg w-full`}
+  `;
+
   const KanjiContainer = styled.div`
-    ${tw`flex flex-row gap-20 text-center w-full justify-between items-center min-h-15r`}
+    ${tw`flex flex-row gap-10 text-center w-full justify-between items-center min-h-15r`}
   `;
 
   const Icon = styled.div`
@@ -146,11 +154,11 @@ const StudyPage = () => {
   `;
 
   const KanjiDetails = styled.div`
-    ${tw`w-full flex flex-col items-center gap-20`}
+    ${tw`w-full flex flex-col gap-20`}
   `;
 
   const MainDetails = styled.div`
-    ${tw`w-fit flex flex-col gap-2 border border-gray-500 rounded p-8 border-4`}
+    ${tw`flex flex-col items-center gap-4 mx-auto`}
   `;
 
   const TitleContainer = styled.div`
@@ -158,102 +166,107 @@ const StudyPage = () => {
   `;
 
   const Title = styled.div`
-    ${tw`text-6xl`}
-  `;
-
-  const WordsContainer = styled.div`
-    ${tw`w-full flex flex-col gap-8 border border-gray-500 rounded p-8 border-4`}
-  `;
-
-  const WordsListContainer = styled.div`
-    ${tw`flex flex-row justify-evenly gap-8`}
+    ${tw`text-4xl`}
   `;
 
   const WordsList = styled.div`
-    ${tw`w-full flex flex-col gap-2`}
+    ${tw`w-full border border-primary-100 rounded px-8 py-4 border-4
+    overflow-y-auto h-64
+    `}
+    scrollbar-gutter: stable;
+
+    /* Custom scrollbar styles */
+    &::-webkit-scrollbar {
+      width: 12px; /* Width of the scrollbar */
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      width: 12px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #8bd1ff;
+      border-radius: 20px;
+      border: 3px solid transparent;
+      background-clip: content-box;
+    }
   `;
 
   const StartQuizContainer = styled.div`
-    ${tw`h-full w-full flex flex-row justify-center`}
+    ${tw`h-full w-full pb-16 flex flex-row justify-center`}
   `;
 
   const StartQuizButtonContainer = styled.div`
     ${tw`h-full w-fit`}
   `;
 
-
-  
-
   return (
     <StudyPageContainer>
-      <BackButton>
-        <Button onClick={() => dispatch(setPage("learningSettings"))} full>
-          Back to lessons
-        </Button>
-      </BackButton>
-      <KanjiContainer>
-        <Icon hide={currentKanjiIndex === 0}>
-          <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>
-        </Icon>
-        {!lessonDone ? (
-          <KanjiSymbol>{kanjiData?.kanji.kanji}</KanjiSymbol>
-        ) : (
-          <TitleContainer>
-            <Title>Lesson done.</Title>
-            <Title>Ready for the quiz?</Title>
-          </TitleContainer>
-        )}
-        <Icon hide={lessonDone}>
-          <NextIcon onClick={() => nextKanji()}></NextIcon>
-        </Icon>
-      </KanjiContainer>
-
-      {!lessonDone ? (
-        <KanjiDetails>
-          <MainDetails>
-            <div>meanings: {kanjiData?.kanji.meanings}</div>
-
-            {kanjiData?.kanji.kun_readings.length !== 0 && (
-              <div>kun: {kanjiData?.kanji.kun_readings.join(", ")}</div>
-            )}
-            {kanjiData?.kanji.on_readings.length !== 0 && (
-              <div>on: {kanjiData?.kanji.on_readings.join(", ")}</div>
-            )}
-          </MainDetails>
-
-          {kanjiData?.words?.length !== 0 && (
-            <WordsContainer>
-              <div>words:</div>
-              <WordsListContainer>
-                <WordsList>
-                  {kanjiData?.words
-                    .slice(0, Math.ceil(kanjiData?.words.length / 2))
-                    .map((word) => (
-                      <div key={word.id}>
-                        {word.word} ({word.reading}) = {word.meanings}
-                      </div>
-                    ))}
-                </WordsList>
-                <WordsList>
-                  {kanjiData?.words
-                    .slice(Math.ceil(kanjiData?.words.length / 2))
-                    .map((word) => (
-                      <div key={word.id}>
-                        {word.word} ({word.reading}) = {word.meanings}
-                      </div>
-                    ))}
-                </WordsList>
-              </WordsListContainer>
-            </WordsContainer>
+      <BackButtonContainer>
+        <BackButton>
+          <Button onClick={() => dispatch(setPage("learningSettings"))} full>
+            Back to lessons
+          </Button>
+        </BackButton>
+      </BackButtonContainer>
+      <Card>
+        <KanjiContainer>
+          <Icon hide={currentKanjiIndex === 0}>
+            <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>
+          </Icon>
+          {!lessonDone ? (
+            <KanjiSymbol>{kanjiData?.kanji.kanji}</KanjiSymbol>
+          ) : (
+            <TitleContainer>
+              <Title>Lesson done.</Title>
+              <Title>Ready for the quiz?</Title>
+            </TitleContainer>
           )}
-        </KanjiDetails>
-      ) : (
-        <StartQuizContainer>
-          <StartQuizButtonContainer>
-            <Button full>start quiz</Button>
-          </StartQuizButtonContainer>
-        </StartQuizContainer>
-      )}
+          <Icon hide={lessonDone}>
+            <NextIcon onClick={() => nextKanji()}></NextIcon>
+          </Icon>
+        </KanjiContainer>
+
+        {!lessonDone ? (
+          <KanjiDetails>
+            <MainDetails>
+              <div>
+                {kanjiData?.kanji.meanings.length > 3
+                  ? kanjiData?.kanji.meanings.slice(0, 3).join(", ")
+                  : kanjiData?.kanji.meanings.join(", ")}
+              </div>
+
+              {kanjiData?.kanji.kun_readings.length !== 0 && (
+                <div>
+                  <b>kun:</b> {kanjiData?.kanji.kun_readings.join(", ")}
+                </div>
+              )}
+              {kanjiData?.kanji.on_readings.length !== 0 && (
+                <div>
+                  <b>on:</b> {kanjiData?.kanji.on_readings.join(", ")}
+                </div>
+              )}
+            </MainDetails>
+
+            {kanjiData?.words?.length !== 0 && (
+              <WordsList>
+                {kanjiData?.words.map((word) => (
+                  <div key={word.id}>
+                    {word.word} ({word.reading}) = {word.meanings.join(", ")}
+                  </div>
+                ))}
+              </WordsList>
+            )}
+          </KanjiDetails>
+        ) : (
+          <StartQuizContainer>
+            <StartQuizButtonContainer>
+              <Button full>Start quiz</Button>
+            </StartQuizButtonContainer>
+          </StartQuizContainer>
+        )}
+      </Card>
     </StudyPageContainer>
   );
 };
