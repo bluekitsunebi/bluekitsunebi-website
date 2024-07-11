@@ -3,7 +3,7 @@ import tw from "twin.macro";
 import styled, { css } from "styled-components";
 
 const ButtonWrapper = styled.div`
-  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none`}
+  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none text-lg sm:text-xl`}
   ${({ isSelected }) =>
     isSelected &&
     css`
@@ -58,10 +58,10 @@ const ButtonWrapper = styled.div`
       hover:bg-gray-200 
       `}
     `}
-  ${({ fontsizeNormal }) =>
-    fontsizeNormal &&
+  ${({ isKanji }) =>
+    isKanji &&
     css`
-      ${tw`font-normal`}
+      ${tw`font-normal text-5xl sm:text-5xl`}
     `}
   ${({ isDual, isFirst, isLast }) =>
     isDual && isFirst
@@ -94,7 +94,7 @@ const Button = ({
   begin,
   monochrome,
   children,
-  fontsizeNormal,
+  isKanji,
   isDual,
   transparent,
   full,
@@ -109,7 +109,7 @@ const Button = ({
       isLast={isLast}
       begin={begin}
       monochrome={monochrome}
-      fontsizeNormal={fontsizeNormal}
+      isKanji={isKanji}
       isDual={isDual}
       transparent={transparent}
       full={full}

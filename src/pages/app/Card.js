@@ -13,7 +13,7 @@ const CardWrapper = styled.div`
     
     flex 
     flex-col 
-    gap-10 
+    gap-5 
     items-center 
     justify-between
     
@@ -22,8 +22,10 @@ const CardWrapper = styled.div`
     sm:bg-white
     `
   }
-  height: calc(100vh - 4rem);
-  max-height: 55rem;
+  height: 55rem;
+  @media (max-width: 400px) {
+    height: 70rem;
+  }
 `;
 
 const Card = ({ children }) => {

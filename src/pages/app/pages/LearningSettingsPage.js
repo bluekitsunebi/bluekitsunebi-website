@@ -7,6 +7,7 @@ import {
   setStudyType,
   setResponseQuizLessons,
   setStudyLesson,
+  setShowAllKanjis,
 } from "store/app/studySettingsSlice";
 import Card from "../Card";
 import PrimarySettings from "../PrimarySettings";
@@ -67,10 +68,6 @@ const LearningSettingsPage = () => {
     dispatch(setStudyLevel(level));
   };
 
-  const LearnSettingsContainer = styled.div`
-    ${tw``}
-  `;
-
   return (
 
       <Card>
@@ -87,6 +84,7 @@ const LearningSettingsPage = () => {
                       studyLevel &&
                         studyLevel !== level &&
                         dispatch(setStudyLesson(null));
+                      dispatch(setShowAllKanjis(false));
                     }}
                     isSelected={studyLevel === level}
                     isLevelSelector
