@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setResponseStudyLessons,
   setStudyLesson,
   setStudyKanji,
   setShowAllKanjis,
@@ -174,7 +173,7 @@ const Kanji = styled.span`
 
 const LessonSelector = ({ show }) => {
   const dispatch = useDispatch();
-  const database = useSelector((state) => state.database.database);
+  // const database = useSelector((state) => state.database.database);
   const levels = useSelector((state) => state.studySettings.levels);
   const studyLevel = useSelector((state) => state.studySettings.studyLevel);
   const studyLesson = useSelector((state) => state.studySettings.studyLesson);
@@ -185,58 +184,12 @@ const LessonSelector = ({ show }) => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
-
-  const getLessons = async (level = studyLevel) => {
-    if (level && responseStudyLessons[level].length === 0) {
-      try {
-        const query = `
-      SELECT kl.id_lesson, 
-      '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
-      FROM (
-        SELECT DISTINCT level, id_lesson, id_kanji 
-        FROM kanji_lessons
-        WHERE level = '${level}'
-      ) kl
-      JOIN kanjis k ON kl.id_kanji = k.id
-      GROUP BY kl.level, kl.id_lesson
-      ORDER BY kl.level DESC, kl.id_lesson ASC;
-      `;
-        const stmt = database.prepare(query);
-        const lessons = [];
-        while (stmt.step()) {
-          const row = stmt.getAsObject();
-          const kanjis = JSON.parse(row.kanjis);
-          lessons.push({
-            id: row.id_lesson,
-            kanjis: kanjis,
-          });
-        }
-        dispatch(setResponseStudyLessons({ lessons: lessons, level: level }));
-        stmt.free();
-      } catch (error) {
-        console.error(
-          `Failed to load lessons for ${level} from database`,
-          error
-        );
-      }
-    }
-  };
-
-  useEffect(() => {
-    getLessons();
-  }, [studyLevel]);
-
   const [showAllLessons, setShowAllLessons] = useState(false);
-
-  const [getAllLessons, setGetAllLessons] = useState(false);
-
   const handleSetStudyLesson = (lessonId) => {
     dispatch(setStudyLesson(lessonId));
     setShowAllLessons(false);
     dispatch(setShowAllKanjis(false));
   };
-
-  
 
   const nextLesson = () => {
     dispatch(setShowAllKanjis(false));
@@ -264,14 +217,6 @@ const LessonSelector = ({ show }) => {
   };
 
   const handleShowAllKanjis = async (showAllKanjis = !showAllKanjis) => {
-    if (getAllLessons) {
-      await Promise.all(
-        levels.map((level) => {
-          getLessons(level);
-        })
-      );
-    }
-    setGetAllLessons(true);
     setShowAllLessons(false);
     dispatch(setShowAllKanjis(showAllKanjis));
     dispatch(setStudyLesson(null));
@@ -280,7 +225,6 @@ const LessonSelector = ({ show }) => {
   const goToKanjiPage = (idKanji, idLesson) => {
     idLesson && dispatch(setStudyLesson(idLesson));
     dispatch(setStudyKanji(idKanji));
-    console.log(studyLevel, studyLesson || idLesson, studyKanji || idKanji);
     if(studyLevel && (studyLesson || idLesson) && (studyKanji || idKanji)){
       dispatch(setPage("study"));
     }

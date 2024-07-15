@@ -6,6 +6,124 @@ import { FaAngleLeft as Previous, FaAngleRight as Next } from "react-icons/fa6";
 import Button from "../Button";
 import { setPage } from "store/app/appSlice";
 import { setStudyKanji, setStudyLesson } from "store/app/studySettingsSlice";
+import { nextKanji, previousKanji, setKanjiList, setCurrentKanjiIndex, setKanjiData } from "store/app/studyPage";
+
+const StudyPageContainer = styled.div`
+  ${tw`w-full flex flex-col gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
+    justify-evenly`}
+  height: calc(100vh - 8rem);
+  @media (min-width: 640px) {
+    height: auto;
+  }
+`;
+
+const BackButtonContainer = styled.div`
+  ${tw`w-full mr-auto mb-5 sm:mb-8`}
+`;
+
+const BackButton = styled.div`
+  ${tw`w-fit`}
+`;
+
+const Card = styled.div`
+  ${tw`flex flex-col gap-5 w-full h-full
+      justify-evenly
+      sm:h-fit sm:my-auto
+      sm:bg-white sm:px-16 sm:py-16 sm:gap-16 sm:rounded-3xl sm:max-w-screen-lg
+      sm:min-h-52r`}
+`;
+
+const KanjiContainer = styled.div`
+  ${tw`flex flex-row gap-2 text-center w-full justify-between items-center h-36 sm:gap-10`}
+`;
+
+const Icon = styled.div`
+  ${tw`text-primary-300 cursor-pointer border rounded-full border-primary-300 p-1 transition-colors duration-300
+
+    hover:bg-primary-300 
+    hover:text-white
+    active:bg-primary-300 
+    active:text-white
+    focus:bg-primary-300 
+    focus:text-white
+    `}
+  border-width: 3px;
+  @media (min-width: 640px) {
+    border-width: 0.5rem;
+  }
+  ${({ hide }) =>
+    hide &&
+    css`
+      ${tw`opacity-50 cursor-default pointer-events-none`}
+    `}
+`;
+
+const PreviousIcon = styled(Previous)`
+  ${tw`w-6 h-6  sm:w-16 sm:h-16`}
+`;
+
+const NextIcon = styled(Next)`
+  ${tw`w-6 h-6 sm:w-16 sm:h-16`}
+`;
+
+const KanjiSymbol = styled.div`
+  ${tw`font-thin text-gray-800`}
+  line-height: 90%;
+  font-size: 8rem;
+  @media (min-width: 640px) {
+    font-size: 10rem;
+  }
+`;
+
+const MainDetails = styled.div`
+  ${tw`flex flex-col items-center gap-2 sm:gap-4 mx-auto min-h-28 sm:min-h-44`}
+`;
+
+const TitleContainer = styled.div`
+  ${tw`flex flex-col items-center text-gray-800`}
+`;
+
+const Title = styled.div`
+  ${tw`text-xl sm:text-4xl`}
+`;
+
+const WordsList = styled.div`
+  ${tw`w-full border border-primary-100 rounded p-2 sm:px-8 sm:py-4 border-4
+    overflow-y-auto h-64 min-h-64 bg-white
+    flex flex-col gap-2 sm:gap-0
+    `}
+  ${({ hide }) =>
+    hide &&
+    css`
+      ${tw`opacity-0 cursor-default pointer-events-none`}
+    `}
+    scrollbar-gutter: stable;
+
+  /* Custom scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #8bd1ff;
+    border-radius: 20px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+`;
+
+const StartQuizContainer = styled.div`
+  ${tw`w-full flex flex-col items-center justify-center min-h-28 sm:min-h-44`}
+`;
+
+const StartQuizButtonContainer = styled.div`
+  ${tw``}
+`;
 
 const StudyPage = () => {
   const dispatch = useDispatch();
@@ -19,30 +137,41 @@ const StudyPage = () => {
   const responseStudyLessons = useSelector(
     (state) => state.studySettings.responseStudyLessons
   );
-  const [kanjiData, setKanjiData] = useState(null);
+  const kanjiList = useSelector((state) => state.studyPage.kanjiList);
+  const currentKanjiIndex = useSelector((state) => state.studyPage.currentKanjiIndex);
+  const kanjiData = useSelector((state) => state.studyPage.kanjiData);
+
+  useEffect(() => {
+    dispatch(setKanjiList(getKanjiList()));
+    
+  }, []);
+
+
 
   const getKanjiList = () => {
-    let lesson = null;
-    if (responseStudyLessons && level && lessonId) {
-      lesson = responseStudyLessons[level].find(
-        (lesson) => lesson.id === lessonId
-      );
-    }
-    return lesson?.kanjis || [];
-  };
+    if(!showAllKanjis) {
+      if (responseStudyLessons && level && lessonId) {
 
-  const [kanjiList, setKanjiList] = useState(getKanjiList() || []);
+          return responseStudyLessons[level].find(
+            (lesson) => lesson?.id === lessonId
+          )?.kanjis || [];
+        
+        //  else if (last && responseStudyLessons[level]?.length !== 0) {
+        //   lesson =
+        //   responseStudyLessons[level][responseStudyLessons[level]?.length - 1];
+        // }
+      }
+    } else {
+      return [];
+    }
+  };
 
   const getCurrentKajiIndex = () => {
     return kanjiList?.findIndex((kanji) => kanji.id === kanjiId);
   };
 
-  const [currentKanjiIndex, setCurrentKanjiIndex] = useState(
-    getCurrentKajiIndex()
-  );
-  const [lessonDone, setLessonDone] = useState(false);
-
   const getKanjiData = () => {
+    console.log("here 4");
     if (level && lessonId && kanjiId) {
       try {
         const query = `
@@ -91,11 +220,34 @@ const StudyPage = () => {
   };
 
   const previousKanji = () => {
-    if (currentKanjiIndex > 0 && !lessonDone) {
-      dispatch(setStudyKanji(kanjiList[currentKanjiIndex - 1].id));
-      setCurrentKanjiIndex(currentKanjiIndex - 1);
-    } else if (lessonDone) {
-      setLessonDone(false);
+    if (!showAllKanjis) {
+      if (currentKanjiIndex > 0 && !lessonDone) {
+        setCurrentKanjiIndex(currentKanjiIndex - 1);
+      } else if (lessonDone) {
+        setLessonDone(false);
+      }
+    } else {
+      if (!lessonDone) {
+        if (lessonId !== 1) {
+          if (currentKanjiIndex !== 0) {
+            console.log("here");
+            setCurrentKanjiIndex(currentKanjiIndex - 1);
+          } else if (currentKanjiIndex === 0) {
+            dispatch(setStudyLesson(lessonId - 1));
+            setCurrentKanjiIndex(kanjiList?.length);
+          }
+        } else if (lessonId === 1) {
+          if (currentKanjiIndex !== 0) {
+            setCurrentKanjiIndex(currentKanjiIndex - 1);
+          }
+        }
+      } else {
+        setLessonDone(false);
+        dispatch(setStudyLesson(responseStudyLessons[level].length));
+        setKanjiList(getKanjiList(true));
+        setCurrentKanjiIndex(getKanjiList(true)?.length);
+        setStudyKanji(getKanjiList(true)[-1]?.id);
+      }
     }
   };
 
@@ -105,7 +257,6 @@ const StudyPage = () => {
         currentKanjiIndex !== -1 &&
         currentKanjiIndex < kanjiList?.length - 1
       ) {
-        dispatch(setStudyKanji(kanjiList[currentKanjiIndex + 1].id));
         setCurrentKanjiIndex(currentKanjiIndex + 1);
       } else if (
         currentKanjiIndex !== -1 &&
@@ -152,138 +303,25 @@ const StudyPage = () => {
   }, [lessonId]);
 
   useEffect(() => {
-    console.log("kanjiList: ", kanjiList);
-    console.log("currentKanjiIndex: ", currentKanjiIndex);
-    kanjiList &&
+    if (
+      kanjiList &&
       kanjiList?.lenght !== 0 &&
-      (currentKanjiIndex || currentKanjiIndex === 0) &&
+      (currentKanjiIndex || currentKanjiIndex === 0)
+    ) {
+      console.log("here 2");
       dispatch(setStudyKanji(kanjiList[currentKanjiIndex]?.id));
+    }
   }, [kanjiList, currentKanjiIndex]);
 
   useEffect(() => {
+    console.log("here 3")
     kanjiId && getKanjiData();
-    console.log("kanjiId: ", kanjiId);
-    console.log("currentKanjiIndex: ", currentKanjiIndex);
-    console.log("kanjiList: ", kanjiList);
-    console.log("lessonId: ", lessonId);
   }, [kanjiId]);
 
-  const StudyPageContainer = styled.div`
-    ${tw`w-full flex flex-col gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
-    justify-evenly`}
-    height: calc(100vh - 8rem);
-    @media (min-width: 640px) {
-      height: auto;
-    }
-  `;
-
-  const BackButtonContainer = styled.div`
-    ${tw`w-full mr-auto mb-5 sm:mb-8`}
-  `;
-
-  const BackButton = styled.div`
-    ${tw`w-fit`}
-  `;
-
-  const Card = styled.div`
-    ${tw`flex flex-col gap-5 w-full h-full
-      justify-evenly
-      sm:h-fit sm:my-auto
-      sm:bg-white sm:px-16 sm:py-16 sm:gap-16 sm:rounded-3xl sm:max-w-screen-lg
-      sm:min-h-52r`}
-  `;
-
-  const KanjiContainer = styled.div`
-    ${tw`flex flex-row gap-2 text-center w-full justify-between items-center h-36 sm:gap-10`}
-  `;
-
-  const Icon = styled.div`
-    ${tw`text-primary-300 cursor-pointer border rounded-full border-primary-300 p-1 transition-colors duration-300
-
-    hover:bg-primary-300 
-    hover:text-white
-    active:bg-primary-300 
-    active:text-white
-    focus:bg-primary-300 
-    focus:text-white
-    `}
-    border-width: 3px;
-    @media (min-width: 640px) {
-      border-width: 0.5rem;
-    }
-    ${({ hide }) =>
-      hide &&
-      css`
-        ${tw`opacity-50 cursor-default pointer-events-none`}
-      `}
-  `;
-
-  const PreviousIcon = styled(Previous)`
-    ${tw`w-6 h-6  sm:w-16 sm:h-16`}
-  `;
-
-  const NextIcon = styled(Next)`
-    ${tw`w-6 h-6 sm:w-16 sm:h-16`}
-  `;
-
-  const KanjiSymbol = styled.div`
-    ${tw`font-thin text-gray-800`}
-    line-height: 90%;
-    font-size: 8rem;
-    @media (min-width: 640px) {
-      font-size: 10rem;
-    }
-  `;
-
-  const MainDetails = styled.div`
-    ${tw`flex flex-col items-center gap-2 sm:gap-4 mx-auto min-h-28 sm:min-h-44 bg-red-500`}
-  `;
-
-  const TitleContainer = styled.div`
-    ${tw`flex flex-col items-center text-gray-800`}
-  `;
-
-  const Title = styled.div`
-    ${tw`text-xl sm:text-4xl`}
-  `;
-
-  const WordsList = styled.div`
-    ${tw`w-full border border-primary-100 rounded p-2 sm:px-8 sm:py-4 border-4
-    overflow-y-auto h-64 min-h-64 bg-white
-    flex flex-col gap-2 sm:gap-0
-    `}
-    ${({ hide }) =>
-      hide &&
-      css`
-        ${tw`opacity-0 cursor-default pointer-events-none`}
-      `}
-    scrollbar-gutter: stable;
-
-    /* Custom scrollbar styles */
-    &::-webkit-scrollbar {
-      width: 12px; /* Width of the scrollbar */
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-      width: 12px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #8bd1ff;
-      border-radius: 20px;
-      border: 3px solid transparent;
-      background-clip: content-box;
-    }
-  `;
-
-  const StartQuizContainer = styled.div`
-    ${tw`w-full flex flex-col items-center justify-center min-h-28 sm:min-h-44`}
-  `;
-
-  const StartQuizButtonContainer = styled.div`
-    ${tw``}
-  `;
+  useEffect(() => {
+    console.log("here 5")
+    console.log("kanjiData ", kanjiData);
+  }, [kanjiData]);
 
   return (
     <>
@@ -301,7 +339,7 @@ const StudyPage = () => {
               hide={
                 !showAllKanjis
                   ? currentKanjiIndex === 0
-                  : lessonId === 1 && currentKanjiIndex === 1
+                  : lessonId === 1 && currentKanjiIndex === 0
               }
             >
               <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>

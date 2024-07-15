@@ -4,15 +4,13 @@ import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/original/logo2.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
+import { useDispatch, useSelector } from "react-redux";
 import initSqlJs from "sql.js";
 import dataBase from "../../db/kanji_vocab_database.db";
-import {
-  setDatabase
-} from "store/app/databaseSlice";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { setDatabase } from "store/app/databaseSlice";
 import { loginSuccess } from "store/app/authSlice";
+import { setResponseStudyLessons } from "store/app/studySettingsSlice";
+import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
 const Container = styled.div`
@@ -57,10 +55,49 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const database = useSelector((state) => state.database.database);
+  const responseStudyLessons = useSelector((state) => state.studySettings.responseStudyLessons);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState(false);
   const [message, setMessage] = useState("");
+
+  const levels = useSelector((state) => state.studySettings.levels);
+
+  const getLessons = async (level) => {
+    if (level) {
+      try {
+        const query = `
+      SELECT kl.id_lesson, 
+      '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
+      FROM (
+        SELECT DISTINCT level, id_lesson, id_kanji 
+        FROM kanji_lessons
+        WHERE level = '${level}'
+      ) kl
+      JOIN kanjis k ON kl.id_kanji = k.id
+      GROUP BY kl.level, kl.id_lesson
+      ORDER BY kl.level DESC, kl.id_lesson ASC;
+      `;
+        const stmt = database.prepare(query);
+        const lessons = [];
+        while (stmt.step()) {
+          const row = stmt.getAsObject();
+          const kanjis = JSON.parse(row.kanjis);
+          lessons.push({
+            id: row.id_lesson,
+            kanjis: kanjis,
+          });
+        }
+        dispatch(setResponseStudyLessons({ lessons: lessons, level: level }));
+        stmt.free();
+      } catch (error) {
+        console.error(
+          `Failed to load lessons for ${level} from database`,
+          error
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     const loadDataBase = async () => {
@@ -74,6 +111,25 @@ const LoginPage = () => {
     };
     loadDataBase();
   }, []);
+
+  useEffect(() => {
+    console.log("database: ", database);
+    if (database) {
+      const setLessons = async () => {
+        await Promise.all(
+          levels.map((level) => {
+            getLessons(level);
+          })
+        );
+      }; 
+      setLessons();
+      
+    }
+  }, [database]);
+
+  useEffect(() => {
+    console.log("responseStudyLessons: ", responseStudyLessons);
+  }, [responseStudyLessons]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
