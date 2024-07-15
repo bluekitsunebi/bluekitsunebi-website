@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
@@ -6,7 +6,12 @@ import { FaAngleLeft as Previous, FaAngleRight as Next } from "react-icons/fa6";
 import Button from "../Button";
 import { setPage } from "store/app/appSlice";
 import { setStudyKanji, setStudyLesson } from "store/app/studySettingsSlice";
-import { nextKanji, previousKanji, setKanjiList, setCurrentKanjiIndex, setKanjiData } from "store/app/studyPage";
+import {
+  setKanjiList,
+  setCurrentKanjiIndex,
+  setKanjiData,
+  reset,
+} from "store/app/studyPageSlice";
 
 const StudyPageContainer = styled.div`
   ${tw`w-full flex flex-col gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
@@ -138,55 +143,109 @@ const StudyPage = () => {
     (state) => state.studySettings.responseStudyLessons
   );
   const kanjiList = useSelector((state) => state.studyPage.kanjiList);
-  const currentKanjiIndex = useSelector((state) => state.studyPage.currentKanjiIndex);
+  const currentKanjiIndex = useSelector(
+    (state) => state.studyPage.currentKanjiIndex
+  );
   const kanjiData = useSelector((state) => state.studyPage.kanjiData);
 
   useEffect(() => {
     dispatch(setKanjiList(getKanjiList()));
-    
   }, []);
 
+  useEffect(() => {
+    kanjiList.length !== 0 &&
+      dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
+  }, [kanjiList]);
 
+  useEffect(() => {
+    if (currentKanjiIndex !== null && kanjiList?.length !== 0) {
+      dispatch(setStudyKanji(kanjiList[currentKanjiIndex]?.idKanji));
+      if (showAllKanjis && kanjiList[currentKanjiIndex]?.idLesson) {
+        dispatch(setStudyLesson(kanjiList[currentKanjiIndex].idLesson));
+      }
+    }
+  }, [currentKanjiIndex]);
+
+  useEffect(() => {
+    const fetchKanjiData = async () => {
+      const data = await getKanjiData();
+      dispatch(setKanjiData(data));
+    };
+    fetchKanjiData();
+  }, [kanjiId]);
 
   const getKanjiList = () => {
-    if(!showAllKanjis) {
-      if (responseStudyLessons && level && lessonId) {
+    if (responseStudyLessons && level) {
+      if (!showAllKanjis && lessonId) {
+        const lesson = responseStudyLessons[level]?.find(
+          (lesson) => lesson?.id === lessonId
+        );
+        if (lesson && lesson.kanjis) {
+          let list =
+            lesson.kanjis?.map((kanji) => ({
+              level: level,
+              idLesson: lessonId,
+              idKanji: kanji.id,
+              lessonDone: false,
+            })) || [];
 
-          return responseStudyLessons[level].find(
-            (lesson) => lesson?.id === lessonId
-          )?.kanjis || [];
-        
-        //  else if (last && responseStudyLessons[level]?.length !== 0) {
-        //   lesson =
-        //   responseStudyLessons[level][responseStudyLessons[level]?.length - 1];
-        // }
-      }
-    } else {
-      return [];
-    }
+          list.push({
+            level: null,
+            idLesson: null,
+            idKanji: null,
+            lessonDone: true,
+          });
+          return list;
+        } else {
+          return [];
+        }
+      } else if (showAllKanjis) {
+        let list =
+          responseStudyLessons[level]?.flatMap((lesson) =>
+            lesson.kanjis.map((kanji) => ({
+              level: level,
+              idLesson: lesson.id,
+              idKanji: kanji.id,
+              lessonDone: false,
+            }))
+          ) || [];
+        list.push({
+          level: null,
+          idLesson: null,
+          idKanji: null,
+          lessonDone: true,
+        });
+        return list;
+      } else return [];
+    } else return [];
   };
 
   const getCurrentKajiIndex = () => {
-    return kanjiList?.findIndex((kanji) => kanji.id === kanjiId);
+    let index = kanjiList?.findIndex((kanji) => kanji.idKanji === kanjiId);
+    if (index !== -1) {
+      return index;
+    } else {
+      return null;
+    }
   };
+  
 
-  const getKanjiData = () => {
-    console.log("here 4");
+  const getKanjiData = async () => {
     if (level && lessonId && kanjiId) {
       try {
         const query = `
-      SELECT 
-        kl.level, 
+      SELECT
+        kl.level,
         kl.id_lesson,
-        '{ "id": ' || kl.id_kanji || 
-        ', "kanji": "' || k.kanji || 
-        '", "meanings": ' || k.meanings || 
-        ', "kun_readings": ' || IFNULL(k.kun_readings, '[]') ||  
+        '{ "id": ' || kl.id_kanji ||
+        ', "kanji": "' || k.kanji ||
+        '", "meanings": ' || k.meanings ||
+        ', "kun_readings": ' || IFNULL(k.kun_readings, '[]') ||
         ', "on_readings": ' || IFNULL(k.on_readings, '[]') || '}' AS kanji,
-        '[' || GROUP_CONCAT('{ "id": ' || kl.id_word || 
-        ', "word": "' || w.word || 
-        '", "reading": "' || w.reading || 
-        '", "meanings": ' || w.meanings || '}', ', ') || ']' AS words 
+        '[' || GROUP_CONCAT('{ "id": ' || kl.id_word ||
+        ', "word": "' || w.word ||
+        '", "reading": "' || w.reading ||
+        '", "meanings": ' || w.meanings || '}', ', ') || ']' AS words
       FROM kanji_lessons kl
       JOIN words w ON kl.id_word = w.id
       JOIN kanjis k ON kl.id_kanji = k.id
@@ -196,12 +255,14 @@ const StudyPage = () => {
         const stmt = database.prepare(query);
         while (stmt.step()) {
           const row = stmt.getAsObject();
-          setKanjiData({
+          return {
             level: level,
             id_lesson: lessonId,
             kanji: JSON.parse(row.kanji),
-            words: JSON.parse(row.words),
-          });
+            // kanji: { id: 49, kanji: "先", meanings: ["before", "ahead", "future", "precedence", "previous"], kun_readings: ["さき", "ま.ず"], on_readings: ["セン"]},
+            // words: JSON.parse(row.words),
+            words: [],
+          };
         }
 
         stmt.free();
@@ -211,117 +272,26 @@ const StudyPage = () => {
           error
         );
       }
-    } else setKanjiData(null);
+    } else return null;
   };
 
   const handleBackToLessons = () => {
-    dispatch(setPage("learningSettings"));
     showAllKanjis && dispatch(setStudyLesson(null));
+    dispatch(reset());
+    dispatch(setPage("learningSettings"));
   };
 
   const previousKanji = () => {
-    if (!showAllKanjis) {
-      if (currentKanjiIndex > 0 && !lessonDone) {
-        setCurrentKanjiIndex(currentKanjiIndex - 1);
-      } else if (lessonDone) {
-        setLessonDone(false);
-      }
-    } else {
-      if (!lessonDone) {
-        if (lessonId !== 1) {
-          if (currentKanjiIndex !== 0) {
-            console.log("here");
-            setCurrentKanjiIndex(currentKanjiIndex - 1);
-          } else if (currentKanjiIndex === 0) {
-            dispatch(setStudyLesson(lessonId - 1));
-            setCurrentKanjiIndex(kanjiList?.length);
-          }
-        } else if (lessonId === 1) {
-          if (currentKanjiIndex !== 0) {
-            setCurrentKanjiIndex(currentKanjiIndex - 1);
-          }
-        }
-      } else {
-        setLessonDone(false);
-        dispatch(setStudyLesson(responseStudyLessons[level].length));
-        setKanjiList(getKanjiList(true));
-        setCurrentKanjiIndex(getKanjiList(true)?.length);
-        setStudyKanji(getKanjiList(true)[-1]?.id);
-      }
+    if (currentKanjiIndex > 0) {
+      dispatch(setCurrentKanjiIndex(currentKanjiIndex - 1));
     }
   };
 
   const nextKanji = () => {
-    if (!showAllKanjis) {
-      if (
-        currentKanjiIndex !== -1 &&
-        currentKanjiIndex < kanjiList?.length - 1
-      ) {
-        setCurrentKanjiIndex(currentKanjiIndex + 1);
-      } else if (
-        currentKanjiIndex !== -1 &&
-        currentKanjiIndex === kanjiList?.length - 1
-      ) {
-        setLessonDone(true);
-      }
-    } else {
-      if (lessonId < responseStudyLessons[level].length) {
-        if (
-          currentKanjiIndex !== -1 &&
-          currentKanjiIndex < kanjiList.length - 1
-        ) {
-          setCurrentKanjiIndex(currentKanjiIndex + 1);
-        } else if (
-          currentKanjiIndex !== -1 &&
-          currentKanjiIndex === kanjiList.length - 1
-        ) {
-          dispatch(setStudyLesson(lessonId + 1));
-          setCurrentKanjiIndex(0);
-        }
-      } else if (lessonId === responseStudyLessons[level].length) {
-        if (
-          currentKanjiIndex !== -1 &&
-          currentKanjiIndex < kanjiList.length - 1
-        ) {
-          setCurrentKanjiIndex(currentKanjiIndex + 1);
-        } else if (
-          currentKanjiIndex !== -1 &&
-          currentKanjiIndex === kanjiList.length - 1
-        ) {
-          dispatch(setStudyLesson(null));
-          setKanjiList([]);
-          setCurrentKanjiIndex(null);
-          dispatch(setStudyKanji(null));
-          setLessonDone(true);
-        }
-      }
+    if (!kanjiList[currentKanjiIndex]?.lessonDone) {
+      dispatch(setCurrentKanjiIndex(currentKanjiIndex + 1));
     }
   };
-
-  useEffect(() => {
-    lessonId && setKanjiList(getKanjiList());
-  }, [lessonId]);
-
-  useEffect(() => {
-    if (
-      kanjiList &&
-      kanjiList?.lenght !== 0 &&
-      (currentKanjiIndex || currentKanjiIndex === 0)
-    ) {
-      console.log("here 2");
-      dispatch(setStudyKanji(kanjiList[currentKanjiIndex]?.id));
-    }
-  }, [kanjiList, currentKanjiIndex]);
-
-  useEffect(() => {
-    console.log("here 3")
-    kanjiId && getKanjiData();
-  }, [kanjiId]);
-
-  useEffect(() => {
-    console.log("here 5")
-    console.log("kanjiData ", kanjiData);
-  }, [kanjiData]);
 
   return (
     <>
@@ -335,45 +305,39 @@ const StudyPage = () => {
       <StudyPageContainer>
         <Card>
           <KanjiContainer>
-            <Icon
-              hide={
-                !showAllKanjis
-                  ? currentKanjiIndex === 0
-                  : lessonId === 1 && currentKanjiIndex === 0
-              }
-            >
+            <Icon hide={currentKanjiIndex === 0}>
               <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>
             </Icon>
-            {!lessonDone ? (
-              <KanjiSymbol>{kanjiData?.kanji.kanji}</KanjiSymbol>
+            {!kanjiList[currentKanjiIndex]?.lessonDone ? (
+              <KanjiSymbol>{kanjiData?.kanji?.kanji}</KanjiSymbol>
             ) : (
               <TitleContainer>
                 <Title>Lesson done.</Title>
                 <Title>Ready for the quiz?</Title>
               </TitleContainer>
             )}
-            <Icon hide={lessonDone}>
+            <Icon hide={kanjiList[currentKanjiIndex]?.lessonDone}>
               <NextIcon onClick={() => nextKanji()}></NextIcon>
             </Icon>
           </KanjiContainer>
 
           <>
-            {!lessonDone ? (
+            {!kanjiList[currentKanjiIndex]?.lessonDone ? (
               <MainDetails>
                 <div>
-                  {kanjiData?.kanji.meanings.length > 3
-                    ? kanjiData?.kanji.meanings.slice(0, 3).join(", ")
-                    : kanjiData?.kanji.meanings.join(", ")}
+                  {kanjiData?.kanji?.meanings.length > 3
+                    ? kanjiData?.kanji?.meanings.slice(0, 3).join(", ")
+                    : kanjiData?.kanji?.meanings.join(", ")}
                 </div>
 
-                {kanjiData?.kanji.kun_readings.length !== 0 && (
+                {kanjiData?.kanji?.kun_readings.length !== 0 && (
                   <div>
-                    <b>kun:</b> {kanjiData?.kanji.kun_readings.join(", ")}
+                    <b>kun:</b> {kanjiData?.kanji?.kun_readings.join(", ")}
                   </div>
                 )}
-                {kanjiData?.kanji.on_readings.length !== 0 && (
+                {kanjiData?.kanji?.on_readings.length !== 0 && (
                   <div>
-                    <b>on:</b> {kanjiData?.kanji.on_readings.join(", ")}
+                    <b>on:</b> {kanjiData?.kanji?.on_readings.join(", ")}
                   </div>
                 )}
               </MainDetails>
@@ -386,10 +350,10 @@ const StudyPage = () => {
             )}
 
             {kanjiData?.words?.length !== 0 && (
-              <WordsList hide={lessonDone}>
-                {kanjiData?.words.map((word) => (
+              <WordsList hide={kanjiList[currentKanjiIndex]?.lessonDone}>
+                {kanjiData?.words?.map((word) => (
                   <div key={word.id}>
-                    {word.word} ({word.reading}) = {word.meanings.join(", ")}
+                    {word.word} ({word.reading}) = {word?.meanings.join(", ")}
                   </div>
                 ))}
               </WordsList>

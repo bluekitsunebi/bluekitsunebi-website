@@ -113,7 +113,6 @@ const LoginPage = () => {
   }, []);
 
   useEffect(() => {
-    console.log("database: ", database);
     if (database) {
       const setLessons = async () => {
         await Promise.all(
@@ -126,10 +125,6 @@ const LoginPage = () => {
       
     }
   }, [database]);
-
-  useEffect(() => {
-    console.log("responseStudyLessons: ", responseStudyLessons);
-  }, [responseStudyLessons]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
