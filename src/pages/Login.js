@@ -96,7 +96,7 @@ const LoginPage = () => {
           );
           setDisplayMessage(false);
           setMessage("");
-          navigate("/app");
+          navigate("/app/levelSelect");
         } else {
           setDisplayMessage(true);
           setMessage("Incorrect username or password");

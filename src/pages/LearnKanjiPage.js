@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 import { useDispatch } from "react-redux";
+import { levelSelected } from "store/levelSelectSlice";
 
 const Content = styled.div`
   ${tw`w-screen h-screen flex flex-col items-center justify-center 
@@ -40,6 +41,22 @@ const Button = styled.div`
     `}
 `;
 
+const handleLevelSelect = async (event) => {
+  event.preventDefault();
+
+  try {
+        dispatch(
+          levelSelected({
+            levelSelected: event.target.value
+          })
+        );
+        // navigate("/app");
+      } 
+    catch (error) {
+      console.log('Something went wrong after level selection')
+  }
+};
+
 const LearnKanjiPage = () => {
   const dispatch = useDispatch();
 
@@ -48,11 +65,11 @@ const LearnKanjiPage = () => {
       <Card>
         <Title>Choose the level you want to study for</Title>
         <Selector>
-          <Button type="left">N5</Button>
-          <Button>N4</Button>
-          <Button>N3</Button>
-          <Button>N2</Button>
-          <Button type="right">N1</Button>
+          <Button type="left" onClick={handleLevelSelect}>N5</Button>
+          <Button onClick={handleLevelSelect}>N4</Button>
+          <Button onClick={handleLevelSelect}>N3</Button>
+          <Button onClick={handleLevelSelect}>N2</Button>
+          <Button type="right" onClick={handleLevelSelect}>N1</Button>
         </Selector>
       </Card>
     </Content>
