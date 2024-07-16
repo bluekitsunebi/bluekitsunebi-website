@@ -1,0 +1,200 @@
+{
+  "Header": {
+    "hero": "Acasă",
+    "japanese": "Cursuri japoneză",
+    "programming": "Meditații informatică",
+    "courses": "Prețuri",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+
+  "HeroSection": {
+    "title": {
+      "left": ["Cursuri", "online", "de japoneză"],
+      "right": ["Meditații", "online", "la informatică"]
+    },
+    "mainButton": "Află mai multe",
+    "description": {
+      "left": [
+        "disponibile pentru toate nivelurile",
+        "ședințe individuale sau de grup",
+        "personalizate pe nivelul și ritmul de studiu al cursanților",
+        "răspuns la orice întrebare chiar și în afara orelor de curs, în decurs de 24 de ore",
+        "materiale de studiu personalizate"
+      ],
+      "right": [
+        "meditații pentru BAC la informatică",
+        "pregătire pentru examenul de admitere",
+        "învățarea limbajului C++",
+        "cursuri pentru viitorii dezvoltatori web",
+        "HTML, CSS, JavaScript și framework-urile React și Angular"
+      ]
+    }
+  },
+
+  "CoursesSection": {
+    "title": "Cursuri online de programare",
+    "description": [
+      "Aplicații de mobil? Site-uri web? Sau poate vrei să înveți pentru BAC și examenul de admitere? Oricare ar fi motivul, suntem mai mult decât pregătiți să-ți venim în ajutor. Programarea este des văzută ca fiind un domeniu accesibil doar celor supradotați, dar în realitate oricine are un nivel mediu de inteligență are toate șansele să devină programator dacă depune efortul necesar. Majoritatea sarcinilor unui software developer implică refolosirea și innădirea unor părți de cod deja existente sau respectarea unei structuri prestabilite, lucru care se poate învăța cu destul antrenament.",
+      "Lecțiile noastre sunt concepute de programatori cu experiență reală în domeniu și care au cunoștințe într-o varietate mare de limbaje și tehnologii folosite în prezent de majoritatea companiilor din întreaga lume. Limbajele predate în cursurile noastre depind de țelul fiecăruia: celor care vor să învețe pentru examenele de bacalaureat și de admitere li se va preda C++, pe când celor care vor o carieră în domeniu li se vor preda HTML, CSS, JavaScript și ulterior React. Motivul pentru care am ales JavaScript ca și limbaj pe care să-l predăm este versatilitatea acestuia. Acesta se folosește atât pentru partea de server și comunicare cu baza de date cât și pentru partea de interfață, cu care interacționează userul. Știind JavaScript ai cele mai multe porți deschise pentru a obține primul tău job în domeniul IT.",
+      "O mare parte din timpul unui software developer este ocupată de remedierea diverselor erori apărute în urma procesului de dezvoltare. Odată cu experiența, depistarea părții de cod care produce eroarea devine ceva instinctiv, dar la început este ușor să te pierzi neștiind cum să continui. Suntem aici să-ți dăm o mână de ajutor în lupta contra oricăror erori întâmpini de-a lungul procesului de învățare, deci stai fără griji!"
+    ]
+  },
+
+  "ChooseUsSection": {
+    "title": "De ce să alegi lecțiile noastre?",
+    "description": [
+      "disponibile pentru toate nivelurile",
+      "ședințe pentru BAC, admitere sau carieră",
+      "personalizate pe nivelul și ritmul de studiu al cursanților",
+      "răspuns la orice întrebare chiar și în afara orelor de curs, în decurs de 24 de ore",
+      "materiale de studiu personalizate"
+    ]
+  },
+
+  "TeacherSection": {
+    "title": ["Profesorul de informatică ", "Teodorescu Cezara"],
+    "description": [
+      "experiență de lucru ca programator pe mai mult de 5 proiecte reale (dintre care 2 de lungă durată)",
+      "experiență de lucru cu cele mai utilizate tehnologii front-end (React, Angular, Redux, Tailwind CSS etc.)",
+      "experiență de lucru în medii de dezvoltare bazate pe microservicii",
+      "experiență în lansare de site-uri în regim serverless",
+      "studii în domeniul pedagogiei și al informaticii"
+    ]
+  },
+
+  "PricesSection": {
+    "title": "Cursuri de programare:",
+    "button": "Înscrie-te",
+    "categories": [
+      { "switcherText": "Grup" },
+      { "switcherText": "Individual" }
+    ],
+    "durations": [
+      { "selectorText": "1 oră" },
+      { "selectorText": "1 oră și 30 de minute" },
+      { "selectorText": "2 ore" }
+    ],
+
+    "defaultPlans": [
+      {
+        "name": [
+          "Pregătire informatică grup",
+          "Pregătire informatică individual"
+        ],
+        "price": [
+          ["85 RON", "85 RON", "85 RON"],
+          ["90 RON", "130 RON", "170 RON"]
+        ],
+        "duration": [
+          [
+            "1 oră și 30 de minute",
+            "1 oră și 30 de minute",
+            "1 oră și 30 de minute"
+          ],
+          ["1 oră", "1 oră și 30 de minute", "2 ore"]
+        ],
+        "mainFeature": "Prima lecție gratis",
+        "features": [
+          "Lecții de pregătire pentru examenul de bacalaureat la materia informatică",
+          "Învățarea limbajului C++ pentru nivelul clasei a 12-a",
+          "Profesor cu experiență de lucru în dezvoltarea software",
+          "Materiale personalizate pe nivelul elevilor",
+          "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+          "(plata o dată la 4 lecții)"
+        ]
+      },
+
+      {
+        "name": ["Web development grup", "Web development individual"],
+        "price": [
+          ["85 RON", "85 RON", "85 RON"],
+          ["90 RON", "130 RON", "170 RON"]
+        ],
+        "duration": [
+          [
+            "1 oră și 30 de minute",
+            "1 oră și 30 de minute",
+            "1 oră și 30 de minute"
+          ],
+          ["1 oră", "1 oră și 30 de minute", "2 ore"]
+        ],
+        "mainFeature": "Prima lecție gratis",
+        "features": [
+          "Cursuri pentru viitorii dezvoltatori web",
+          "Predate de un programator cu experiență",
+          "Vei învăța HTML, CSS, limbajul JavaScript și framework-urile React și Angular",
+          "Vei afla care sunt cele mai bune practici din industrie",
+          "vei lansa propriul website și vei avea un portofoliu personal cu proiecte",
+          "(plata o dată la 4 lecții)"
+        ],
+        "featured": false
+      }
+    ]
+  },
+
+  "FAQSection": {
+    "title": "Întrebări frecvente",
+    "faqs": [
+      {
+        "question": "Cum se efectuează plata?",
+        "answer": "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
+      },
+      {
+        "question": "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită?",
+        "answer": "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din păcate ședința plătită dacă motivul absentării nu este unul strict obiectiv."
+      },
+      {
+        "question": "Cum pot beneficia de asistența oferită în afara orelor de curs?",
+        "answer": "Ne puteți pune întrebări privind materia studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
+      }
+    ]
+  },
+
+  "ContactSection": {
+    "title": ["Contactează-ne ", "și vom reveni cu un răspuns cât de curând."],
+    "phone": ["Telefon / WhatsApp:", "+40 745 984 726"],
+    "formTitle": "Sau trimite un mail",
+    "formFields": ["Nume", "Email", "Telefon", "Mesaj"],
+    "checkbox": {
+      "message": [
+        "Sunt de acord cu ",
+        "Termenii și condițiile",
+        " și ",
+        "Politica de confidențialitate"
+      ],
+      "accord": "Sunt de acord",
+      "disagree": "Nu sunt de acord"
+    },
+    "requiredErrorMessage": "Vă rugăm completați aici",
+    "button": {
+      "send": "Trimite",
+      "sending": "Se trimite",
+      "sent": "Trimis"
+    }
+  },
+
+  "InfoSection": {
+    "title": "Informații",
+    "details": [
+      "Kitsunebi Miyabi SRL",
+      "Tel: +40 745 984 726",
+      "Email: bluekitsunebi@gmail.com",
+      "Cont: RO84CECEB00030RON2569171",
+      "Nr. ord. registrul com.: J29/63/2023",
+      "C.I.F.: 47442947",
+      "Sediu social: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
+    ]
+  },
+
+  "Footer": {
+    "WhatsApp": "WhatsApp",
+    "email": "bluekitsunebi@gmail.com",
+    "courses": "Cursuri de japoneză",
+    "terms": "Termenii și condițiile",
+    "phone": "+40 745 984 726",
+    "faq": "Întrebări frecvente",
+    "policy": "Politica de confidențialitate",
+    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
+  }
+}

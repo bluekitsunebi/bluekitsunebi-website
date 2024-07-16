@@ -1,0 +1,200 @@
+{
+  "Header": {
+    "hero": "",
+    "japanese": "",
+    "programming": "",
+    "courses": "",
+    "faq": "",
+    "contact": ""
+  },
+
+  "HeroSection": {
+    "title": {
+      "left": ["", "", ""],
+      "right": ["", "", ""]
+    },
+    "mainButton": "",
+    "description": {
+      "left": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "right": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+
+  "CoursesSection": {
+    "title": "",
+    "description": [
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "ChooseUsSection": {
+    "title": "",
+    "description": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "TeacherSection": {
+    "title": ["", ""],
+    "description": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "PricesSection": {
+    "title": "",
+    "button": "",
+    "categories": [
+      { "switcherText": "" },
+      { "switcherText": "" }
+    ],
+    "durations": [
+      { "selectorText": "" },
+      { "selectorText": "" },
+      { "selectorText": "" }
+    ],
+
+    "defaultPlans": [
+      {
+        "name": [
+          "",
+          ""
+        ],
+        "price": [
+          ["", "", ""],
+          ["", "", ""]
+        ],
+        "duration": [
+          [
+            "",
+            "",
+            ""
+          ],
+          ["", "", ""]
+        ],
+        "mainFeature": "",
+        "features": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+
+      {
+        "name": ["", ""],
+        "price": [
+          ["", "", ""],
+          ["", "", ""]
+        ],
+        "duration": [
+          [
+            "",
+            "",
+            ""
+          ],
+          ["", "", ""]
+        ],
+        "mainFeature": "",
+        "features": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "featured": false
+      }
+    ]
+  },
+
+  "FAQSection": {
+    "title": "",
+    "faqs": [
+      {
+        "question": "",
+        "answer": ""
+      },
+      {
+        "question": "",
+        "answer": ""
+      },
+      {
+        "question": "",
+        "answer": ""
+      }
+    ]
+  },
+
+  "ContactSection": {
+    "title": ["", ""],
+    "phone": ["", ""],
+    "formTitle": "",
+    "formFields": ["", "", "", ""],
+    "checkbox": {
+      "message": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "accord": "",
+      "disagree": ""
+    },
+    "requiredErrorMessage": "",
+    "button": {
+      "send": "",
+      "sending": "",
+      "sent": ""
+    }
+  },
+
+  "InfoSection": {
+    "title": "",
+    "details": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
+  },
+
+  "Footer": {
+    "WhatsApp": "",
+    "email": "",
+    "courses": "",
+    "terms": "",
+    "phone": "",
+    "faq": "",
+    "policy": "",
+    "copyright": ""
+  }
+}

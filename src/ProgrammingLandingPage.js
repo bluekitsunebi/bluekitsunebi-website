@@ -288,16 +288,6 @@ export default ({
     };
   }, [isResizing, dispatch]);
 
-  // send section ids to store
-  // const homeWasRendered = useSelector((state) => state.home.wasRendered);
-  // const aboutSectionId = "about-section";
-
-  // useEffect(() => {
-    // if (homeWasRendered === "true") {
-      // dispatch(setAboutSectionId(aboutSectionId));
-    // }
-  // }, [homeWasRendered]);
-
 
   return (
     <AnimationRevealPage disabled>

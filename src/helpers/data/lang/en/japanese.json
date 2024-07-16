@@ -1,0 +1,279 @@
+{
+  "Header": {
+    "hero": "Home",
+    "japanese": "Japanese Courses",
+    "programming": "Programming Lessons",
+    "courses": "Prices",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+
+  "HeroSection": {
+    "title": {
+      "left": ["Online", "Japanese", "Courses"],
+      "right": ["Online", "Programming", "Lessons"]
+    },
+    "mainButton": "Learn more",
+    "description": {
+      "left": [
+        "available for all levels",
+        "individual or group sessions",
+        "customized to the level and pace of the students",
+        "answers to any questions even outside class hours, within 24 hours",
+        "personalized study materials"
+      ],
+      "right": [
+        "individual or group sessions",
+        "career focused lessons, customized to the level and pace of the students",
+        "learning Python, HTML, CSS, JavaScript (with React framework) and more",
+        "courses for future web developers and data analysts",
+        "answers to any questions even outside class hours, within 24 hours"
+      ]
+    }
+  },
+
+  "CoursesSection": {
+    "title": "Online Japanese Courses",
+    "description": [
+      [
+        "If you want to become a professional, understand anime without subtitles, plan to visit Japan, or simply want to learn Japanese as a hobby, you've come to the right place. We pride ourselves on the quality of our lessons and the progress our students make, and our Japanese teacher's knowledge far surpasses many other options on the market. The idea is simple: You like it and dedicate the necessary time ➔ you'll progress in a way you probably can't even imagine."
+      ],
+
+      [
+        "Japanese is accessible to everyone, having many logical elements and being easy to assimilate when taught correctly. Basic grammar is simplistic, pronunciation is not that hard, and the vocabulary and the three alphabets can be mastered with enough dedication. Considering that you already know English, which is known for its irregularities in both spelling and pronunciation, you'll find Japanese easier to digest as it strictly adheres to its rules. A good teacher can answer any question, no matter its difficulty. With us, things are even better - you can ask anything even outside class hours. You heard something in an anime or read a difficult passage somewhere? Go ahead and ask! ",
+        "( ￣▽￣)b"
+      ],
+
+      [
+        "Maybe you also want to obtain the JLPT Japanese language certificates. Don't worry, we teach the language as a whole, to be understood and used in its entirety, so if you stay committed, you'll pass those with flying colors too. Turn your dream into a goal and don't miss the unique experience that learning Japanese offers. And most importantly, remember: ",
+        [
+          "Effort properly applied ",
+          "turns ",
+          "passion ",
+          "into ",
+          "skills",
+          ".",
+          "",
+          ""
+        ]
+      ]
+    ]
+  },
+
+  "ChooseUsSection": {
+    "title": "Why choose our lessons?",
+    "description": [
+      ["Available for ", "all levels", ""],
+      ["", "Individual or group", " sessions"],
+      [
+        "Customized based on the ",
+        "student's level and study pace",
+        ""
+      ],
+      [
+        "Answers to any question ",
+        "even outside class hours, within 24 hours",
+        ""
+      ],
+      ["", "Personalized", " study materials"]
+    ]
+  },
+
+  "TeacherSection": {
+    "title": ["Japanese Teacher ", "Cheșca Vicențiu"],
+    "description": [
+      "fluent Japanese speaker",
+      "experience as a tour guide and interpreter for Japanese tourist groups",
+      "online translation experience of documents and writings from Japanese to English and vice versa",
+      "collaboration experience with Japanese natives on software development projects",
+      "over 6 years of teaching experience"
+    ]
+  },
+
+  "PricesSection": {
+    "title": "Courses taught in:",
+    "button": "Enroll now",
+    "disabled": "Coming soon",
+    "categories": [
+      { "switcherText": "Romanian" },
+      { "switcherText": "English" },
+      { "switcherText": "Japanese" }
+    ],
+    "durations": [
+      { "selectorText": "1 hour" },
+      { "selectorText": "1 hour and 30 minutes" },
+      { "selectorText": "2 hours" }
+    ],
+
+    "defaultPlans": [
+      {
+        "name": [
+          "Individual Japanese Lessons",
+          "Individual Japanese Lessons",
+          "Individual English Lessons"
+        ],
+        "price": [
+          ["90 RON", "130 RON", "170 RON"],
+
+          ["$32", "$43", "$56"],
+
+          ["$32", "$43", "$56"]
+        ],
+        "duration": [
+          ["1 hour", "1 hour and 30 minutes", "2 hours"],
+
+          ["1 hour", "1 hour and 30 minutes", "2 hours"],
+
+          ["1 hour", "1 hour and 30 minutes", "2 hours"]
+        ],
+        "mainFeature": "First lesson free",
+        "features": [
+          [
+            "The student chooses a day and time and we start immediately",
+            "Customized materials based on the student's level",
+            "Advanced Japanese teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ],
+
+          [
+            "The student chooses a day and time and we start immediately",
+            "Customized materials based on the student's level",
+            "Advanced Japanese teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ],
+
+          [
+            "The student chooses a day and time and we start immediately",
+            "Customized materials based on the student's level",
+            "Advanced English teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ]
+        ]
+      },
+
+      {
+        "name": ["Grup Japanese Lessons", "Grup Japanese Lessons", "Grup English Lessons"],
+        "price": ["85 RON", "$28", "$28"],
+        "duration": [
+          "1 hour and 30 minutes",
+          "1 hour and 30 minutes",
+          "1 hour and 30 minutes"
+        ],
+        "mainFeature": "First lesson free",
+        "features": [
+          [
+            "Bring your friends and form a group or wait for us to find one for you",
+            "Customized materials for the group level",
+            "Advanced Japanese teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ],
+
+          [
+            "Bring your friends and form a group or wait for us to find one for you",
+            "Customized materials for the group level",
+            "Advanced Japanese teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ],
+
+          [
+            "Bring your friends and form a group or wait for us to find one for you",
+            "Customized materials for the group level",
+            "Advanced English teacher",
+            "Support even outside class hours, with response within 24 hours",
+            "(payment once every 4 lessons)"
+          ]
+        ],
+        "featured": true
+      },
+
+      {
+        "name": ["Anime Japanese Course", "Anime Japanese Course", ""],
+        "price": ["", "", ""],
+        "duration": ["", "", ""],
+        "mainFeature": "First lesson free",
+        "features": [
+          [
+            "Special course focused on Japanese used in anime",
+            "Participation in any other course offered by us is required for enrollment in this extra course."
+          ],
+          [
+            "Special course focused on Japanese used in anime",
+            "Participation in any other course offered by us is required for enrollment in this extra course."
+          ],
+          []
+        ],
+        "disabled": true
+      }
+    ]
+  },
+
+  "FAQSection": {
+    "title": "FAQs",
+    "faqs": [
+      {
+        "question": "How is the payment made?",
+        "answer": "Payment is made after the free introductory session, signing the contract, and receiving the invoice, in advance for a number of 4 sessions, via bank transfer (you can find the details in the contact section), including the student's name in the description."
+      },
+      {
+        "question": "If I can't attend a session one day, what happens to the paid session?",
+        "answer": "For those who have chosen an individual study program, it is possible to reschedule it to another day within the next 4 weeks. Unfortunately, those taking lessons in a group will lose the paid session unless the reason for absence is strictly objective."
+      },
+      {
+        "question": "How can I benefit from the assistance offered outside of class hours?",
+        "answer": "You can ask questions about the studied language via email or chat on any social network. You are entitled to ask up to 4 questions at a time, and the response will come within 24 hours."
+      }
+    ]
+  },
+
+  "ContactSection": {
+    "title": ["Contact us", ", and we will respond as soon as possible."],
+    "phone": ["Phone / WhatsApp:", "+40 745 984 726"],
+    "formTitle": "Or send an email",
+    "formFields": ["Name", "Email", "Phone", "Message"],
+    "checkbox": {
+      "message": [
+        "I agree with the ",
+        "Terms and Conditions",
+        " and ",
+        "Privacy Policy"
+      ],
+      "accord": "I agree",
+      "disagree": "I do not agree"
+    },
+    "requiredErrorMessage": "Please fill in here",
+    "button": {
+      "send": "Send",
+      "sending": "Sending",
+      "sent": "Sent"
+    }
+  },
+
+  "InfoSection": {
+    "title": "Informations",
+    "details": [
+      "Kitsunebi Miyabi SRL",
+      "Tel: +40 745 984 726",
+      "Email: bluekitsunebi@gmail.com",
+      "Bank Account: RO84CECEB00030RON2569171",
+      "Company registration number: J29/63/2023",
+      "C.I.F.: 47442947",
+      "Headquarters: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
+    ]
+  },
+
+  "Footer": {
+    "WhatsApp": "WhatsApp",
+    "email": "bluekitsunebi@gmail.com",
+    "courses": "Japanese Courses",
+    "terms": "Terms and Conditions",
+    "phone": "+40 745 984 726",
+    "faq": "FAQs",
+    "policy": "Privacy Policy",
+    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
+  }
+}

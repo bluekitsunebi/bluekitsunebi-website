@@ -12,6 +12,7 @@ import {
   setHeight,
   setYaxisPosition,
 } from "store/aboutSectionSlice";
+// import usePreloadImages from 'hooks/usePreloadImages';
 
 const Container = tw.div`relative mx-8`;
 
@@ -57,6 +58,8 @@ const aboutSectionRef = useRef(null);
 let paddingBottom = 0;
 let paddingTop = 0;
 
+// const imagesLoaded = usePreloadImages([laptop, study, fight]);
+
 useEffect(() => {
   if (homeWasRendered === "true") {
     // ---------------------------------------------------
@@ -92,7 +95,7 @@ useEffect(() => {
     {
       imageSrc: study,
       description:
-        (<Description>Lecțiile noastre sunt concepute de programatori cu experiență reală în domeniu și care au cunoștințe într-o varietate mare de limbaje și tehnologii folosite în prezent de majoritatea companiilor din întreaga lume. Limbajele predate în cursurile noastre depind de țelul fiecăruia: celor care vor să învețe pentru examenele de bacalaureat și de admitere li se va preda C++, pe când celor care vor o carieră în domeniu li se vor preda HTML, CSS, JavaScript și ulterior React. Motivul pentru care am ales Javascript ca și limbaj pe care să-l predăm este versatilitatea acestuia. Acesta se folosește atât pentru partea de server și comunicare cu baza de date cât și pentru partea de interfață, cu care interacționează userul. Știind JavaScript ai cele mai multe porți deschise pentru a obține primul tău job în domeniul IT.</Description>),
+        (<Description>Lecțiile noastre sunt concepute de programatori cu experiență reală în domeniu și care au cunoștințe într-o varietate mare de limbaje și tehnologii folosite în prezent de majoritatea companiilor din întreaga lume. Limbajele predate în cursurile noastre depind de țelul fiecăruia: celor care vor să învețe pentru examenele de bacalaureat și de admitere li se va preda C++, pe când celor care vor o carieră în domeniu li se vor preda HTML, CSS, JavaScript și ulterior React. Motivul pentru care am ales JavaScript ca și limbaj pe care să-l predăm este versatilitatea acestuia. Acesta se folosește atât pentru partea de server și comunicare cu baza de date cât și pentru partea de interfață, cu care interacționează userul. Știind JavaScript ai cele mai multe porți deschise pentru a obține primul tău job în domeniul IT.</Description>),
     },
 
     {

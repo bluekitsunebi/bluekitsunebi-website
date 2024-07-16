@@ -3,10 +3,17 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./Button.module.css";
 import { setSection, switchWasClicked } from "store/routerSlice";
+import {
+  setHeroSection__entered,
+  setBackgroundLeft__entered,
+  setTitleLeft__entered,
+  setDescriptionLeft__entered,
+  setHalfAnimation,
+} from "store/heroSectionSlice";
 import { closeMenu } from "store/headerSlice";
-import enData from "helpers/data/lang/en.json";
-import jaData from "helpers/data/lang/ja.json";
-import roData from "helpers/data/lang/ro.json";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 function Button(props) {
   const location = useLocation().pathname;
@@ -29,6 +36,7 @@ function Button(props) {
       : props.behavior === "instant"
       ? "instant"
       : "instant";
+  const resetAnimation = props.resetAnimation;
 
   // get the website language
   let language = useSelector((state) => state.websiteLanguage.language);
@@ -68,10 +76,17 @@ function Button(props) {
   }
 
   const handleClick = () => {
+    if (resetAnimation) {
+      dispatch(setHeroSection__entered(false));
+      dispatch(setBackgroundLeft__entered(false));
+      dispatch(setTitleLeft__entered(false));
+      dispatch(setDescriptionLeft__entered(false));
+      dispatch(setHalfAnimation("middle"));
+    }
     window.scroll({
       top: sectionPosition,
       left: 0,
-      behavior: link && link !== location ? 'instant' : behavior,
+      behavior: link && link !== location ? "instant" : behavior,
     });
     dispatch(setSection(section));
     dispatch(switchWasClicked());
@@ -79,8 +94,6 @@ function Button(props) {
       dispatch(closeMenu());
     }
   };
-
-  
 
   return (
     <Link to={link ? link : "#"}>
@@ -96,11 +109,8 @@ function Button(props) {
           ${position === "right" && styles.right}
           ${
             name === underlinedButton &&
-            
-            ((link && location === link) || (!link))
-            
-            
-            && styles.underline
+            ((link && location === link) || !link) &&
+            styles.underline
           }
           ${transform === "capitalize" && styles.capitalize}
           ${

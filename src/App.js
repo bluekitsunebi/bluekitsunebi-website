@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GlobalStyles from 'styles/GlobalStyles';
+import GlobalStyles from "styles/GlobalStyles";
 import { css } from "styled-components/macro"; //eslint-disable-line
 
 /*
@@ -99,20 +99,25 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 // import TermsOfServicePage from "pages/TermsOfService.js";
 // import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
-import GetStarted from "components/cta/GetStarted.js";
-import ComponentRenderer from "ComponentRenderer.js";
+// import GetStarted from "components/cta/GetStarted.js";
+// import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
-import ThankYouPage from "ThankYouPage.js";
+// import ThankYouPage from "ThankYouPage.js";
 
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import styled from 'styled-components';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+// import styled from "styled-components";
 import ProgrammingLandingPage from "ProgrammingLandingPage";
-import LoginPage from "pages/app/Login.js";
-import KanjiApp from "pages/app/KanjiApp.js";
-import ProtectedRoute from 'components/login/ProtectedRoute';
-import { useDispatch } from 'react-redux';
-import { logout } from 'store/app/authSlice';
-
+// import LoginPage from "pages/Login.js";
+// import LearnKanjiPage from "pages/LearnKanjiPage.js";
+// import ProtectedRoute from "components/login/ProtectedRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "store/authSlice";
+import { setLanguage, initializeLanguage } from "./store/websiteLanguageSlice";
 
 function Wrapper() {
   const location = useLocation();
@@ -120,43 +125,54 @@ function Wrapper() {
   const [hasVisitedApp, setHasVisitedApp] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/app' && !hasVisitedApp) {
+    if (location.pathname === "/app" && !hasVisitedApp) {
       setHasVisitedApp(true);
     }
-    if(location.pathname !== '/app' && hasVisitedApp){
+    if (location.pathname !== "/app" && hasVisitedApp) {
       dispatch(logout());
       setHasVisitedApp(false);
     }
-  }, [location, dispatch]);
-  
+  }, [location, hasVisitedApp, dispatch]);
+
   return (
     <>
-      <GlobalStyles pathname={location.pathname}/>
-      <Routes>
-        <Route path="/" element={<MainLandingPage />} />
-        <Route path="/programming" element={<ProgrammingLandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/app" element={
-          <ProtectedRoute>
-            <KanjiApp />
-          </ProtectedRoute>
-        } />
-      </Routes>
+      <GlobalStyles pathname={location.pathname} />
+      <div className="custom-scrollbar">
+        <Routes>
+          <Route path="/" element={<MainLandingPage />} />
+          <Route path="/programming" element={<ProgrammingLandingPage />} />
+          {/* <Route path="/login" element={<LoginPage />} /> */}
+          {/* <Route
+          path="/app"
+          element={
+            <ProtectedRoute>
+              <LearnKanjiPage />
+            </ProtectedRoute>
+          }
+        /> */}
+        </Routes>
+      </div>
     </>
   );
 }
 
 export default function App() {
+  const dispatch = useDispatch();
+  const language = useSelector((state) => state.websiteLanguage.language);
+
   // adjusts font based on pixel density
   useEffect(() => {
     let devicePixelRatio = window.devicePixelRatio || 1;
     const baseFontSize = 16;
-    const adjustedFontSize = baseFontSize * 1 + ((devicePixelRatio - 1) / 4);
+    const adjustedFontSize = baseFontSize * 1 + (devicePixelRatio - 1) / 4;
     document.documentElement.style.fontSize = `${adjustedFontSize}px`;
   }, []);
 
-  // If you want to disable the animation just use the disabled `prop` like below on your page's component
-  // return <AnimationRevealPage disabled>xxxxxxxxxx</AnimationRevealPage>;
+  // initialize website language
+  useEffect(() => {
+    dispatch(initializeLanguage());
+  }, [dispatch]);
+
 
   return (
     <Router>

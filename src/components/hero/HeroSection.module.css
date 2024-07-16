@@ -509,12 +509,14 @@
 
 @media (max-width: 900px) {
   .pushTitleLeft,
-  .pullTitleLeft {
+  .pullTitleLeft,
+  .titleImageContainer__left {
     left: 0;
     transform: none;
   }
   .pushTitleRight,
-  .pullTitleRight {
+  .pullTitleRight,
+  .titleImageContainer__right {
     right: 0;
     transform: none;
   }

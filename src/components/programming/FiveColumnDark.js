@@ -53,27 +53,11 @@ md:mt-8`;
 const Breakable = tw.span`break-all text-center sm:text-left`;
 
 export default function Footer(onRender) {
-  // SET SECTION Y AXIS POSITION
 
 const homeWasRendered = useSelector((state) => state.home.wasRendered);
 const footerRef = useRef(null);
-// const dispatch = useDispatch();
-// let paddingBottom = 0;
-// let paddingTop = 0;
 
 useEffect(() => {
-  // if (homeWasRendered === "true") {
-  //   const computedStyle = getComputedStyle(footerRef.current);
-  //   paddingTop = parseFloat(computedStyle.paddingTop);
-  //   paddingBottom = parseFloat(computedStyle.paddingBottom);
-  //   const totalHeight =
-  //   footerRef.current.offsetHeight + paddingTop + paddingBottom;
-  //   dispatch(setHeight(totalHeight));
-  //   const rect = footerRef.current.getBoundingClientRect();
-  //   const yOffset = window.pageYOffset || document.documentElement.scrollTop;
-  //   const yPosition = rect.top + yOffset;
-  //   dispatch(setYaxisPosition(yPosition));
-  // }
   if (typeof onRender === "function") {
     onRender();
   }

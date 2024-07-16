@@ -137,12 +137,6 @@ export default function ProfesorSection({
 
   // ---------------------------------------------------------
 
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-
-  /*
-   * Change the features variable as you like, add or delete objects
-   * `icon` must be a React SVG component. See how BriefcaseIcon is imported above. For a full list of available icons, see Feather Icons.
-   */
   const defaultFeatures = [
     {
       Icon: PiCube,
