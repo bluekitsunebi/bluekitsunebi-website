@@ -17,9 +17,9 @@ import WebsiteLanguageSwitcher from "./WebsiteLanguageSwitcher";
 import { CgMenu as MenuRoundedIcon } from "react-icons/cg";
 import { CgClose as CloseRoundedIcon } from "react-icons/cg";
 
-import enData from "helpers/data/lang/en.json";
-import jaData from "helpers/data/lang/ja.json";
-import roData from "helpers/data/lang/ro.json";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 export default function Header({ onRender }) {
   const dispatch = useDispatch();

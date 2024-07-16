@@ -1,0 +1,202 @@
+{
+  "Header": {
+    "hero": "Home",
+    "japanese": "Japanese Courses",
+    "programming": "Programming Lessons",
+    "courses": "Prices",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+
+  "HeroSection": {
+    "title": {
+      "left": ["Online Japanese", "Courses"],
+      "right": ["Online Programming", "Lessons"]
+    },
+    "mainButton": "Learn more",
+    "description": {
+      "left": [
+        "available for all levels",
+        "individual or group sessions",
+        "customized to the level and pace of the students",
+        "answers to any questions even outside class hours, within 24 hours",
+        "personalized study materials"
+      ],
+      "right": [
+        "individual or group sessions",
+        "career focused lessons, customized to the level and pace of the students",
+        "learning Python, HTML, CSS, JavaScript (with React framework) and more",
+        "courses for future web developers and data analysts",
+        "answers to any questions even outside class hours, within 24 hours"
+      ]
+    }
+  },
+
+  "CoursesSection": {
+    "title": "Online Programming Lessons",
+    "description": [
+      "Mobile apps? Websites? Or maybe you want to learn how server-side programming works? Whatever the reason, we are more than ready to help you. Programming is often seen as a field accessible only to the exceptionally gifted, but in reality, anyone with an average level of intelligence has every chance to become a programmer if they put in the necessary effort. Most tasks of a software developer involve reusing and merging existing pieces of code or following a predefined structure, which can be learned with enough practice.",
+
+      "Our lessons are designed by programmers with real-world experience and knowledge in a wide variety of programming languages and technologies currently used by most companies worldwide. The programming languages taught in our courses depend on each individual's goal and include the following technologies: Python, HTML, CSS, JavaScript, React. The reason we chose JavaScript as the language to teach is its versatility. It is used both for the server side and database communication as well as for the user interface side, with which the user interacts. Knowing JavaScript opens the most doors for you to get your first job in the IT field. Python on the other side is easy to use and perfect for fast development and scripting, being mainly used for building APIs, data processing and AI.",
+
+      "A large part of a software developer's time is occupied by fixing various errors that occur during the development process. As you gain experience, identifying the part of the code that causes the error becomes instinctive, but at the beginning, it's easy to get lost not knowing how to proceed. We are here to give you a helping hand in the fight against any errors you encounter throughout the learning process, so don't worry!"
+    ]
+  },
+
+  "ChooseUsSection": {
+    "title": "Why choose our lessons?",
+    "description": {
+      "allLevels": "available for all levels",
+      "lessons": "career focused lessons",
+      "tailored": "customized based on the student's level and study pace",
+      "respond": "answers to any question even outside class hours, within 24 hours",
+      "materials": "personalized study materials"
+    }
+  },
+
+  "TeacherSection": {
+    "title": ["Programming Teacher ", "Cheșca Vicențiu"],
+    "description": [
+      "fluent English speaker",
+      "over 3 years of experience as a programmer on real-world projects",
+      "experience with the following technologies: Python (and Flask framework), Javascript (and React framework), PHP (and Laravel framework), Dart (and Flutter framework), C# (and .NET framework), C++, Ionic framework, PostgreSQL, Firebase, PowerBI, Git, Docker, Linux, HTML, CSS etc.",
+      "work experience with microservices",
+      "over 6 years of teaching experience"
+    ]
+  },
+
+  "PricesSection": {
+    "title": "Programming Courses:",
+    "button": "Enroll now",
+    "categories": [
+      { "switcherText": "Group" },
+      { "switcherText": "Individual" }
+    ],
+    "durations": [
+      { "selectorText": "1 hour" },
+      { "selectorText": "1 hour and 30 minutes" },
+      { "selectorText": "2 hours" }
+    ],
+
+    "defaultPlans": [
+      {
+        "name": [
+          "Group Python Lessons",
+          "Individual Python Lessons"
+        ],
+        "price": [
+          ["85 RON", "85 RON", "85 RON"],
+          ["90 RON", "130 RON", "170 RON"]
+        ],
+        "duration": [
+          [
+            "1 hour and 30 minutes",
+            "1 hour and 30 minutes",
+            "1 hour and 30 minutes"
+          ],
+          ["1 hour", "1 hour and 30 minutes", "2 hours"]
+        ],
+        "mainFeature": "First lesson free",
+        "features": [
+          "course for future data analysts",
+          "learning the Python programming language",
+          "teacher with work experience in software development",
+          "customized materials for the student's level",
+          "support even outside class hours, with response within 24 hours",
+          "(payment once every 4 lessons)"
+        ]
+      },
+
+      {
+        "name": ["Group Web Development Lessons", "Individual Web Development Lessons"],
+        "price": [
+          ["85 RON", "85 RON", "85 RON"],
+          ["90 RON", "130 RON", "170 RON"]
+        ],
+        "duration": [
+          [
+            "1 hour and 30 minutes",
+            "1 hour and 30 minutes",
+            "1 hour and 30 minutes"
+          ],
+          ["1 hour", "1 hour and 30 minutes", "2 hours"]
+        ],
+        "mainFeature": "First lesson free",
+        "features": [
+          "course for future web developers",
+          "taught by an experienced programmer",
+          "you will learn HTML, CSS, JavaScript, and the React framework",
+          "you will learn the best practices in the industry",
+          "you will launch your own website and have a personal portfolio with projects",
+          "(payment once every 4 lessons)"
+        ],
+        "featured": false
+      }
+    ]
+  },
+
+  "FAQSection": {
+    "title": "FAQs",
+    "faqs": [
+      {
+        "question": "How is the payment made?",
+        "answer": "Payment is made after the free introductory session, signing the contract, and receiving the invoice, in advance for a number of 4 sessions, via bank transfer (you can find the details in the contact section), including the student's name in the description."
+      },
+      {
+        "question": "If I can't attend a session one day, what happens to the paid session?",
+        "answer": "For those who have chosen an individual study program, it is possible to reschedule it to another day within the next 4 weeks. Unfortunately, those taking lessons in a group will lose the paid session unless the reason for absence is strictly objective."
+      },
+      {
+        "question": "How can I benefit from the assistance offered outside of class hours?",
+        "answer": "You can ask questions about the studied language via email or chat on any social network. You are entitled to ask up to 4 questions at a time, and the response will come within 24 hours."
+      }
+    ]
+  },
+
+  "ContactSection": {
+    "title": ["Contact us", ", and we will respond as soon as possible."],
+    "phone": ["Phone / WhatsApp:", "+40 745 984 726"],
+    "formTitle": "Or send an email",
+    "formFields": ["Name", "Email", "Phone", "Message"],
+    "checkbox": {
+      "message": [
+        "I agree with the ",
+        "Terms and Conditions",
+        " and ",
+        "Privacy Policy"
+      ],
+      "accord": "I agree",
+      "disagree": "I do not agree"
+    },
+    "requiredErrorMessage": "Please fill in here",
+    "button": {
+      "send": "Send",
+      "sending": "Sending",
+      "sent": "Sent"
+    }
+  },
+
+  "InfoSection": {
+    "title": "Informations",
+    "details": [
+      "Kitsunebi Miyabi SRL",
+      "Tel: +40 745 984 726",
+      "Email: bluekitsunebi@gmail.com",
+      "Bank Account: RO84CECEB00030RON2569171",
+      "Company registration number: J29/63/2023",
+      "C.I.F.: 47442947",
+      "Headquarters: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
+    ]
+  },
+
+  "Footer": {
+    "WhatsApp": "WhatsApp",
+    "email": "bluekitsunebi@gmail.com",
+    "courses": "Japanese Courses",
+    "terms": "Terms and Conditions",
+    "phone": "+40 745 984 726",
+    "faq": "FAQs",
+    "policy": "Privacy Policy",
+    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
+  }
+}

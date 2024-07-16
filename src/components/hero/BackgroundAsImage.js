@@ -14,9 +14,9 @@ import {
   setHalfAnimation,
 } from "store/heroSectionSlice";
 import { BsGearFill as SettingsRoundedIcon } from "react-icons/bs";
-import enData from "helpers/data/lang/en.json";
-import jaData from "helpers/data/lang/ja.json";
-import roData from "helpers/data/lang/ro.json";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 import tw from "twin.macro";
 

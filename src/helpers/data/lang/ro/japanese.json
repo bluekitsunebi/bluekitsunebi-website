@@ -1,0 +1,280 @@
+{
+  "Header": {
+    "hero": "Acasă",
+    "japanese": "Cursuri japoneză",
+    "programming": "Meditații informatică",
+    "courses": "Prețuri",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+
+  "HeroSection": {
+    "title": {
+      "left": ["Cursuri online", "de japoneză"],
+      "right": ["Meditații online", "la informatică"]
+    },
+    "mainButton": "Află mai multe",
+    "description": {
+      "left": [
+        "disponibile pentru toate nivelurile",
+        "ședințe individuale sau de grup",
+        "personalizate pe nivelul și ritmul de studiu al cursanților",
+        "răspuns la orice întrebare chiar și în afara orelor de curs, în decurs de 24 de ore",
+        "materiale de studiu personalizate"
+      ],
+      "right": [
+        "meditații pentru BAC la informatică",
+        "pregătire pentru examenul de admitere",
+        "învățarea limbajului C++",
+        "cursuri pentru viitorii dezvoltatori web",
+        "HTML, CSS, JavaScript și framework-urile React și Angular"
+      ]
+    }
+  },
+
+  "CoursesSection": {
+    "title": "Cursuri online de japoneză",
+    "description": [
+      [
+        "Dacă vrei să ajungi profesionist, să înțelegi anime fără subtitrări, plănuiești să vizitezi Japonia, sau pur și simplu vrei să înveți japoneza ca hobby, ai ajuns unde trebuie. Ne mândrim cu lecțiile noastre de calitate și cu ritmul în care avansează toți cursanții noștri, iar nivelul de cunoștințe pe care îl are profesorul nostru de japoneză este net superior multor altor opțiuni de pe piață. Ideea este simplă: îți place și dorești să aloci timpul necesar ➔ progresezi cum probabil nici tu nu îți imaginezi."
+      ],
+
+      [
+        "Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și ușor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap. (≧▽≦) Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât - poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Dă-i drumul și întreabă! ",
+        "( ￣▽￣)b"
+      ],
+
+      [
+        "Poate îți dorești și să obții atestatele JLPT de limba japoneză dacă tot înveți, nu? Nu-ți face griji, noi predăm limba ca întreg, pentru a putea fi înțeleasă și folosită în deplinătatea ei, deci dacă te ții de treabă le vei trece și pe acelea cu brio. Transformă-ți visul în obiectiv și nu rata experiența unică pe care ți-o oferă învățarea limbii japoneze. Și cel mai important, ține minte: ",
+        [
+          "Efortul ",
+          "depus ",
+          "cum trebuie ",
+          "transformă ",
+          "pasiunea ",
+          "în ",
+          "abilități",
+          "."
+        ]
+      ]
+    ]
+  },
+
+  "ChooseUsSection": {
+    "title": "De ce să alegi lecțiile noastre?",
+    "description": {
+      "allLevels": ["disponibile pentru ", "toate nivelurile", ""],
+      "lessons": ["ședințe ", "individuale sau de grup", ""],
+      "tailored": [
+        "personalizate pe ",
+        "nivelul și ritmul de studiu ",
+        "al cursanților"
+      ],
+
+      "respond": [
+        "răspuns la orice întrebare",
+        "chiar și în afara orelor de curs, în decurs de 24 de ore",
+        ""
+      ],
+      "materials": ["materiale de studiu ", "personalizate", ""]
+    }
+  },
+
+  "TeacherSection": {
+    "title": ["Profesorul de japoneză ", "Cheșca Vicențiu"],
+    "description": [
+      "Vorbitor fluent de japoneză",
+      "Experiență ca ghid turistic și interpret pentru grupuri de turiști japonezi",
+      "Experiență de traducere online de documente și scrieri din limba japoneză în engleză și vice-versa",
+      "Experiență de colaborare cu japonezi nativi pe proiecte de dezvoltare software",
+      "Experiență de predare a limbii japoneze de peste 6 ani"
+    ]
+  },
+
+  "PricesSection": {
+    "title": "Cursuri cu predare în limba:",
+    "button": "Înscrie-te",
+    "disabled": "În curând",
+    "categories": [
+      { "switcherText": "Română" },
+      { "switcherText": "Engleză" },
+      { "switcherText": "Japoneză" }
+    ],
+    "durations": [
+      { "selectorText": "1 oră" },
+      { "selectorText": "1 oră și 30 de minute" },
+      { "selectorText": "2 ore" }
+    ],
+
+    "defaultPlans": [
+      {
+        "name": [
+          "Japoneză individual",
+          "Japoneză individual",
+          "Engleză individual"
+        ],
+        "price": [
+          ["90 RON", "130 RON", "170 RON"],
+
+          ["$32", "$43", "$56"],
+
+          ["$32", "$43", "$56"]
+        ],
+        "duration": [
+          ["1 oră", "1 oră și 30 de minute", "2 ore"],
+
+          ["1 oră", "1 oră și 30 de minute", "2 ore"],
+
+          ["1 oră", "1 oră și 30 de minute", "2 ore"]
+        ],
+        "mainFeature": "Prima lecție gratis",
+        "features": [
+          [
+            "Elevul alege o zi și o oră și începem imediat",
+            "Materiale personalizate pe nivelul elevului",
+            "Profesor cu nivel avansat de japoneză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ],
+
+          [
+            "Elevul alege o zi și o oră și începem imediat",
+            "Materiale personalizate pe nivelul elevului",
+            "Profesor cu nivel avansat de japoneză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ],
+
+          [
+            "Elevul alege o zi și o oră și începem imediat",
+            "Materiale personalizate pe nivelul elevului",
+            "Profesor cu nivel avansat de engleză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ]
+        ]
+      },
+
+      {
+        "name": ["Japoneză grup", "Japoneză grup", "Engleză grup"],
+        "price": ["85 RON", "$28", "$28"],
+        "duration": [
+          "1 oră și 30 de minute",
+          "1 oră și 30 de minute",
+          "1 oră și 30 de minute"
+        ],
+        "mainFeature": "Prima lecție gratis",
+        "features": [
+          [
+            "Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi",
+            "Materiale personalizate pe nivelul grupului",
+            "Profesor cu nivel avansat de japoneză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ],
+
+          [
+            "Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi",
+            "Materiale personalizate pe nivelul grupului",
+            "Profesor cu nivel avansat de japoneză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ],
+
+          [
+            "Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi",
+            "Materiale personalizate pe nivelul grupului",
+            "Profesor cu nivel avansat de engleză",
+            "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
+            "(plata o dată la 4 lecții)"
+          ]
+        ],
+        "featured": true
+      },
+
+      {
+        "name": ["Japoneză anime", "Japoneză anime", ""],
+        "price": ["", "", ""],
+        "duration": ["", "", ""],
+        "mainFeature": "Prima lecție gratis",
+        "features": [
+          [
+            "Curs special axat pe japoneza vorbită în anime",
+            "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi."
+          ],
+          [
+            "Curs special axat pe japoneza vorbită în anime",
+            "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi."
+          ],
+          []
+        ],
+        "disabled": true
+      }
+    ]
+  },
+
+  "FAQSection": {
+    "title": "Întrebări frecvente",
+    "faqs": [
+      {
+        "question": "Cum se efectuează plata?",
+        "answer": "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
+      },
+      {
+        "question": "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită?",
+        "answer": "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din păcate ședința plătită dacă motivul absentării nu este unul strict obiectiv."
+      },
+      {
+        "question": "Cum pot beneficia de asistența oferită în afara orelor de curs?",
+        "answer": "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
+      }
+    ]
+  },
+
+  "ContactSection": {
+    "title": ["Contactează-ne ", "și vom reveni cu un răspuns cât de curând."],
+    "phone": ["Telefon / WhatsApp:", "+40 745 984 726"],
+    "formTitle": "Sau trimite un mail",
+    "formFields": ["Nume", "Email", "Telefon", "Mesaj"],
+    "checkbox": {
+      "message": [
+        "Sunt de acord cu ",
+        "Termenii și condițiile",
+        " și ",
+        "Politica de confidențialitate"
+      ],
+      "accord": "Sunt de acord",
+      "disagree": "Nu sunt de acord"
+    },
+    "requiredErrorMessage": "Vă rugăm completați aici",
+    "button": {
+      "send": "Trimite",
+      "sending": "Se trimite",
+      "sent": "Trimis"
+    }
+  },
+
+  "InfoSection": {
+    "title": "Informații",
+    "details": [
+      "Kitsunebi Miyabi SRL",
+      "Tel: +40 745 984 726",
+      "Email: bluekitsunebi@gmail.com",
+      "Cont: RO84CECEB00030RON2569171",
+      "Nr. ord. registrul com.: J29/63/2023",
+      "C.I.F.: 47442947",
+      "Sediu social: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
+    ]
+  },
+
+  "Footer": {
+    "WhatsApp": "WhatsApp",
+    "email": "bluekitsunebi@gmail.com",
+    "courses": "Cursuri de japoneză",
+    "terms": "Termenii și condițiile",
+    "phone": "+40 745 984 726",
+    "faq": "Întrebări frecvente",
+    "policy": "Politica de confidențialitate",
+    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
+  }
+}
