@@ -101,4 +101,15 @@
     --navyTint70: #B3B8CB;
     --navyTint80: #CCD0DD;
     --navyTint90: #E6E7EE;
+
+    /* GRAY */
+    --gray900: #1a202c;
+
+    /* DARK BLUE */
+    --darkBlue900: #040c19;
+    --darkBlue850: #061225;
+    --darkBlue800: #081832;
+    --darkBlue750: #0b1e3f;
+    --darkBlue700: #0d244b;
+
 }

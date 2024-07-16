@@ -12,7 +12,7 @@
   font-size: 1.5rem;
   background-color: transparent;
   border: none;
-  color: var(--textLight);
+  color: #b9c5d8;
 }
 
 .langIcon {
@@ -37,14 +37,14 @@
   height: 3rem;
   width: 3rem;
   right: 5.3rem;
-  background-color: var(--cinnabarTint10);
+  background-color: #153c7d;
 }
 
 .dropdownContent {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  background-color: var(--cinnabarTint10);
+  background-color: #153c7d;
   border: none;
   border-radius: 20px;
   padding: 0.5rem 1rem;
@@ -55,12 +55,12 @@
 }
 
 .websiteLangButton:hover {
-  background-color: var(--cinnabarTint20);
+  background-color: #2c508a;
   border-radius: 20px;
 }
 
 .selected {
-  color: var(--navyTint20);
+  color: #fff;
 }
 
 .hide {
@@ -139,7 +139,7 @@
 }
 
 .disabled {
-  color: var(--gray);
+  color: #718096;
 }
 
 .disabled:hover {

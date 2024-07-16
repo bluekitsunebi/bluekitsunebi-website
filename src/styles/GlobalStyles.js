@@ -4,6 +4,10 @@ import { globalStyles } from 'twin.macro';
 const blue = '#0d244b';
 const beige = '#ffedda';
 
+const scrollbarTrack = '#0b1e3f';
+const scrollbarThumb = '#446397';
+
+
 const GlobalStyles = createGlobalStyle`
   ${globalStyles}
 
@@ -21,8 +25,28 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    /* Aceasta este sintaxa corectă pentru accesarea props în styled-components */
+    /* color theme */
     background-color: ${props => props.pathname === '/programming' ? blue : beige};
+  }
+
+  /* Custom scrollbar styles */
+
+  scrollbar-gutter: stable;
+  
+  &::-webkit-scrollbar {
+    width: 20px; /* Width of the scrollbar */
+    padding: 0 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${scrollbarTrack}; /* background for the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${scrollbarThumb}; /* Color of the scrollbar thumb */
+    border-radius: 20px; /* Rounded corners */
+    border: 8px solid transparent; /* Space around the thumb */
+    background-clip: content-box; /* Clipping the thumb inside the border */
   }
 `;
 

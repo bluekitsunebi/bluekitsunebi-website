@@ -10,8 +10,8 @@
 
   "HeroSection": {
     "title": {
-      "left": ["", ""],
-      "right": ["", ""]
+      "left": ["", "", ""],
+      "right": ["", "", ""]
     },
     "mainButton": "",
     "description": {
@@ -43,13 +43,13 @@
 
   "ChooseUsSection": {
     "title": "",
-    "description": {
-      "allLevels": "",
-      "lessons": "",
-      "tailored": "",
-      "respond": "",
-      "materials": ""
-    }
+    "description": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
   },
 
   "TeacherSection": {

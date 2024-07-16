@@ -313,6 +313,7 @@ useEffect(() => {
                       <span 
                         style={{display:'flex',flexDirection:'row', gap: '0.5rem', alignItems: 'center', width:'100%'}}
                         onClick={() => setActiveDurationIndex(durationIndex)}
+                        key={durationIndex}
                       >
                         <SelectButton 
                           active={activeDurationIndex === durationIndex} 

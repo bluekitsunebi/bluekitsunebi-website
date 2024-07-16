@@ -10,8 +10,8 @@
 
   "HeroSection": {
     "title": {
-      "left": ["Cursuri online", "de japoneză"],
-      "right": ["Meditații online", "la informatică"]
+      "left": ["Cursuri", "online", "de japoneză"],
+      "right": ["Meditații", "online", "la informatică"]
     },
     "mainButton": "Află mai multe",
     "description": {
@@ -43,13 +43,13 @@
 
   "ChooseUsSection": {
     "title": "De ce să alegi lecțiile noastre?",
-    "description": {
-      "allLevels": "disponibile pentru toate nivelurile",
-      "lessons": "ședințe pentru BAC, admitere sau carieră",
-      "tailored": "personalizate pe nivelul și ritmul de studiu al cursanților",
-      "respond": "răspuns la orice întrebare chiar și în afara orelor de curs, în decurs de 24 de ore",
-      "materials": "materiale de studiu personalizate"
-    }
+    "description": [
+      "disponibile pentru toate nivelurile",
+      "ședințe pentru BAC, admitere sau carieră",
+      "personalizate pe nivelul și ritmul de studiu al cursanților",
+      "răspuns la orice întrebare chiar și în afara orelor de curs, în decurs de 24 de ore",
+      "materiale de studiu personalizate"
+    ]
   },
 
   "TeacherSection": {

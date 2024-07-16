@@ -10,8 +10,8 @@
 
   "HeroSection": {
     "title": {
-      "left": ["Online Japanese", "Courses"],
-      "right": ["Online Programming", "Lessons"]
+      "left": ["Online", "Japanese", "Courses"],
+      "right": ["Online", "Programming", "Lessons"]
     },
     "mainButton": "Learn more",
     "description": {
@@ -45,13 +45,13 @@
 
   "ChooseUsSection": {
     "title": "Why choose our lessons?",
-    "description": {
-      "allLevels": "available for all levels",
-      "lessons": "career focused lessons",
-      "tailored": "customized based on the student's level and study pace",
-      "respond": "answers to any question even outside class hours, within 24 hours",
-      "materials": "personalized study materials"
-    }
+    "description": [
+      "available for all levels",
+      "career focused lessons",
+      "customized based on the student's level and study pace",
+      "answers to any question even outside class hours, within 24 hours",
+      "personalized study materials"
+    ]
   },
 
   "TeacherSection": {

@@ -86,10 +86,8 @@ export default function WebsiteLanguageSwitcher() {
             ${styles.websiteLangButton}
             ${styles.enWebsiteLang}
             ${language === "en" && styles.selected}
-            ${styles.disabled}
           `}
           onClick={() => changeLanguage("en")}
-          disabled
         >
           English
         </button>
@@ -98,10 +96,8 @@ export default function WebsiteLanguageSwitcher() {
             ${styles.websiteLangButton} 
             ${styles.jpWebsiteLang}
             ${language === "ja" && styles.selected}
-            ${styles.disabled}
           `}
           onClick={() => changeLanguage("ja")}
-          disabled
         >
           日本語
         </button>

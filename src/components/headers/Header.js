@@ -60,7 +60,7 @@ export default function Header({ onRender }) {
   const headerHeight = useSelector((state) => state.header.height);
   const color = useSelector((state) => state.header.color);
   let isOpen = useSelector((state) => state.header.isOpen);
-  let headerColor = !isOpen ? color : "var(--navyShadow50)";
+  let headerColor = !isOpen ? color : "var(--darkBlue850)";
 
   let underlineButton = useSelector((state) => state.header.underlined);
 
@@ -79,7 +79,7 @@ export default function Header({ onRender }) {
 
   const listenScrollEvent = () => {
     window.scrollY > 0
-      ? dispatch(setColor("var(--navyShadow50)"))
+      ? dispatch(setColor("var(--darkBlue850)"))
       : dispatch(setColor("transparent"));
 
     if (
@@ -201,14 +201,14 @@ export default function Header({ onRender }) {
           </div>
         </Link>
         <div></div>
-        {/* <div
+        <div
           className={`${styles.WebsiteLanguageSwitcher_phone} ${
             !isOpen ? styles.show : styles.hide
           }`}
         >
           <WebsiteLanguageSwitcher />
         </div>
-        <div className={isOpen ? styles.show : styles.hide}></div> */}
+        <div className={isOpen ? styles.show : styles.hide}></div>
       </div>
 
       <div className={styles.header__phone}>
@@ -304,18 +304,18 @@ export default function Header({ onRender }) {
           transform="capitalizeFirstLetter"
           section="contactSection"
         ></Button>
-        {/* <div className={isOpen ? styles.show : styles.hide}>
+        <div className={isOpen ? styles.show : styles.hide}>
           <WebsiteLanguageSwitcher />
-        </div> */}
+        </div>
       </nav>
       <div></div>
-      {/* <div
+      <div
         className={`${styles.WebsiteLanguageSwitcher_pc} ${
           !isOpen ? styles.show : styles.hide
         }`}
       >
         <WebsiteLanguageSwitcher />
-      </div> */}
+      </div>
     </header>
   );
 }

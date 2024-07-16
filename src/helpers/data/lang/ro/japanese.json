@@ -10,8 +10,8 @@
 
   "HeroSection": {
     "title": {
-      "left": ["Cursuri online", "de japoneză"],
-      "right": ["Meditații online", "la informatică"]
+      "left": ["Cursuri", "online", "de japoneză"],
+      "right": ["Meditații", "online", "la informatică"]
     },
     "mainButton": "Află mai multe",
     "description": {
@@ -40,7 +40,12 @@
       ],
 
       [
-        "Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și ușor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap. (≧▽≦) Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât - poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Dă-i drumul și întreabă! ",
+        "Japoneza este o limbă accesibilă tuturor, cu foarte multe elemente logice și ușor de asimilat atunci când este predată cum trebuie. Gramatica de bază este simplistă, pronunția ușor de stăpânit nouă ca români, iar vocabularul și cele trei alfabete pot fi biruite cu destul devotament. Având în vedere că deja vorbești una dintre cele mai complexe limbi de pe planetă, sigur îi dai și japonezei de cap. ",
+
+        "(≧▽≦)",
+
+        " Un profesor bun poate răspunde la orice întrebare, indiferent de gradul acesteia de dificultate. La noi lucrurile stau mai bine de atât - poți întreba orice chiar și în afara orelor de curs. Ai auzit ceva într-un anime sau ai citit un pasaj dificil undeva? Dă-i drumul și întreabă! ",
+
         "( ￣▽￣)b"
       ],
 
@@ -62,22 +67,21 @@
 
   "ChooseUsSection": {
     "title": "De ce să alegi lecțiile noastre?",
-    "description": {
-      "allLevels": ["disponibile pentru ", "toate nivelurile", ""],
-      "lessons": ["ședințe ", "individuale sau de grup", ""],
-      "tailored": [
+    "description": [
+      ["disponibile pentru ", "toate nivelurile", ""],
+      ["ședințe ", "individuale sau de grup", ""],
+      [
         "personalizate pe ",
         "nivelul și ritmul de studiu ",
         "al cursanților"
       ],
-
-      "respond": [
+      [
+        "",
         "răspuns la orice întrebare",
-        "chiar și în afara orelor de curs, în decurs de 24 de ore",
-        ""
+        " chiar și în afara orelor de curs, în decurs de 24 de ore"
       ],
-      "materials": ["materiale de studiu ", "personalizate", ""]
-    }
+      ["materiale de studiu ", "personalizate", ""]
+    ]
   },
 
   "TeacherSection": {
