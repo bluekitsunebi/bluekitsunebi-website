@@ -4,6 +4,11 @@ const initialState = {
   isAuthenticated: false,
   // isAuthenticated: true,
   user: null,
+  // {
+    // id: number,
+    // username: "",
+    // password: ""
+  // }
 };
 
 export const authSlice = createSlice({

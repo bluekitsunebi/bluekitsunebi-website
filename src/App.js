@@ -99,35 +99,20 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 // import TermsOfServicePage from "pages/TermsOfService.js";
 // import PrivacyPolicyPage from "pages/PrivacyPolicy.js";
 
-import GetStarted from "components/cta/GetStarted.js";
-import ComponentRenderer from "ComponentRenderer.js";
+// import GetStarted from "components/cta/GetStarted.js";
+// import ComponentRenderer from "ComponentRenderer.js";
 import MainLandingPage from "MainLandingPage.js";
-import ThankYouPage from "ThankYouPage.js";
+// import ThankYouPage from "ThankYouPage.js";
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import ProgrammingLandingPage from "ProgrammingLandingPage";
 import LoginPage from "pages/app/Login.js";
 import KanjiApp from "pages/app/KanjiApp.js";
 import ProtectedRoute from 'components/login/ProtectedRoute';
-import { useDispatch } from 'react-redux';
-import { logout } from 'store/app/authSlice';
-
 
 function Wrapper() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const [hasVisitedApp, setHasVisitedApp] = useState(false);
-
-  useEffect(() => {
-    if (location.pathname === '/app' && !hasVisitedApp) {
-      setHasVisitedApp(true);
-    }
-    if(location.pathname !== '/app' && hasVisitedApp){
-      dispatch(logout());
-      setHasVisitedApp(false);
-    }
-  }, [location, dispatch]);
   
   return (
     <>

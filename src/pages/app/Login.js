@@ -55,7 +55,6 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const database = useSelector((state) => state.database.database);
-  const responseStudyLessons = useSelector((state) => state.studySettings.responseStudyLessons);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState(false);
@@ -120,11 +119,19 @@ const LoginPage = () => {
             getLessons(level);
           })
         );
-      }; 
+      };
       setLessons();
-      
     }
   }, [database]);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userObject = JSON.parse(user);
+      setUsername(userObject.username);
+      setPassword(userObject.password);
+    }
+  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -142,16 +149,20 @@ const LoginPage = () => {
         const user = stmt.getAsObject();
         const passwordIsValid = bcrypt.compareSync(password, user.password);
         if (passwordIsValid) {
-          dispatch(
-            loginSuccess({
-              id: user.id,
-              username: user.user,
-            })
-          );
+          const userObject = {
+            id: user.id,
+            username: user.user,
+            password: password,
+          };
+
+          localStorage.setItem("user", JSON.stringify(userObject));
+
+          dispatch(loginSuccess(userObject));
           setDisplayMessage(false);
           setMessage("");
           navigate("/app");
         } else {
+          localStorage.removeItem("user");
           setDisplayMessage(true);
           setMessage("Incorrect username or password");
         }
