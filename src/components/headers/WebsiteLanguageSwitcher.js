@@ -62,7 +62,9 @@ export default function WebsiteLanguageSwitcher() {
       <button className={`${styles.dropdown}`} onClick={toggleDropdown}>
         <TranslateRoundedIcon className={styles.langIcon}/>
         <span className={styles.dropdown_lang_text}>
-          {language === "ro" ? "RO" : language === "ja" ? "JA" : "EN"}
+          {language === "ro" ? "RO" : "EN"}
+          {/* TO DO */}
+          {/* {language === "ro" ? "RO" : language === "ja" ? "JA" : "EN"} */}
         </span>
       </button>
       <div
@@ -91,7 +93,8 @@ export default function WebsiteLanguageSwitcher() {
         >
           English
         </button>
-        <button
+        {/* TO DO */}
+        {/* <button
           className={`
             ${styles.websiteLangButton} 
             ${styles.jpWebsiteLang}
@@ -100,7 +103,7 @@ export default function WebsiteLanguageSwitcher() {
           onClick={() => changeLanguage("ja")}
         >
           日本語
-        </button>
+        </button> */}
         <button
           className={`
             ${styles.websiteLangButton} 
