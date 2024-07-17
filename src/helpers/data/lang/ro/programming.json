@@ -36,7 +36,9 @@
     "title": "Cursuri online de programare",
     "description": [
       "Aplicații de mobil? Site-uri web? Sau poate vrei să înveți pentru BAC și examenul de admitere? Oricare ar fi motivul, suntem mai mult decât pregătiți să-ți venim în ajutor. Programarea este des văzută ca fiind un domeniu accesibil doar celor supradotați, dar în realitate oricine are un nivel mediu de inteligență are toate șansele să devină programator dacă depune efortul necesar. Majoritatea sarcinilor unui software developer implică refolosirea și innădirea unor părți de cod deja existente sau respectarea unei structuri prestabilite, lucru care se poate învăța cu destul antrenament.",
+
       "Lecțiile noastre sunt concepute de programatori cu experiență reală în domeniu și care au cunoștințe într-o varietate mare de limbaje și tehnologii folosite în prezent de majoritatea companiilor din întreaga lume. Limbajele predate în cursurile noastre depind de țelul fiecăruia: celor care vor să învețe pentru examenele de bacalaureat și de admitere li se va preda C++, pe când celor care vor o carieră în domeniu li se vor preda HTML, CSS, JavaScript și ulterior React. Motivul pentru care am ales JavaScript ca și limbaj pe care să-l predăm este versatilitatea acestuia. Acesta se folosește atât pentru partea de server și comunicare cu baza de date cât și pentru partea de interfață, cu care interacționează userul. Știind JavaScript ai cele mai multe porți deschise pentru a obține primul tău job în domeniul IT.",
+      
       "O mare parte din timpul unui software developer este ocupată de remedierea diverselor erori apărute în urma procesului de dezvoltare. Odată cu experiența, depistarea părții de cod care produce eroarea devine ceva instinctiv, dar la început este ușor să te pierzi neștiind cum să continui. Suntem aici să-ți dăm o mână de ajutor în lupta contra oricăror erori întâmpini de-a lungul procesului de învățare, deci stai fără griji!"
     ]
   },
@@ -76,7 +78,7 @@
       { "selectorText": "2 ore" }
     ],
 
-    "defaultPlans": [
+    "plans": [
       {
         "name": [
           "Pregătire informatică grup",
@@ -163,7 +165,7 @@
         " și ",
         "Politica de confidențialitate"
       ],
-      "accord": "Sunt de acord",
+      "agree": "Sunt de acord",
       "disagree": "Nu sunt de acord"
     },
     "requiredErrorMessage": "Vă rugăm completați aici",
@@ -178,22 +180,22 @@
     "title": "Informații",
     "details": [
       "Kitsunebi Miyabi SRL",
-      "Tel: +40 745 984 726",
-      "Email: bluekitsunebi@gmail.com",
-      "Cont: RO84CECEB00030RON2569171",
-      "Nr. ord. registrul com.: J29/63/2023",
-      "C.I.F.: 47442947",
+      ["Tel: ", "+40 745 984 726"],
+      ["Email: ", "bluekitsunebi@gmail.com"],
+      ["Cont: ", "RO84CECEB00030RON2569171"],
+      ["Nr. ord. registrul com.: ", "J29/63/2023"],
+      ["C.I.F.: ", "47442947"],
       "Sediu social: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
     ]
   },
 
   "Footer": {
-    "WhatsApp": "WhatsApp",
+    "whatsApp": "WhatsApp",
+    "phone": "+40 745 984 726",
     "email": "bluekitsunebi@gmail.com",
     "courses": "Cursuri de japoneză",
-    "terms": "Termenii și condițiile",
-    "phone": "+40 745 984 726",
     "faq": "Întrebări frecvente",
+    "terms": "Termenii și condițiile",
     "policy": "Politica de confidențialitate",
     "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
   }

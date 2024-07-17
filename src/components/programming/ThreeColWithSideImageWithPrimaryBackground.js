@@ -11,6 +11,10 @@ import { FaLightbulb } from "react-icons/fa";
 import { FaPenRuler } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
+import enData from "helpers/data/lang/en/programming.json";
+import jaData from "helpers/data/lang/ja/programming.json";
+import roData from "helpers/data/lang/ro/programming.json";
+
 const Container = tw.div`relative bg-darkPurple-700 mx-0 px-8 text-gray-300`;
 
 const ThreeColumnContainer = styled.div`
@@ -48,7 +52,6 @@ const Card = styled.div`
 export default function WhySection({
   onRender,
   cards = null,
-  heading = "De ce să alegi lecțiile noastre?",
 }) {
 // SET SECTION Y AXIS POSITION
 
@@ -64,33 +67,28 @@ useEffect(() => {
 // ---------------------------------------------------------
 
   const defaultCards = [
-    { icon: <IoHeart style={{ fontSize: '32px' }} />, 
-      title: ["disponibile pentru ", "toate nivelurile"], 
+    { icon: <IoHeart style={{ fontSize: '32px' }} />,  
       highlightIndex: "1",
       gridColumn: "1 / span 2", 
       gridRow: "3 / span 1" 
     },
     { icon: <FaUserGroup 
-      style={{ fontSize: '32px' }} />, 
-      title: ["ședințe ", "pentru BAC, admitere sau carieră"],
+      style={{ fontSize: '32px' }} />,
       gridColumn: "3 / span 2", 
       gridRow: "3 / span 1"
     },
     { icon: <FaPenRuler
-      style={{ fontSize: '32px' }} />, 
-      title: ["personalizate pe ", "nivelul și ritmul de studiu", " al cursanților"],
+      style={{ fontSize: '32px' }} />,
       gridColumn: "5 / span 2",
       gridRow: "3 / span 1"
     },
     { icon: <FaLightbulb 
-      style={{ fontSize: '32px' }} />, 
-      title: ["", "răspuns la orice întrebare", " chiar și în afara orelor de curs, în decurs de 24 de ore"],
+      style={{ fontSize: '32px' }} />,
       gridColumn: "2 / span 2", 
       gridRow: "4 / span 1"
     },
     { icon: <FaHandSparkles 
-      style={{ fontSize: '32px' }} />, 
-      title: ["materiale de studiu ", "personalizate"],
+      style={{ fontSize: '32px' }} />,
       gridColumn: "4 / span 2", 
       gridRow: "4 / span 1" 
     },
@@ -98,19 +96,22 @@ useEffect(() => {
 
   if (!cards) cards = defaultCards;
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
+
   return (
     <Container ref={whySectionRef}>
       <ThreeColumnContainer>
-        <Heading>{heading}</Heading>
-        {cards.map((card, i) => (
-          <Column key={i} gridColumn={card.gridColumn} gridRow={card.gridRow}>
+        <Heading>{langData.ChooseUsSection.title}</Heading>
+        {langData.ChooseUsSection.description.map((point, index) => (
+          <Column key={index} gridColumn={defaultCards[index].gridColumn} gridRow={defaultCards[index].gridRow}>
             <Card>
-              <div className="iconContainer">{card.icon}</div>
+              <div className="iconContainer">{defaultCards[index].icon}</div>
               <span className="textContainer">
                 <span className="title">
-                  <span>{card.title[0]}</span>
-                  <span>{card.title[1]}</span>
-                  <span>{card.title[2]}</span>
+                  <span>{point}</span>
                 </span>
               </span>
             </Card>

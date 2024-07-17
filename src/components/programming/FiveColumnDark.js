@@ -3,20 +3,24 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro";
 import { IoLogoFacebook as FacebookIcon } from "react-icons/io5";
-import { IoLogoInstagram as InstagramIcon} from "react-icons/io5";
-import { IoLogoTiktok as TiktokIcon} from "react-icons/io5";
+import { IoLogoInstagram as InstagramIcon } from "react-icons/io5";
+import { IoLogoTiktok as TiktokIcon } from "react-icons/io5";
 import { IoMail as GmailIcon } from "react-icons/io5";
 import { IoLogoWhatsapp as WhatsAppIcon } from "react-icons/io";
+import { FaLine as LineIcon } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import sal from "images/original/anpc/sal.webp";
 import sol from "images/original/anpc/sol.webp";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 const Container = tw.div`relative bg-darkBlue-800 text-gray-500 mx-0 mb-0 px-8`;
 const Content = tw.div`max-w-screen-xl mx-auto pt-8 pb-8
 sm:pt-8 
 md:pt-0
 xl:pt-8
-`
+`;
 const FiveColumns = tw.div`flex flex-wrap justify-between`;
 
 const Column = tw.div`
@@ -53,17 +57,18 @@ md:mt-8`;
 const Breakable = tw.span`break-all text-center sm:text-left`;
 
 export default function Footer(onRender) {
+  // SET SECTION Y AXIS POSITION
 
-const homeWasRendered = useSelector((state) => state.home.wasRendered);
-const footerRef = useRef(null);
+  const homeWasRendered = useSelector((state) => state.home.wasRendered);
+  const footerRef = useRef(null);
 
-useEffect(() => {
-  if (typeof onRender === "function") {
-    onRender();
-  }
-}, [onRender, homeWasRendered]);
+  useEffect(() => {
+    if (typeof onRender === "function") {
+      onRender();
+    }
+  }, [onRender, homeWasRendered]);
 
-// ---------------------------------------------------------
+  // ---------------------------------------------------------
 
   const headerHeight = useSelector((state) => state.header.height);
   const aboutSectionPosition = useSelector(
@@ -78,22 +83,33 @@ useEffect(() => {
     window.scroll({
       top: sectionPosition,
       left: 0,
-      behavior: 'instant',
+      behavior: "instant",
     });
   };
+
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
 
   return (
     <Container ref={footerRef}>
       <Content>
-        <FiveColumns>    
-
+        <FiveColumns>
           <FirstColumn>
             <LinkList>
               <FirstLinkListItem>
-                  <Text><Icon><WhatsAppIcon/></Icon>WhatsApp</Text>
+                <Text>
+                  <Icon>
+                    {language === "ja" ? <LineIcon /> : <WhatsAppIcon />}
+                  </Icon>
+                  {language === "ja"
+                    ? langData.Footer.line
+                    : langData.Footer.whatsApp}
+                </Text>
               </FirstLinkListItem>
               <LinkListItem>
-                <Text>+40 745 984 726</Text>
+                <Text>{langData.Footer.phone}</Text>
               </LinkListItem>
             </LinkList>
           </FirstColumn>
@@ -102,20 +118,31 @@ useEffect(() => {
             <LinkList>
               <LinkListItem>
                 <Text>
-                  <Icon><GmailIcon/></Icon> 
-                  <Breakable>bluekitsunebi@gmail.com</Breakable>
+                  <Icon>
+                    <GmailIcon />
+                  </Icon>
+                  <Breakable>{langData.Footer.email}</Breakable>
                 </Text>
               </LinkListItem>
               <LinkListItem>
-                <SocialIcon href="https://www.instagram.com/bluekitsunebi?utm_source=qr&igsh=MWo0eGE1aG5menIzZw==" target="_blank">
+                <SocialIcon
+                  href="https://www.instagram.com/bluekitsunebi?utm_source=qr&igsh=MWo0eGE1aG5menIzZw=="
+                  target="_blank"
+                >
                   <InstagramIcon />
                 </SocialIcon>
-                <SocialIcon href="https://www.facebook.com/profile.php?id=100093026116129" target="_blank">
+                <SocialIcon
+                  href="https://www.facebook.com/profile.php?id=100093026116129"
+                  target="_blank"
+                >
                   <FacebookIcon />
                 </SocialIcon>
-                <SocialIcon href="https://www.tiktok.com/@bluekitsunebi?is_from_webapp=1&sender_device=pc" target="_blank">
+                <SocialIcon
+                  href="https://www.tiktok.com/@bluekitsunebi?is_from_webapp=1&sender_device=pc"
+                  target="_blank"
+                >
                   <TiktokIcon />
-                </SocialIcon>                    
+                </SocialIcon>
               </LinkListItem>
             </LinkList>
           </Column>
@@ -123,43 +150,49 @@ useEffect(() => {
           <Column>
             <LinkList>
               <LinkListItem>
-                <UnderlinedText onClick={() => handleClick(aboutSectionPosition)}>Meditații Informatică</UnderlinedText>
+                <UnderlinedText
+                  onClick={() => handleClick(aboutSectionPosition)}
+                >
+                  {langData.Footer.courses}
+                </UnderlinedText>
               </LinkListItem>
               <LinkListItem>
-                <UnderlinedText onClick={() => handleClick(FAQsectionPosition)}>Întrebări frecvente</UnderlinedText>
-              </LinkListItem>
-            </LinkList>
-          </Column>
-          
-          <Column>
-            <LinkList>
-              <LinkListItem>
-                <Text>Termenii și condițiile</Text>
-              </LinkListItem>
-              <LinkListItem>
-                <Text>Politica de confidențialitate</Text>
+                <UnderlinedText onClick={() => handleClick(FAQsectionPosition)}>
+                  {langData.Footer.faq}
+                </UnderlinedText>
               </LinkListItem>
             </LinkList>
           </Column>
 
+          <Column>
+            <LinkList>
+              <LinkListItem>
+                <Text>{langData.Footer.terms}</Text>
+              </LinkListItem>
+              <LinkListItem>
+                <Text>{langData.Footer.policy}</Text>
+              </LinkListItem>
+            </LinkList>
+          </Column>
         </FiveColumns>
-        <Divider/>
+        <Divider />
         <CopyrightAndCompanyInfoRow>
-        <CompanyInfo>
-          <Utils>
-            <a href='https://anpc.ro/ce-este-sal/' target="_blank">
-              <img src={sal} alt='Soluționarea Alternativă a Litigiilor'></img>
-            </a>
-            <a href='https://ec.europa.eu/consumers/odr' target="_blank">
-              <img src={sol} alt='Soluționarea On-Line a Litigiilor'></img>
-            </a>
-          </Utils>
+          <CompanyInfo>
+            <Utils>
+              <a href="https://anpc.ro/ce-este-sal/" target="_blank">
+                <img
+                  src={sal}
+                  alt="Soluționarea Alternativă a Litigiilor"
+                ></img>
+              </a>
+              <a href="https://ec.europa.eu/consumers/odr" target="_blank">
+                <img src={sol} alt="Soluționarea On-Line a Litigiilor"></img>
+              </a>
+            </Utils>
           </CompanyInfo>
-          <CopyrightNotice>
-            &copy; Copyright 2024, Kitsunebi Miyabi SRL
-          </CopyrightNotice>
+          <CopyrightNotice>{langData.Footer.copyright}</CopyrightNotice>
         </CopyrightAndCompanyInfoRow>
       </Content>
     </Container>
   );
-};
+}

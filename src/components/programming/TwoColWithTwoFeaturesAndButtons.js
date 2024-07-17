@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.js";
-
+import enData from "helpers/data/lang/en/programming.json";
+import jaData from "helpers/data/lang/ja/programming.json";
+import roData from "helpers/data/lang/ro/programming.json";
 // icons
 import { PiCube } from "react-icons/pi";
 import { FaReact } from "react-icons/fa";
@@ -12,6 +14,7 @@ import { PiCode } from "react-icons/pi";
 
 //img
 import teacher from "../../images/original/teacher-programming.webp";
+import teacherEng from "../../images/original/teacher-programming-eng.webp";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setHeight, setYaxisPosition } from "store/profesorSectionSlice";
@@ -48,6 +51,10 @@ const FrameStyled = styled.div`
 
 const ProfilePhoto = styled.div`
   ${tw`overflow-hidden rounded-3xl p-8 bg-lightBlue-500`};
+  box-shadow: 1rem 1rem 1.5rem rgba(0, 0, 0, 0.4);
+`;
+const ProfilePhotoP0 = styled.div`
+  ${tw`overflow-hidden rounded-3xl bg-lightBlue-500`};
   box-shadow: 1rem 1rem 1.5rem rgba(0, 0, 0, 0.4);
 `;
 
@@ -88,27 +95,17 @@ const Features = tw.div`mt-8 max-w-sm mx-auto md:mx-0`;
 const Feature = tw.div`mt-8 flex items-start flex-col md:flex-row-reverse`;
 
 const FeatureIconContainer = styled.div`
-  ${() =>
-    tw`border border-2 border-lightPurple-500`};
+  ${() => tw`border border-2 border-lightPurple-500`};
   ${tw`mx-auto inline-block text-center rounded-full p-2 flex-shrink-0 md:ml-0 md:mr-0`}
   svg {
     ${tw`w-5 h-5 text-lightPurple-500`}
   }
 `;
 
-const FeatureText = tw.div`mt-4 md:mt-0 md:mr-4 text-center md:text-left mx-auto`;
+const FeatureText = tw.div`mt-4 md:mt-0 md:mr-4 text-center md:text-left mx-auto w-full`;
 const FeatureDescription = tw.div`mt-1 text-sm text-gray-100`;
 
-export default function ProfesorSection({
-  onRender,
-  heading = (
-    <>
-      Profesorul de informatică <Highlight>Teodorescu Cezara</Highlight>
-    </>
-  ),
-  features = null,
-  textOnLeft = true,
-}) {
+export default function ProfesorSection({ onRender, textOnLeft = true }) {
   // SET SECTION Y AXIS POSITION
 
   const homeWasRendered = useSelector((state) => state.home.wasRendered);
@@ -137,33 +134,10 @@ export default function ProfesorSection({
 
   // ---------------------------------------------------------
 
-  const defaultFeatures = [
-    {
-      Icon: PiCube,
-      description:
-        "experiență de lucru ca programator pe mai mult de 5 proiecte reale (dintre care 2 de lungă durată)",
-    },
-    {
-      Icon: FaReact,
-      description:
-        "experiență de lucru cu cele mai utilizate tehnologii front-end (React, Angular, Redux, Tailwind CSS etc.)",
-    },
-    {
-      Icon: PiShareNetwork,
-      description:
-        "experiență de lucru în medii de dezvoltare bazate pe microservicii",
-    },
-    {
-      Icon: PiCloudArrowUp,
-      description: "experiență în lansare de site-uri în regim serverless",
-    },
-    {
-      Icon: PiCode,
-      description: "studii în domeniul pedagogiei și al informaticii",
-    },
-  ];
-
-  if (!features) features = defaultFeatures;
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
 
   return (
     <Container ref={profesorSectionRef}>
@@ -173,25 +147,45 @@ export default function ProfesorSection({
             <FrameStyled></FrameStyled>
             <div style={customStyleOuterDiv}></div>
             <div style={customStyleInnerDiv}></div>
+            {language === "ro" ? 
+            
             <ProfilePhoto>
-              <img src={teacher} alt="teacher photo" />
+              <img src={teacher} alt="teacher" />
             </ProfilePhoto>
+            : 
+            <ProfilePhotoP0>
+              <img src={teacherEng} alt="teacher" />
+            </ProfilePhotoP0>
+            }
           </Image>
         </ImageColumn>
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>
-            <Heading>{heading}</Heading>
+            <Heading>
+              <Highlight>{langData.TeacherSection.title[0]}</Highlight>
+              {langData.TeacherSection.title[1]}
+            </Heading>
             <Features>
-              {features.map((feature, index) => (
+              {langData.TeacherSection.description.map((feature, index) => (
                 <Feature key={index}>
                   <FeatureIconContainer>
-                    {React.cloneElement(<feature.Icon />, {
-                      style: { width: "24px", height: "24px" },
-                    })}
+
+                  {index === 0 ? (
+                      <PiCube />
+                    ) : index === 1 ? (
+                      <FaReact />
+                    ) : index === 2 ? (
+                      <PiShareNetwork />
+                    ) : index === 3 ? (
+                      <PiCloudArrowUp />
+                    ) : (
+                      <PiCode />
+                    )}
+                    
                   </FeatureIconContainer>
                   <FeatureText>
                     <FeatureDescription>
-                      {feature.description}
+                      {feature}
                     </FeatureDescription>
                   </FeatureText>
                 </Feature>

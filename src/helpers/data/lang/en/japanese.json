@@ -105,7 +105,7 @@
       { "selectorText": "2 hours" }
     ],
 
-    "defaultPlans": [
+    "plans": [
       {
         "name": [
           "Individual Japanese Lessons",
@@ -242,7 +242,7 @@
         " and ",
         "Privacy Policy"
       ],
-      "accord": "I agree",
+      "agree": "I agree",
       "disagree": "I do not agree"
     },
     "requiredErrorMessage": "Please fill in here",
@@ -257,23 +257,23 @@
     "title": "Informations",
     "details": [
       "Kitsunebi Miyabi SRL",
-      "Tel: +40 745 984 726",
-      "Email: bluekitsunebi@gmail.com",
-      "Bank Account: RO84CECEB00030RON2569171",
-      "Company registration number: J29/63/2023",
-      "C.I.F.: 47442947",
+      ["Tel: ", "+40 745 984 726"],
+      ["Email: ", "bluekitsunebi@gmail.com"],
+      ["Bank Account: ", "RO84CECEB00030RON2569171"],
+      ["Company registration number: ", "J29/63/2023"],
+      ["C.I.F.: ", "47442947"],
       "Headquarters: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et. P, ap. 1, Ploiești, Prahova, 100511, România"
     ]
   },
 
   "Footer": {
-    "WhatsApp": "WhatsApp",
+    "whatsApp": "WhatsApp",
+    "phone": "+40 745 984 726",
     "email": "bluekitsunebi@gmail.com",
     "courses": "Japanese Courses",
-    "terms": "Terms and Conditions",
-    "phone": "+40 745 984 726",
     "faq": "FAQs",
-    "policy": "Privacy Policy",
-    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL"
+    "terms": "Terms and Conditions",
+    "copyright": "© Copyright 2024, Kitsunebi Miyabi SRL",
+    "policy": "Privacy Policy"
   }
 }

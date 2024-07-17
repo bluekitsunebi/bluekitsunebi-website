@@ -2,17 +2,15 @@ import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { SectionHeading } from "components/misc/Headings.js";
-
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 // icons
 import { FaRegComments } from "react-icons/fa6";
 import { PiAirplaneTilt } from "react-icons/pi";
 import { PiPenNib } from "react-icons/pi";
 import { PiCode } from "react-icons/pi";
 import { PiChalkboardTeacher } from "react-icons/pi";
-
-import enData from "helpers/data/lang/en/japanese.json";
-import jaData from "helpers/data/lang/ja/japanese.json";
-import roData from "helpers/data/lang/ro/japanese.json";
 
 //img
 import teacher from "../../images/original/teacher.jpg";
@@ -88,18 +86,14 @@ const FeatureIconContainer = styled.div`
   }
 `;
 
-const FeatureText = tw.div`mt-4 md:mt-0 md:ml-4 text-center md:text-left mx-auto`;
+const FeatureText = tw.div`mt-4 md:mt-0 md:ml-4 text-center md:text-left mx-auto w-full`;
 const FeatureDescription = tw.div`mt-1 text-sm text-gray-900`;
 
 const Highlight = styled.span`
   ${tw`text-primary-900`}
 `;
 
-export default function ProfesorSection({
-  onRender,
-  icons = null,
-  textOnLeft = true,
-}) {
+export default function ProfesorSection({ onRender, textOnLeft = true }) {
   // SET SECTION Y AXIS POSITION
 
   const homeWasRendered = useSelector((state) => state.home.wasRendered);
@@ -128,22 +122,6 @@ export default function ProfesorSection({
 
   // ---------------------------------------------------------
 
-  // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
-
-  /*
-   * Change the features variable as you like, add or delete objects
-   * `icon` must be a React SVG component. See how BriefcaseIcon is imported above. For a full list of available icons, see Feather Icons.
-   */
-  const defaultIcons = {
-    0: FaRegComments,
-    1: PiAirplaneTilt,
-    2: PiPenNib,
-    3: PiCode,
-    4: PiChalkboardTeacher,
-  };
-
-  if (!icons) icons = defaultIcons;
-
   // get the website language
   let language = useSelector((state) => state.websiteLanguage.language);
   let langData =
@@ -159,7 +137,7 @@ export default function ProfesorSection({
             <div style={customStyleInnerDiv}></div>
             <img
               src={teacher}
-              alt="teacher photo"
+              alt="teacher"
               style={{
                 borderRadius: "10%",
                 boxShadow: "-1rem 1rem 1.5rem rgba(0, 0, 0, 0.4)",
@@ -177,10 +155,17 @@ export default function ProfesorSection({
               {langData.TeacherSection.description.map((feature, index) => (
                 <Feature key={index}>
                   <FeatureIconContainer>
-                    {/* TO DO - WEBSITE LANGUAGE */}
-                    {/* {React.cloneElement(<icons.index />, {
-                      style: { width: "24px", height: "24px" },
-                    })} */}
+                    {index === 0 ? (
+                      <FaRegComments />
+                    ) : index === 1 ? (
+                      <PiAirplaneTilt />
+                    ) : index === 2 ? (
+                      <PiPenNib />
+                    ) : index === 3 ? (
+                      <PiCode />
+                    ) : (
+                      <PiChalkboardTeacher />
+                    )}
                   </FeatureIconContainer>
                   <FeatureText>
                     <FeatureDescription>{feature}</FeatureDescription>

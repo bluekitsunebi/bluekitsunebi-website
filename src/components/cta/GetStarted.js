@@ -6,6 +6,9 @@ import { ReactComponent as SvgDecoratorBlob1 } from "images/svg-decorator-blob-9
 import { ContentWithPaddingXl, Container } from "components/misc/Layouts";
 import { useSelector, useDispatch } from "react-redux";
 import { setInfoSectionId } from "store/infoSectionSlice";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 const PrimaryBackgroundContainer = tw.div`py-20 lg:py-24 bg-primary-900 rounded-lg relative`;
 const Row = tw.div`px-8 max-w-screen-lg mx-auto flex items-center relative z-1 flex-col lg:flex-row text-center lg:text-left`;
@@ -28,15 +31,7 @@ const DecoratorBlob2 = tw(
   SvgDecoratorBlob1
 )`absolute top-0 right-0 w-80 h-80 transform  translate-x-20 -translate-y-64 text-primary-700 opacity-50`;
 
-export default function InfoSection({
-  onRender,
-  text = "Informații",
-  // primaryLinkText = "Get Started",
-  // primaryLinkUrl = "http://timerse.com",
-  // secondaryLinkText = "Contact Us",
-  // secondaryLinkUrl = "http://google.com",
-  pushDownFooter = true,
-}) {
+export default function InfoSection({ onRender, pushDownFooter = true }) {
   const dispatch = useDispatch();
   const homeWasRendered = useSelector((state) => state.home.wasRendered);
   const infoSectionId = "info-section";
@@ -54,6 +49,11 @@ export default function InfoSection({
 
   // ---------------------------------------------------------
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
+
   return (
     <Container
       id={infoSectionId}
@@ -63,30 +63,32 @@ export default function InfoSection({
         <PrimaryBackgroundContainer>
           <Row>
             <TextContainer>
-              <Text>{text}</Text>
+              <Text>{langData.InfoSection.title}</Text>
             </TextContainer>
             <LinksContainer>
               <Details>
-                <div>Kitsunebi Miyabi SRL</div>
+                <div>{langData.InfoSection.details[0]}</div>
                 <div>
-                  Tel: <Breakable>+40 745 984 726</Breakable>
+                  {langData.InfoSection.details[1][0]}
+                  <Breakable>{langData.InfoSection.details[1][1]}</Breakable>
                 </div>
                 <div>
-                  Email: <Breakable>bluekitsunebi@gmail.com</Breakable>
+                  {langData.InfoSection.details[2][0]}
+                  <Breakable>{langData.InfoSection.details[3][1]}</Breakable>
                 </div>
                 <div>
-                  Cont: <Breakable>RO84CECEB00030RON2569171</Breakable>
+                  {langData.InfoSection.details[3][0]}{" "}
+                  <Breakable>{langData.InfoSection.details[3][1]}</Breakable>
                 </div>
                 <div>
-                  Nr. ord. registrul com.: <Breakable>J29/63/2023</Breakable>
+                  {langData.InfoSection.details[4][0]}
+                  <Breakable>{langData.InfoSection.details[4][1]}</Breakable>
                 </div>
                 <div>
-                  C.I.F.: <Breakable>47442947</Breakable>
+                  {langData.InfoSection.details[5][0]}
+                  <Breakable>{langData.InfoSection.details[5][1]}</Breakable>
                 </div>
-                <div>
-                  Sediu social: Str. Peneș Curcanul, nr. 8, bl. 151C, sc. A, et.
-                  P, ap. 1, Ploiești, Prahova, 100511, România
-                </div>
+                <div>{langData.InfoSection.details[6]}</div>
               </Details>
             </LinksContainer>
           </Row>

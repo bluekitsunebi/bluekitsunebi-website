@@ -2,16 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import {
-  SectionHeading,
-  Subheading as SubheadingBase,
-} from "components/misc/Headings.js";
-import { SectionDescription } from "components/misc/Typography.js";
+import { SectionHeading } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { ReactComponent as SvgDecoratorBlob } from "images/svg-decorator-blob-6.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { setHeight, setYaxisPosition } from "store/coursesSectionSlice";
+import enData from "helpers/data/lang/en/programming.json";
+import jaData from "helpers/data/lang/ja/programming.json";
+import roData from "helpers/data/lang/ro/programming.json";
 
 const Container = tw.div`relative mx-8`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
@@ -116,16 +115,6 @@ const DecoratorBlob = styled(SvgDecoratorBlob)`
 
 export default function CoursesSection({
   onRender,
-  heading = "Cursuri de programare:",
-  plans = null,
-  primaryButtonText = "Înscrie-te",
-  primaryButtonText__disabled = "În curând",
-  categories = [{ switcherText: "Grup" }, { switcherText: "Individual" }],
-  durations = [
-    { selectorText: "1 oră" },
-    { selectorText: "1 oră și 30 de minute" },
-    { selectorText: "2 ore" },
-  ],
 }) {
   // ------------------------------------------------------------
   // SET SECTION Y AXIS POSITION
@@ -163,64 +152,11 @@ export default function CoursesSection({
   };
   // --------------------------------------------------------
 
-  const defaultPlans = [
-    {
-      name: ["Pregătire informatică grup", "Pregătire informatică individual"],
-      price: [
-        ["85 RON", "85 RON", "85 RON"],
-        ["90 RON", "130 RON", "170 RON"],
-      ],
-      duration: [
-        [
-          "1 oră și 30 de minute",
-          "1 oră și 30 de minute",
-          "1 oră și 30 de minute",
-        ],
-        ["1 oră", "1 oră și 30 de minute", "2 ore"],
-      ],
-      mainFeature: "Prima lecție gratis",
-      features: [
-        "Lecții de pregătire pentru examenul de bacalaureat la materia informatică",
-        "Învățarea limbajului C++ pentru nivelul clasei a 12-a",
-        "Profesor cu experiență de lucru în dezvoltarea software",
-        "Materiale personalizate pe nivelul grupului",
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",
-      ],
-    },
-
-    {
-      name: ["Web development grup", "Web development individual"],
-      price: [
-        ["85 RON", "85 RON", "85 RON"],
-        ["90 RON", "130 RON", "170 RON"],
-      ],
-      duration: [
-        [
-          "1 oră și 30 de minute",
-          "1 oră și 30 de minute",
-          "1 oră și 30 de minute",
-        ],
-        ["1 oră", "1 oră și 30 de minute", "2 ore"],
-      ],
-      mainFeature: "Prima lecție gratis",
-      features: [
-        "Cursuri pentru viitorii dezvoltatori web",
-        "Predate de un programator cu experiență",
-        "Vei învăța HTML, CSS, limbajul JavaScript și framework-urile React și Angular",
-        "Vei afla care sunt cele mai bune practici din industrie",
-        "La finalul acestor cursuri, vei lansa propriul website și vei avea un portofoliu personal cu proiecte",
-        "(plata o dată la 6 lecții)",
-      ],
-      featured: false,
-    },
-  ];
-
-  if (!plans) plans = defaultPlans;
-
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-  const [activeDurationIndexFirstCard, setActiveDurationIndexFirstCard] = useState(1);
-  const [activeDurationIndexSecondCard, setActiveDurationIndexSecondCard] = useState(1);
+  const [activeDurationIndexFirstCard, setActiveDurationIndexFirstCard] =
+    useState(1);
+  const [activeDurationIndexSecondCard, setActiveDurationIndexSecondCard] =
+    useState(1);
 
   const highlightGradientsCss = [
     css`
@@ -261,13 +197,20 @@ export default function CoursesSection({
     );
   `;
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
+
+  const plans = langData.PricesSection.plans;
+
   return (
     <Container ref={coursesSectionRef}>
       <ContentWithPaddingXl>
         <HeaderContainer>
-          <Heading>{heading}</Heading>
+          <Heading>{langData.PricesSection.title}</Heading>
           <Switcher>
-            {categories.map((category, index) => (
+            {langData.PricesSection.categories.map((category, index) => (
               <SwitchButton
                 active={activeCategoryIndex === index}
                 key={index}
@@ -294,15 +237,27 @@ export default function CoursesSection({
                   {plan.name[activeCategoryIndex]}
                 </span>
                 <span className="price">
-                  {plan.price[activeCategoryIndex][index === 0 ? activeDurationIndexFirstCard : activeDurationIndexSecondCard]}
+                  {
+                    plan.price[activeCategoryIndex][
+                      index === 0
+                        ? activeDurationIndexFirstCard
+                        : activeDurationIndexSecondCard
+                    ]
+                  }
                 </span>
                 {activeCategoryIndex === 0 ? (
                   <span className="duration">
-                    {plan.duration[activeCategoryIndex][index === 0 ? activeDurationIndexFirstCard : activeDurationIndexSecondCard]}
+                    {
+                      plan.duration[activeCategoryIndex][
+                        index === 0
+                          ? activeDurationIndexFirstCard
+                          : activeDurationIndexSecondCard
+                      ]
+                    }
                   </span>
                 ) : (
                   <DurationSelector>
-                    {durations.map((duration, durationIndex) => (
+                    {langData.PricesSection.durations.map((duration, durationIndex) => (
                       <span
                         style={{
                           display: "flex",
@@ -311,10 +266,24 @@ export default function CoursesSection({
                           alignItems: "center",
                           width: "100%",
                         }}
-                        onClick={() => (index === 0 ? setActiveDurationIndexFirstCard(durationIndex, index) : setActiveDurationIndexSecondCard(durationIndex, index) )}
+                        onClick={() =>
+                          index === 0
+                            ? setActiveDurationIndexFirstCard(
+                                durationIndex,
+                                index
+                              )
+                            : setActiveDurationIndexSecondCard(
+                                durationIndex,
+                                index
+                              )
+                        }
                       >
                         <SelectButton
-                          active={(index === 0 ? activeDurationIndexFirstCard === durationIndex : activeDurationIndexSecondCard === durationIndex )}
+                          active={
+                            index === 0
+                              ? activeDurationIndexFirstCard === durationIndex
+                              : activeDurationIndexSecondCard === durationIndex
+                          }
                           key={`${index} ${durationIndex}`}
                         ></SelectButton>
                         <span style={{ textAlign: "start", width: "100%" }}>
@@ -342,14 +311,14 @@ export default function CoursesSection({
                     css={!plan.featured && highlightGradientsCss[index]}
                     disabled={plan.disabled}
                   >
-                    {primaryButtonText}
+                    {langData.PricesSection.button}
                   </BuyNowButton>
                 ) : (
                   <BuyNowButton__disabled
                     css={!plan.featured && highlightGradientsCss__disabled}
                     disabled={plan.disabled}
                   >
-                    {primaryButtonText__disabled}
+                    {langData.PricesSection.disabled}
                   </BuyNowButton__disabled>
                 )}
               </PlanAction>

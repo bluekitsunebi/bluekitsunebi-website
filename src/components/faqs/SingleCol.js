@@ -13,6 +13,9 @@ import {
   setYaxisPosition,
 } from "store/FAQsectionSlice";
 import { setIsResizing } from "store/homeSectionSlice";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 
 const Container = tw.div`relative mx-8`;
@@ -58,24 +61,6 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 
 export default function FAQSection({
   onRender,
-  heading = "Întrebări frecvente",
-  faqs = [
-    {
-      question: "Cum se efectuează plata ?",
-      answer:
-        "Plata se efectuează după ședința gratis de început, semnarea contractului și primirea facturii, în avans pentru un număr de 6 ședințe, prin transfer bancar (găsiți datele în rubrica contact), punând numele elevului în descriere."
-    },
-    {
-      question: "Dacă nu pot intra într-o zi, ce se întâmplă cu ședința plătită ?",
-      answer:
-        "Pentru cei ce au ales un program individual de studiu, este posibilă mutarea acesteia în altă zi din următoarele 4 săptămâni. Cei cărora li se predă în sistem grup vor pierde din păcate ședința plătită dacă motivul absentării nu este unul strict obiectiv."
-    },
-    {
-      question: "Cum pot beneficia de asistența oferită în afara orelor de curs ?",
-      answer:
-        "Ne puteți pune întrebări privind limba studiată prin mail sau prin chat pe orice rețea de socializare. Aveți dreptul la câte 4 întrebări deodată iar răspunsul va veni în decurs de 24 de ore."
-    },
-  ],
 }) {
   // SET SECTION Y AXIS POSITION
 
@@ -114,6 +99,10 @@ useEffect(() => {
     dispatch(setIsResizing(false));
   };
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
 
   return (
     <Container ref={faqSectionRef}>
@@ -123,10 +112,10 @@ useEffect(() => {
           </ImageColumn>
           <TextColumn>
             <HeaderContent>
-              <Heading>{heading}</Heading>
+              <Heading>{langData.FAQSection.title}</Heading>
             </HeaderContent>
             <FAQSContainer >
-              {faqs.map((faq, index) => (
+              {langData.FAQSection.faqs.map((faq, index) => (
                 <FAQ
                   key={index}
                   onClick={() => {

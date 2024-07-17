@@ -22,6 +22,9 @@ import { FaCheckCircle } from "react-icons/fa";
 import { FaRegCircle } from "react-icons/fa";
 import { ImSpinner9 as SpinIcon } from "react-icons/im";
 import { BsFillSendCheckFill as SendIcon } from "react-icons/bs";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 const Container = tw.div`relative mx-8`;
 const TwoColumn = tw.div`flex flex-col md:flex-row-reverse justify-between max-w-screen-xl mx-auto py-20 md:py-24`;
@@ -145,8 +148,6 @@ export default function ContactSection({
     }
   }, [onRender, homeWasRendered]);
 
-  const requiredErrorMessage = "Vă rugăm completați aici";
-
   // -------------------------------------------------------
 
   // The textOnLeft boolean prop can be used to display either the text on left or right side of the image.
@@ -170,7 +171,9 @@ export default function ContactSection({
       email: e.target.elements.email.value,
       phone: e.target.elements.phone.value,
       message: e.target.elements.message.value,
-      checkbox: accord ? "Sunt de acord" : "Nu sunt de acord",
+      checkbox: accord
+        ? langData.ContactSection.checkbox.agree
+        : langData.ContactSection.checkbox.disagree,
     };
     const templateId = `contactForm`;
 
@@ -191,6 +194,11 @@ export default function ContactSection({
       );
   };
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
+
   return (
     <Container ref={contactSectionRef} id={contactSectionId}>
       <TwoColumn>
@@ -200,16 +208,16 @@ export default function ContactSection({
         <TextColumn textOnLeft={textOnLeft}>
           <TextContent>
             <Heading>
-              <Highlight>Contactează-ne </Highlight>
-              și vom reveni cu un răspuns cât de curând.
+              <Highlight>{langData.ContactSection.title[0]}</Highlight>
+              {langData.ContactSection.title[1]}
             </Heading>
             <Variants>
               <Phone>
-              Telefon / WhatsApp:
-                <Highlight>+40 745 984 726</Highlight>
+              {langData.ContactSection.phone[0]}
+                <Highlight>{langData.ContactSection.phone[1]}</Highlight>
               </Phone>
               <Divider></Divider>
-              <span>Sau trimite un mail</span>
+              <span>{langData.ContactSection.formTitle}</span>
             </Variants>
             <Form onSubmit={sendEmail} action={formAction} method={formMethod}>
               <Input
@@ -218,7 +226,7 @@ export default function ContactSection({
                 type="text"
                 autoComplete="given-name"
                 name="name"
-                placeholder="Nume"
+                placeholder={langData.ContactSection.formFields[0]}
               />
 
               <Input
@@ -227,7 +235,7 @@ export default function ContactSection({
                 type="email"
                 autoComplete="email"
                 name="email"
-                placeholder="Email"
+                placeholder={langData.ContactSection.formFields[1]}
               />
 
               <Input
@@ -235,7 +243,7 @@ export default function ContactSection({
                 type="text"
                 autoComplete="phone"
                 name="phone"
-                placeholder="Telefon"
+                placeholder={langData.ContactSection.formFields[2]}
                 onKeyPress={(event) => {
                   if (!/[0-9+]/.test(event.key)) {
                     event.preventDefault();
@@ -248,7 +256,7 @@ export default function ContactSection({
                 onFocus={handleInputFocus}
                 type="text"
                 name="message"
-                placeholder="Mesaj"
+                placeholder={langData.ContactSection.formFields[3]}
               />
 
               <Checkbox>
@@ -260,14 +268,14 @@ export default function ContactSection({
                   )}
                 </Icon>
                 <PolicyText>
-                  Sunt de acord cu <Link href="#">Termenii și condițiile</Link>{" "}
-                  și <Link href="#">Politica de confidențialitate</Link>
+                {langData.ContactSection.checkbox.message[0]}<Link href="#">{langData.ContactSection.checkbox.message[1]}</Link>{" "}
+                {langData.ContactSection.checkbox.message[2]}<Link href="#">{langData.ContactSection.checkbox.message[3]}</Link>
                 </PolicyText>
                 <AccordNeeded>
                   {accordNeeded ? (
-                    <Show>({requiredErrorMessage})</Show>
+                    <Show>({langData.ContactSection.requiredErrorMessage})</Show>
                   ) : (
-                    <Hide>.</Hide>
+                    <Hide>{langData.ContactSection.requiredErrorMessage}</Hide>
                   )}
                 </AccordNeeded>
               </Checkbox>
@@ -275,17 +283,17 @@ export default function ContactSection({
                 {isSend ? (
                   <SendIconButton>
                     <SendIcon />
-                    Trimis
+                    {langData.ContactSection.button.sent}
                   </SendIconButton>
                 ) : isSending ? (
                   <SendingText>
                     <Spin>
                       <SpinIcon />
                     </Spin>
-                    Se trimite
+                    {langData.ContactSection.button.sending}
                   </SendingText>
                 ) : (
-                  "Trimite"
+                  langData.ContactSection.button.send
                 )}
               </SubmitButton>
             </Form>

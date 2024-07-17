@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro"; //eslint-disable-line
-import { SectionHeading, Subheading as SubheadingBase } from "components/misc/Headings.js";
-import { SectionDescription } from "components/misc/Typography.js";
+import { SectionHeading } from "components/misc/Headings.js";
 import { PrimaryButton as PrimaryButtonBase } from "components/misc/Buttons.js";
 import { ContentWithPaddingXl } from "components/misc/Layouts.js";
 import { ReactComponent as SvgDecoratorBlob } from "images/svg-decorator-blob-6.svg";
@@ -12,6 +11,9 @@ import {
   setHeight,
   setYaxisPosition,
 } from "store/coursesSectionSlice";
+import enData from "helpers/data/lang/en/japanese.json";
+import jaData from "helpers/data/lang/ja/japanese.json";
+import roData from "helpers/data/lang/ro/japanese.json";
 
 const Container = tw.div`relative mx-8`;
 const HeaderContainer = tw.div`mt-10 w-full flex flex-col items-center`;
@@ -120,20 +122,6 @@ const DecoratorBlob = styled(SvgDecoratorBlob)`
 
 export default function CoursesSection({
   onRender,
-  heading = "Cursuri cu predare în limba:",
-  plans = null,
-  primaryButtonText = "Înscrie-te",
-  primaryButtonText__disabled = "În curând",
-  categories = [
-    {switcherText: "Română"},
-    {switcherText: "Engleză"},
-    {switcherText: "Japoneză"},
-  ],
-  durations = [
-    {selectorText: "1 oră"},
-    {selectorText: "1 oră și 30 de minute"},
-    {selectorText: "2 ore"},
-  ]
 }) {
   // ------------------------------------------------------------
   // SET SECTION Y AXIS POSITION
@@ -169,93 +157,6 @@ useEffect(() => {
     const element = document.getElementById(contactSectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
-  // --------------------------------------------------------
-
-  const defaultPlans = [
-    {
-      name: ["Japoneză individual", "Japoneză individual", "Engleză individual"],
-      price: [
-        // ro
-        ["90 RON", "130 RON", "170 RON",], 
-        // eng
-        ["$32", "$43", "$56",], 
-        // ja
-        ["$32", "$43", "$56",],
-      ],
-      duration: [
-        // ro
-        ["1 oră", "1 oră și 30 de minute", "2 ore"], 
-        // eng
-        ["1 oră", "1 oră și 30 de minute", "2 ore"], 
-        // ja
-        ["1 oră", "1 oră și 30 de minute", "2 ore"],
-      ],
-      mainFeature: "Prima lecție gratis",
-      features: [
-        ["Elevul alege o zi și o oră și începem imediat", 
-        "Materiale personalizate pe nivelul elevului", 
-        "Profesor cu nivel avansat de japoneză", 
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",],
-
-        ["Elevul alege o zi și o oră și începem imediat", 
-        "Materiale personalizate pe nivelul elevului", 
-        "Profesor cu nivel avansat de japoneză", 
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",],
-
-        ["Elevul alege o zi și o oră și începem imediat", 
-        "Materiale personalizate pe nivelul elevului", 
-        "Profesor cu nivel avansat de engleză",
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",],
-      ],
-    },
-    
-    {
-      name: ["Japoneză grup", "Japoneză grup", "Engleză grup"],
-      price: ["85 RON", "$28", "$28",],
-      duration: ["1 oră și 30 de minute", "1 oră și 30 de minute", "1 oră și 30 de minute",],
-      mainFeature: "Prima lecție gratis",
-      features: [
-        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "Materiale personalizate pe nivelul grupului", 
-        "Profesor cu nivel avansat de japoneză", 
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",],
-
-        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "Materiale personalizate pe nivelul grupului", 
-        "Profesor cu nivel avansat de japoneză", 
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",],
-
-        ["Adu-ți prietenii și formează un grup sau așteaptă să-ți găsim noi", 
-        "Materiale personalizate pe nivelul grupului", 
-        "Profesor cu nivel avansat de engleză", 
-        "Asistență chiar și în afara orelor de curs, cu răspuns în decurs de 24 de ore",
-        "(plata o dată la 6 lecții)",]
-      ],
-      featured: true,
-    },
-    
-    {
-      name: ["Japoneză anime", "Japoneză anime", ""],
-      price: ["", "", ""],
-      duration: ["", "", ""],
-      mainFeature: "Prima lecție gratis",
-      features: [
-        ["Curs special axat pe japoneza vorbită în anime", 
-        "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
-        ["Curs special axat pe japoneza vorbită în anime", 
-        "Pentru înscrierea la acest curs extra se cere participarea la oricare alt curs oferit de noi.",],
-        [],
-      ],
-      disabled: true,
-    },
-  ];
-
-  if (!plans) plans = defaultPlans;
 
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
   const [activeDurationIndex, setActiveDurationIndex] = useState(1);
@@ -280,20 +181,27 @@ useEffect(() => {
     background: linear-gradient(115deg, rgba(160, 174, 192, 1) 0%, rgba(203, 213, 224, 1) 100%);
   `;
 
+  // get the website language
+  let language = useSelector((state) => state.websiteLanguage.language);
+  let langData =
+    language === "en" ? enData : language === "ja" ? jaData : roData;
+
+  const plans = langData.PricesSection.plans;
+
   return (
     <Container ref={coursesSectionRef}>
       <ContentWithPaddingXl>
         <HeaderContainer>
-          <Heading>{heading}</Heading>
+          <Heading>{langData.PricesSection.title}</Heading>
           <Switcher>
-            {categories.map((category, index) => (
+            {langData.PricesSection.categories.map((category, index) => (
               <SwitchButton active={activeCategoryIndex === index} key={index} onClick={() => setActiveCategoryIndex(index)}>{category.switcherText}</SwitchButton>
             ))}
           </Switcher>
         </HeaderContainer>
         <PlansContainer>
           {plans.map((plan, index) => (
-            (activeCategoryIndex == defaultPlans.length-1 && index == defaultPlans.length-1) ? "" :
+            (activeCategoryIndex == plans.length-1 && index === plans.length-1) ? "" :
             <Plan key={index} featured={plan.featured}>
               {!plan.featured && <div className="planHighlight" css={highlightGradientsCss[index % highlightGradientsCss.length]} />}
               <PlanHeader>
@@ -309,7 +217,7 @@ useEffect(() => {
                 {plan.duration[activeCategoryIndex] &&
                   ((index !== 0) ? <span className="duration">{plan.duration[activeCategoryIndex]}</span>
                   : <DurationSelector>
-                    {durations.map((duration, durationIndex) => (
+                    {langData.PricesSection.durations.map((duration, durationIndex) => (
                       <span 
                         style={{display:'flex',flexDirection:'row', gap: '0.5rem', alignItems: 'center', width:'100%'}}
                         onClick={() => setActiveDurationIndex(durationIndex)}
@@ -344,12 +252,12 @@ useEffect(() => {
                     }}
                     css={!plan.featured && highlightGradientsCss[index]}
                     disabled={plan.disabled}
-                  >{primaryButtonText}
+                  >{langData.PricesSection.button}
                   </BuyNowButton>
                   : <BuyNowButton__disabled
                     css={!plan.featured && highlightGradientsCss__disabled}
                     disabled={plan.disabled}
-                  >{primaryButtonText__disabled}
+                  >{langData.PricesSection.disabled}
                   </BuyNowButton__disabled>
                 }
               </PlanAction>
