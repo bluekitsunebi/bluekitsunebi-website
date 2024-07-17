@@ -114,7 +114,7 @@ export default function WhySection({ onRender, cards = null }) {
               <span className="textContainer">
                 <span className="title">
                   {point.map((word, i) => 
-                    i % 2 === 0 ? word : <Highlight>{word}</Highlight>
+                    i % 2 === 0 ? <span key={i}>{word}</span> : <Highlight key={i}>{word}</Highlight>
                   )}
                 </span>
               </span>

@@ -116,7 +116,7 @@ import ProgrammingLandingPage from "ProgrammingLandingPage";
 // import LearnKanjiPage from "pages/LearnKanjiPage.js";
 // import ProtectedRoute from "components/login/ProtectedRoute";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "store/authSlice";
+import { logout } from "store/app/authSlice";
 import { setLanguage, initializeLanguage } from "./store/websiteLanguageSlice";
 
 function Wrapper() {

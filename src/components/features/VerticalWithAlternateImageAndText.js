@@ -116,7 +116,11 @@ export default function AboutSection({ onRender }) {
                       <br />
                       <i>
                         {paragraph[1].map((mottoWord, index) =>
-                          index % 2 === 0 ? <b>{mottoWord}</b> : mottoWord
+                          index % 2 === 0 ? (
+                            <b key={index}>{mottoWord}</b>
+                          ) : (
+                            <span key={index}>{mottoWord}</span>
+                          )
                         )}
                       </i>
                     </>
