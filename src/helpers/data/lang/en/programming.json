@@ -57,11 +57,17 @@
   "TeacherSection": {
     "title": ["Programming Teacher ", "Cheșca Vicențiu"],
     "description": [
-      "fluent English speaker",
-      "over 3 years of experience as a programmer on real-world projects",
-      "experience with the following technologies: Python (and Flask framework), Javascript (and React framework), PHP (and Laravel framework), Dart (and Flutter framework), C# (and .NET framework), C++, Ionic framework, PostgreSQL, Firebase, PowerBI, Git, Docker, Linux, HTML, CSS etc.",
-      "work experience with microservices",
-      "over 6 years of teaching experience"
+
+
+      "Over 3 years of experience as a programmer on real-world projects",
+
+      "Server-side tehnologies: Python (Flask), PHP (Laravel), C# (.NET), C++, PostgreSQL, Firebase , Git, Docker, Linux",
+
+      "Frontend tehnologies: Javascript (React), Dart (Flutter), HTML, CSS, PowerBI",
+
+      "Work experience with microservices",
+
+      "Over 6 years of teaching experience"
     ]
   },
 

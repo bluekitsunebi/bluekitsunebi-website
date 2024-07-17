@@ -12,9 +12,13 @@ import { PiShareNetwork } from "react-icons/pi";
 import { PiCloudArrowUp } from "react-icons/pi";
 import { PiCode } from "react-icons/pi";
 
+// en
+import { FiServer } from "react-icons/fi";
+import { FaChalkboardTeacher } from "react-icons/fa";
+
 //img
 import teacher from "../../images/original/teacher-programming.webp";
-import teacherEng from "../../images/original/teacher-programming-eng.webp";
+import teacherEng from "../../images/original/teacher.jpg";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setHeight, setYaxisPosition } from "store/profesorSectionSlice";
@@ -173,13 +177,18 @@ export default function ProfesorSection({ onRender, textOnLeft = true }) {
                   {index === 0 ? (
                       <PiCube />
                     ) : index === 1 ? (
-                      <FaReact />
+                      (language === "ro" ? <FaReact /> : <FiServer />)
                     ) : index === 2 ? (
-                      <PiShareNetwork />
+                      
+                      (language === "ro" ? <PiShareNetwork /> : <FaReact />)
+                      
                     ) : index === 3 ? (
-                      <PiCloudArrowUp />
+                      (language === "ro" ? <PiCloudArrowUp /> : <PiShareNetwork />)
+                      
                     ) : (
-                      <PiCode />
+                      (language === "ro" ? <PiCode /> : <FaChalkboardTeacher/>)
+                      
+                      
                     )}
                     
                   </FeatureIconContainer>
