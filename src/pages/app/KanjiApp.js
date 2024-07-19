@@ -3,6 +3,7 @@ import tw from "twin.macro";
 import styled from "styled-components";
 import LearningSettingsPage from "./pages/LearningSettingsPage";
 import StudyPage from "./pages/StudyPage";
+import QuizPage from "./pages/QuizPage";
 import { useSelector } from "react-redux";
 
 const AppWraper = styled.div`
@@ -31,10 +32,11 @@ const LearnKanjiPage = () => {
     <AppWraper>
       {currentPage === "learningSettings" ? (
         <LearningSettingsPage />
-      ) : (
-        <StudyPage />
-      )}
+      ) : currentPage === "study" ? (
+         <StudyPage />
+      ) : <QuizPage />}
     </AppWraper>
+    // learningSettings, study, quiz
   );
 };
 

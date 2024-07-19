@@ -255,13 +255,15 @@ const StudyPage = () => {
         const stmt = database.prepare(query);
         while (stmt.step()) {
           const row = stmt.getAsObject();
+          let words = [];
+          try {words = JSON.parse(row.words)} catch (error) {
+            console.error('Failed to convert words', error);
+          }
           return {
             level: level,
             id_lesson: lessonId,
             kanji: JSON.parse(row.kanji),
-            // kanji: { id: 49, kanji: "先", meanings: ["before", "ahead", "future", "precedence", "previous"], kun_readings: ["さき", "ま.ず"], on_readings: ["セン"]},
-            // words: JSON.parse(row.words),
-            words: [],
+            words: words,
           };
         }
 
@@ -293,12 +295,16 @@ const StudyPage = () => {
     }
   };
 
+  const goToQuiz = () => {
+    dispatch(setPage("quiz"));
+  }
+
   return (
     <>
       <BackButtonContainer>
         <BackButton>
           <Button onClick={() => handleBackToLessons()} full>
-            Back to lessons
+            Back
           </Button>
         </BackButton>
       </BackButtonContainer>
@@ -344,7 +350,7 @@ const StudyPage = () => {
             ) : (
               <StartQuizContainer>
                 <StartQuizButtonContainer>
-                  <Button full>Start quiz</Button>
+                  <Button full onClick={() => goToQuiz()}>Start quiz</Button>
                 </StartQuizButtonContainer>
               </StartQuizContainer>
             )}

@@ -25,6 +25,7 @@ import authReducer from './app/authSlice';
 import databaseReducer from './app/databaseSlice';
 import studySettingsReducer from './app/studySettingsSlice';
 import studyPageReducer from './app/studyPageSlice';
+import quizPageReducer from './app/quizPageSlice';
 
 export const store = configureStore({
   reducer: {
@@ -53,6 +54,7 @@ export const store = configureStore({
     database: databaseReducer,
     studySettings: studySettingsReducer,
     studyPage: studyPageReducer,
+    quizPage: quizPageReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

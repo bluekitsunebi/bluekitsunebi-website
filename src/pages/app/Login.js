@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import initSqlJs from "sql.js";
 import dataBase from "../../db/kanji_vocab_database.db";
 import { setDatabase } from "store/app/databaseSlice";
-import { loginSuccess } from "store/app/authSlice";
+import { loginSuccess, logout } from "store/app/authSlice";
 import { setResponseStudyLessons } from "store/app/studySettingsSlice";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
@@ -55,10 +55,36 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const database = useSelector((state) => state.database.database);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState(false);
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      dispatch(logout());
+    }
+    if (!database) {
+      const loadDataBase = async () => {
+        const SQL = await initSqlJs({
+          locateFile: (file) => `https://sql.js.org/dist/${file}`,
+        });
+        const db = new SQL.Database(
+          new Uint8Array(await (await fetch(dataBase)).arrayBuffer())
+        );
+        dispatch(setDatabase(db));
+      };
+      loadDataBase();
+    }
+
+    const user = localStorage.getItem("user");
+    if (user) {
+      const userObject = JSON.parse(user);
+      setUsername(userObject.username);
+      setPassword(userObject.password);
+    }
+  });
 
   const levels = useSelector((state) => state.studySettings.levels);
 
@@ -99,19 +125,6 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    const loadDataBase = async () => {
-      const SQL = await initSqlJs({
-        locateFile: (file) => `https://sql.js.org/dist/${file}`,
-      });
-      const db = new SQL.Database(
-        new Uint8Array(await (await fetch(dataBase)).arrayBuffer())
-      );
-      dispatch(setDatabase(db));
-    };
-    loadDataBase();
-  }, []);
-
-  useEffect(() => {
     if (database) {
       const setLessons = async () => {
         await Promise.all(
@@ -123,15 +136,6 @@ const LoginPage = () => {
       setLessons();
     }
   }, [database]);
-
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      const userObject = JSON.parse(user);
-      setUsername(userObject.username);
-      setPassword(userObject.password);
-    }
-  }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault();
