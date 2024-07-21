@@ -102,7 +102,8 @@ const WordsList = styled.div`
     css`
       ${tw`opacity-0 cursor-default pointer-events-none`}
     `}
-    scrollbar-gutter: stable;
+    
+  scrollbar-gutter: stable;
 
   /* Custom scrollbar styles */
   &::-webkit-scrollbar {
@@ -244,7 +245,7 @@ const StudyPage = () => {
         ', "on_readings": ' || IFNULL(k.on_readings, '[]') || '}' AS kanji,
         '[' || GROUP_CONCAT('{ "id": ' || kl.id_word ||
         ', "word": "' || w.word ||
-        '", "reading": "' || w.reading ||
+        '", "kana_reading": "' || w.kana_reading ||
         '", "meanings": ' || w.meanings || '}', ', ') || ']' AS words
       FROM kanji_lessons kl
       JOIN words w ON kl.id_word = w.id
@@ -259,6 +260,7 @@ const StudyPage = () => {
           try {words = JSON.parse(row.words)} catch (error) {
             console.error('Failed to convert words', error);
           }
+
           return {
             level: level,
             id_lesson: lessonId,
@@ -359,7 +361,7 @@ const StudyPage = () => {
               <WordsList hide={kanjiList[currentKanjiIndex]?.lessonDone}>
                 {kanjiData?.words?.map((word) => (
                   <div key={word.id}>
-                    {word.word} ({word.reading}) = {word?.meanings.join(", ")}
+                    {word.word} ({word.kana_reading}) = {word?.meanings.join(", ")}
                   </div>
                 ))}
               </WordsList>

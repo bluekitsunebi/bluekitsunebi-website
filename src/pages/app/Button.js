@@ -3,7 +3,10 @@ import tw from "twin.macro";
 import styled, { css } from "styled-components";
 
 const ButtonWrapper = styled.div`
-  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none text-lg sm:text-xl`}
+  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none
+    
+    text-xl sm:text-2xl
+    `}
   ${({ isSelected }) =>
     isSelected &&
     css`
@@ -73,15 +76,33 @@ const ButtonWrapper = styled.div`
         css`
           ${tw`rounded-t-none s:rounded`}
         `}
-  ${({ full }) => 
-    full && 
-      css`
-        ${tw`bg-primary-500 text-white border-0
+  ${({ full }) =>
+    full &&
+    css`
+      ${tw`bg-primary-500 text-white border-0
          hover:bg-primary-600 
          hover:text-white 
          hover:border-0
-         `}`
-  }
+         `}
+    `}
+
+  ${({ full, monochrome }) =>
+    full &&
+    monochrome &&
+    css`
+      ${tw`
+      bg-gray-300
+      text-gray-700
+      border-gray-400
+      hover:bg-gray-400
+      hover:text-gray-800
+      `}
+    `}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      ${tw`pointer-events-none cursor-default opacity-50`}
+    `}
 `;
 
 const Button = ({
@@ -98,6 +119,7 @@ const Button = ({
   isDual,
   transparent,
   full,
+  disabled,
 }) => {
   return (
     <ButtonWrapper
@@ -113,6 +135,7 @@ const Button = ({
       isDual={isDual}
       transparent={transparent}
       full={full}
+      disabled={disabled}
     >
       {children}
     </ButtonWrapper>
