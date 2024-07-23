@@ -12,12 +12,11 @@ const ConfettiComponent = () => {
         particleCount: 100,
         spread: 160,
       });
-      // Set a timeout to hide the confetti component after 5 seconds
       const timer = setTimeout(() => {
         setShow(false);
       }, 5000);
 
-      return () => clearTimeout(timer); // Clear timeout if the component is unmounted
+      return () => clearTimeout(timer);
     }
   }, []);
 
