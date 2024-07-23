@@ -10,7 +10,10 @@ import {
   selectOption,
   setWordReading,
   checkReading,
+  setAnswered,
   nextQuestion,
+  nextWrongQuestion,
+  retryQuiz,
   resetQuiz,
 } from "store/app/quizPageSlice";
 
@@ -141,7 +144,7 @@ const NextButtonContainer = styled.div`
 `;
 
 const Title = styled.div`
-  ${tw`mx-auto`}
+  ${tw`mx-auto flex flex-col text-center gap-4`}
 `;
 
 const FinalScoreContainer = styled.div`
@@ -235,7 +238,8 @@ const QuizPage = () => {
   const lastWrongQuestion = useSelector(
     (state) => state.quizPage.lastWrongQuestion
   );
-  const [answered, setAnswered] = useState(false);
+  const answered = useSelector((state) => state.quizPage.answered);
+  const retry = useSelector((state) => state.quizPage.retry);
   const inputRef = useRef(null);
 
   const getQuizData = async () => {
@@ -365,33 +369,39 @@ const QuizPage = () => {
     dispatch(setWordReading(value));
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      dispatch(checkReading());
-      setAnswered(true);
-      e.target.blur();
-    }
-  };
-
   const handleNextQuestion = () => {
-    dispatch(nextQuestion());
-    current.type === "wordQuestions" && setAnswered(false);
+    if (!retry) {
+      dispatch(nextQuestion());
+    } else {
+      dispatch(nextWrongQuestion());
+    }
+    current.type === "wordQuestions" && dispatch(setAnswered(false));
   };
 
   useEffect(() => {
-    // TO DO
     const handleGlobalKeyPress = (e) => {
-      if(e.key !== "Enter") return;
-      const isDisabled = false;
+      if (e.key !== "Enter") return;
+      let isDisabled = false;
       if (current.set > quizData.length - 1) {
         isDisabled = true;
       } else if (current.type === "kanjiQuestion") {
-        isDisabled = quizData[current.set]?.kanjiQuestion?.options.some(
+        isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some(
           (opt) => opt.isSelected
         );
       } else if (current.type === "wordQuestions") {
-        isDisabled = answered;
+        if (!answered) {
+          e.preventDefault();
+          if (
+            quizData[current.set]?.wordQuestions[current.wordIndex].userInput
+              .value
+          ) {
+            dispatch(checkReading());
+            dispatch(setAnswered(true));
+          }
+          isDisabled = true;
+        } else {
+          isDisabled = false;
+        }
       }
 
       if (!isDisabled) {
@@ -406,6 +416,17 @@ const QuizPage = () => {
       document.removeEventListener("keydown", handleGlobalKeyPress);
     };
   }, [current, answered, quizData]);
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.target.blur();
+    }
+  };
+
+  const handleRetry = () => {
+    dispatch(retryQuiz());
+  };
 
   const handleBackToStudy = () => {
     dispatch(setPage("study"));
@@ -538,7 +559,7 @@ const QuizPage = () => {
                         }
                         onClick={() => {
                           dispatch(checkReading());
-                          setAnswered(true);
+                          dispatch(setAnswered(true));
                         }}
                       >
                         Check
@@ -548,7 +569,10 @@ const QuizPage = () => {
                 </>
               ) : (
                 <>
-                  <Title>Quiz ended</Title>
+                  <Title>
+                    <div>Quiz ended</div>
+                    {score.wrongAnswers === 0 && <div>Congratulations!</div>}
+                  </Title>
                   <FinalScoreContainer>
                     <div>Your result</div>
                     <FinalScore>
@@ -560,84 +584,92 @@ const QuizPage = () => {
                       </FinalScoreWrongAnswers>
                     </FinalScore>
                   </FinalScoreContainer>
-                  <ReviewContainer>
-                    <div>Review wrong answers</div>
-                    <WrongQuestionsContainer>
-                      {quizData.map((set, setIndex) => (
-                        <React.Fragment key={`set-${setIndex}`}>
-                          {set.kanjiQuestion.options.some(
-                            (option) =>
-                              option.isSelected === true &&
-                              option.isCorrect === false
-                          ) && (
-                            <KanjiQuestion key={"kanjiQuestion" + setIndex}>
-                              <QuestionItem>
-                                kanji: {set.kanjiQuestion.kanji.kanji}
-                              </QuestionItem>
+                  {score.wrongAnswers !== 0 && (
+                    <ReviewContainer>
+                      <div>Review wrong answers</div>
+                      <WrongQuestionsContainer>
+                        {quizData.map((set, setIndex) => (
+                          <React.Fragment key={`set-${setIndex}`}>
+                            {set.kanjiQuestion.options.some(
+                              (option) =>
+                                option.isSelected === true &&
+                                option.isCorrect === false
+                            ) && (
+                              <KanjiQuestion key={"kanjiQuestion" + setIndex}>
+                                <QuestionItem>
+                                  kanji: {set.kanjiQuestion.kanji.kanji}
+                                </QuestionItem>
 
-                              <QuestionItem>
-                                meaning:{" "}
-                                <Correct>
-                                  {set.kanjiQuestion.options
-                                    .find((option) => option.isCorrect === true)
-                                    .value.join(", ")}
-                                </Correct>
-                              </QuestionItem>
+                                <QuestionItem>
+                                  meaning:{" "}
+                                  <Correct>
+                                    {set.kanjiQuestion.options
+                                      .find(
+                                        (option) => option.isCorrect === true
+                                      )
+                                      .value.join(", ")}
+                                  </Correct>
+                                </QuestionItem>
 
-                              <QuestionItem>
-                                your answer:{" "}
-                                <Wrong>
-                                  {set.kanjiQuestion.options
-                                    .find(
-                                      (option) => option.isSelected === true
-                                    )
-                                    .value.join(", ")}
-                                </Wrong>
-                              </QuestionItem>
-                              {!(
-                                lastWrongQuestion.set === setIndex &&
-                                lastWrongQuestion.type === "kanjiQuestion"
-                              ) && <Divider></Divider>}
-                            </KanjiQuestion>
-                          )}
+                                <QuestionItem>
+                                  your answer:{" "}
+                                  <Wrong>
+                                    {set.kanjiQuestion.options
+                                      .find(
+                                        (option) => option.isSelected === true
+                                      )
+                                      .value.join(", ")}
+                                  </Wrong>
+                                </QuestionItem>
+                                {!(
+                                  lastWrongQuestion.set === setIndex &&
+                                  lastWrongQuestion.type === "kanjiQuestion"
+                                ) && <Divider></Divider>}
+                              </KanjiQuestion>
+                            )}
 
-                          {set.wordQuestions.map(
-                            (wordQuestion, wordIndex) =>
-                              !wordQuestion.userInput.isCorrect && (
-                                <WordQuestion
-                                  key={"wordQuestion" + setIndex + wordIndex}
-                                >
-                                  <QuestionItem>
-                                    word: {wordQuestion.word.word}
-                                  </QuestionItem>
-                                  <QuestionItem>
-                                    reading:{" "}
-                                    <Correct>
-                                      {wordQuestion.word.kana_reading}
-                                    </Correct>
-                                  </QuestionItem>
-                                  <QuestionItem>
-                                    your answer:{" "}
-                                    <Wrong>
-                                      {wordQuestion.userInput.value}
-                                    </Wrong>
-                                  </QuestionItem>
-                                  {!(
-                                    lastWrongQuestion.set === setIndex &&
-                                    lastWrongQuestion.type ===
-                                      "wordQuestions" &&
-                                    lastWrongQuestion.wordIndex === wordIndex
-                                  ) && <Divider></Divider>}
-                                </WordQuestion>
-                              )
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </WrongQuestionsContainer>
-                  </ReviewContainer>
-                  <RetryButtonContainer>
-                    <Button full>Retry wrong questions</Button>
-                  </RetryButtonContainer>
+                            {set.wordQuestions.map(
+                              (wordQuestion, wordIndex) =>
+                                !wordQuestion.userInput.isCorrect && (
+                                  <WordQuestion
+                                    key={"wordQuestion" + setIndex + wordIndex}
+                                  >
+                                    <QuestionItem>
+                                      word: {wordQuestion.word.word}
+                                    </QuestionItem>
+                                    <QuestionItem>
+                                      reading:{" "}
+                                      <Correct>
+                                        {wordQuestion.word.kana_reading}
+                                      </Correct>
+                                    </QuestionItem>
+                                    <QuestionItem>
+                                      your answer:{" "}
+                                      <Wrong>
+                                        {wordQuestion.userInput.value}
+                                      </Wrong>
+                                    </QuestionItem>
+                                    {!(
+                                      lastWrongQuestion.set === setIndex &&
+                                      lastWrongQuestion.type ===
+                                        "wordQuestions" &&
+                                      lastWrongQuestion.wordIndex === wordIndex
+                                    ) && <Divider></Divider>}
+                                  </WordQuestion>
+                                )
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </WrongQuestionsContainer>
+                    </ReviewContainer>
+                  )}
+                  {score.wrongAnswers !== 0 && (
+                    <RetryButtonContainer>
+                      <Button onClick={() => handleRetry()} full>
+                        Retry wrong questions
+                      </Button>
+                    </RetryButtonContainer>
+                  )}
                 </>
               )}
             </>
