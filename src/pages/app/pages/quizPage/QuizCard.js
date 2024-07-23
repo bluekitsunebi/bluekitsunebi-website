@@ -24,7 +24,7 @@ const ExerciseStatement = styled.div`
 `;
 
 const Symbols = styled.div`
-  ${tw`font-thin text-gray-800 w-full flex flex-row justify-center`}
+  ${tw`font-thin text-gray-800 w-full flex flex-row justify-center select-none`}
   line-height: 90%;
   font-size: 8rem;
   @media (min-width: 640px) {
@@ -37,7 +37,7 @@ const OptionsContainer = styled.div`
 `;
 
 const Option = styled.div`
-  ${tw`w-full py-2 px-4 border border-primary-500 border-2 rounded hover:bg-gray-200 cursor-pointer`}
+  ${tw`w-full py-2 px-4 border border-primary-500 border-2 rounded hover:bg-gray-200 cursor-pointer select-none`}
   ${({ isSelected }) =>
     isSelected &&
     css`
@@ -70,7 +70,7 @@ const FormContainer = styled.div`
 `;
 
 const Message = styled.div`
-  ${tw`w-full flex flex-row justify-center text-3xl`}
+  ${tw`w-full flex flex-row justify-center text-3xl select-none`}
   ${({ hide }) =>
     hide &&
     css`

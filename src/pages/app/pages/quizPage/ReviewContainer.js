@@ -9,7 +9,7 @@ const ReviewContainer = styled.div`
 const WrongQuestionsContainer = styled.div`
   ${tw`w-full border border-primary-100 rounded p-2 sm:px-8 sm:py-4 border-4
     overflow-y-auto h-80 min-h-80 bg-white
-    flex flex-col`}
+    flex flex-col select-none`}
 
   scrollbar-gutter: stable;
 
@@ -40,14 +40,14 @@ const WordQuestion = styled.div`
 `;
 
 const QuestionItem = styled.div`
-  ${tw`flex flex-row gap-2`}
+  ${tw`gap-2`}
 `;
 
-const Correct = styled.div`
+const Correct = styled.span`
   ${tw`text-green-500`}
 `;
 
-const Wrong = styled.div`
+const Wrong = styled.span`
   ${tw`text-red-500`}
 `;
 
@@ -68,11 +68,11 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => (
           ) && (
             <KanjiQuestion key={"kanjiQuestion" + setIndex}>
               <QuestionItem>
-                kanji: {set.kanjiQuestion.kanji.kanji}
+                <span>kanji:</span> <span>{set.kanjiQuestion.kanji.kanji}</span>
               </QuestionItem>
 
               <QuestionItem>
-                meaning:{" "}
+                <span>meaning: </span>
                 <Correct>
                   {set.kanjiQuestion.options
                     .find((option) => option.isCorrect === true)
@@ -81,7 +81,7 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => (
               </QuestionItem>
 
               <QuestionItem>
-                your answer:{" "}
+                <span>your answer: </span>
                 <Wrong>
                   {set.kanjiQuestion.options
                     .find((option) => option.isSelected === true)
