@@ -94,7 +94,7 @@ const QuizPage = () => {
             kanjiQuestion: null,
             wordQuestions: [],
           };
-          questionsSet.kanjiQuestion = getKanjiQuestion(originalData, i);
+          questionsSet.kanjiQuestion = await getKanjiQuestion(originalData, i);
           questionsSet.wordQuestions = getWordQuestions(originalData, i);
           quizData.push(questionsSet);
         }
@@ -107,6 +107,43 @@ const QuizPage = () => {
         );
       }
     } else return null;
+  };
+
+  const getKanjiQuestion = async (originalData, i) => {
+    let options = [];
+    let correctOption = null;
+    for (let j = 0; j < originalData.length; j++) {
+      if (i === j) {
+        correctOption = {
+          value: originalData[j].meanings,
+          isCorrect: i === j,
+          isSelected: false,
+        };
+      } else {
+        options.push({
+          value: originalData[j].meanings,
+          isCorrect: i === j,
+          isSelected: false,
+        });
+      }
+    }
+    options = options.slice(0, 2);
+    if (options.length < 2 && lessonId > 1) {
+      let previousLessonKanjis = await getPreviousLessonKanjis();
+      previousLessonKanjis.sort(() => Math.random() - 0.5);
+      previousLessonKanjis = previousLessonKanjis.slice(0, 2 - options.length);
+      options = [...options, ...previousLessonKanjis];
+    }
+    options.push(correctOption);
+    options.sort(() => Math.random() - 0.5);
+    let kanjiQuestion = {
+      kanji: {
+        id: originalData[i].id_kanji,
+        kanji: originalData[i].kanji,
+      },
+      options: options,
+    };
+    return kanjiQuestion;
   };
 
   const getPreviousLessonKanjis = async () => {
@@ -132,7 +169,11 @@ const QuizPage = () => {
       let data = [];
       while (stmt.step()) {
         let row = stmt.getAsObject();
-        data.push(row.meanings);
+        data.push({
+          value: JSON.parse(row.meanings),
+          isCorrect: false,
+          isSelected: false,
+        });
       }
       stmt.free();
       return data;
@@ -142,51 +183,6 @@ const QuizPage = () => {
         error
       );
     }
-  };
-
-  const getKanjiQuestion = (originalData, i) => {
-    let options = [];
-    let correctOption = null;
-    for (let j = 0; j < originalData.length; j++) {
-      if (i === j) {
-        correctOption = {
-          value: originalData[j].meanings,
-          isCorrect: i === j,
-          isSelected: false,
-        };
-      } else {
-        options.push({
-          value: originalData[j].meanings,
-          isCorrect: i === j,
-          isSelected: false,
-        });
-      }
-    }
-
-    options.sort(() => Math.random() - 0.5);
-    options = options.slice(0, 2);
-    options.push(correctOption);
-    options.sort(() => Math.random() - 0.5);
-
-    // TO DO
-    if (options.length < 3 && lessonId > 1) {
-      const previousLessonKanjis = getPreviousLessonKanjis();
-      previousLessonKanjis.sort(() => Math.random() - 0.5);
-      previousLessonKanjis = previousLessonKanjis.slice(0, 3 - options.length);
-      options = [...options, ...previousLessonKanjis];
-
-      console.log("previous lesson kanjis: ", previousLessonKanjis);
-    }
-    //
-
-    let kanjiQuestion = {
-      kanji: {
-        id: originalData[i].id_kanji,
-        kanji: originalData[i].kanji,
-      },
-      options: options,
-    };
-    return kanjiQuestion;
   };
 
   const getWordQuestions = (originalData, i) => {
