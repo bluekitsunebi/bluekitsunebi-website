@@ -17,6 +17,7 @@ import {
   resetQuiz,
 } from "store/app/quizPageSlice";
 import ConfettiComponent from "./quizPage/ConfettiComponent";
+import ProgressBar from "./quizPage/ProgressBar";
 
 const BackButtonContainer = styled.div`
   ${tw`w-full mr-auto mb-5 sm:mb-8 flex flex-row
@@ -49,11 +50,18 @@ const QuizPageContainer = styled.div`
 `;
 
 const Card = styled.div`
+  ${tw`flex flex-col justify-between
+      h-full w-full
+      sm:h-fit sm:my-auto
+      sm:bg-white sm:px-16 sm:py-8 sm:rounded-3xl sm:max-w-screen-lg
+      sm:min-h-52r`}
+`;
+
+const CardContent = styled.div`
   ${tw`flex flex-col gap-4 w-full h-full
       justify-evenly
-      sm:h-fit sm:my-auto
-      sm:bg-white sm:px-16 sm:py-16 sm:rounded-3xl sm:max-w-screen-lg
-      sm:min-h-52r`}
+      sm:h-fit sm:min-h-52r
+     `}
 `;
 
 const ExerciseStatement = styled.div`
@@ -141,7 +149,7 @@ ${({ showAnswer, isCorrect }) =>
 `;
 
 const NextButtonContainer = styled.div`
-  ${tw`w-full h-8`}
+  ${tw`w-full`}
 `;
 
 const Title = styled.div`
@@ -291,8 +299,8 @@ const QuizPage = () => {
           let row = stmt.getAsObject();
           row.meanings = JSON.parse(row.meanings).slice(0, 3);
           // TO DO
-          // let words = JSON.parse(row.words).slice(0, 5);
-          let words = JSON.parse(row.words).slice(0, 1);
+          let words = JSON.parse(row.words).slice(0, 5);
+          // let words = JSON.parse(row.words).slice(0, 2);
           words.sort(() => Math.random() - 0.5);
           row.words = words.slice(0, 3);
           originalData.push(row);
@@ -300,8 +308,8 @@ const QuizPage = () => {
         stmt.free();
 
         // TO DO
-        // for (let i = 0; i < originalData.length; i++) {
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < originalData.length; i++) {
+          // for (let i = 0; i < 1; i++) {
           let questionsSet = {
             kanjiQuestion: null,
             wordQuestions: [],
@@ -376,7 +384,11 @@ const QuizPage = () => {
 
   const handleWordReadingChange = (e) => {
     const value = e.target.value.replace(/\s+/g, "");
-    dispatch(setWordReading(value));
+    const regex =
+      /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
+    if (regex.test(value)) {
+      dispatch(setWordReading(value));
+    }
   };
 
   const handleNextQuestion = () => {
@@ -463,8 +475,9 @@ const QuizPage = () => {
 
       <QuizPageContainer>
         <Card>
+          {quizData && current && <ProgressBar />}
           {quizData && current && score && (
-            <>
+            <CardContent>
               {current.set <= quizData.length - 1 ? (
                 <>
                   <ExerciseStatement>
@@ -542,40 +555,6 @@ const QuizPage = () => {
                       </Form>
                     </FormContainer>
                   )}
-                  <NextButtonContainer>
-                    {current.type === "kanjiQuestion" ||
-                    (current.type === "wordQuestions" && answered) ? (
-                      <Button
-                        full
-                        monochrome
-                        onClick={() => handleNextQuestion()}
-                        disabled={
-                          current.type === "kanjiQuestion" &&
-                          !quizData[current.set]?.kanjiQuestion?.options.some(
-                            (opt) => opt.isSelected
-                          )
-                        }
-                      >
-                        Next
-                      </Button>
-                    ) : (
-                      <Button
-                        full
-                        monochrome
-                        disabled={
-                          !quizData[current.set]?.wordQuestions[
-                            current.wordIndex
-                          ].userInput.value
-                        }
-                        onClick={() => {
-                          dispatch(checkReading());
-                          dispatch(setAnswered(true));
-                        }}
-                      >
-                        Check
-                      </Button>
-                    )}
-                  </NextButtonContainer>
                 </>
               ) : (
                 <>
@@ -687,7 +666,42 @@ const QuizPage = () => {
                   )}
                 </>
               )}
-            </>
+            </CardContent>
+          )}
+          {quizData && current && current.set <= quizData.length - 1 && (
+            <NextButtonContainer>
+              {current.type === "kanjiQuestion" ||
+              (current.type === "wordQuestions" && answered) ? (
+                <Button
+                  full
+                  monochrome
+                  onClick={() => handleNextQuestion()}
+                  disabled={
+                    current.type === "kanjiQuestion" &&
+                    !quizData[current.set]?.kanjiQuestion?.options.some(
+                      (opt) => opt.isSelected
+                    )
+                  }
+                >
+                  Next
+                </Button>
+              ) : (
+                <Button
+                  full
+                  monochrome
+                  disabled={
+                    !quizData[current.set]?.wordQuestions[current.wordIndex]
+                      .userInput.value
+                  }
+                  onClick={() => {
+                    dispatch(checkReading());
+                    dispatch(setAnswered(true));
+                  }}
+                >
+                  Check
+                </Button>
+              )}
+            </NextButtonContainer>
           )}
         </Card>
       </QuizPageContainer>

@@ -23,6 +23,8 @@ const initialState = {
   },
   answered: false,
   retry: false,
+  retryQuestions: 0,
+  currentWrongQuestion: 0,
 };
 
 export const quizPageSlice = createSlice({
@@ -31,10 +33,13 @@ export const quizPageSlice = createSlice({
   reducers: {
     setQuizData(state, action) {
       state.quizData = action.payload;
-      console.log(action.payload)
+      console.log("quizData: ", action.payload);
     },
     setCurrentType(state, action) {
       state.current.type = action.payload;
+    },
+    setRetryQuestions(state, action) {
+      state.retryQuestions = action.payload;
     },
     selectOption(state, action) {
       const [optionIndex, option] = [...action.payload];
@@ -181,6 +186,8 @@ export const quizPageSlice = createSlice({
       ) {
         nextQuestion();
       }
+      
+      state.currentWrongQuestion += 1;
     },
     retryQuiz(state) {
       state.retry = true;
@@ -212,6 +219,8 @@ export const quizPageSlice = createSlice({
         wordIndex: 0,
       };
       state.answered = false;
+      state.retryQuestions = state.score.wrongAnswers;
+      state.currentWrongQuestion = 0;
       state.score.wrongAnswers = 0;
       state.current = {
         set: state.firstWrongQuestion.set,
@@ -223,7 +232,6 @@ export const quizPageSlice = createSlice({
         type: "",
         wordIndex: 0,
       };
-
     },
     resetQuiz(state) {
       state.quizData = [];
@@ -248,6 +256,8 @@ export const quizPageSlice = createSlice({
       };
       state.answered = false;
       state.retry = false;
+      state.retryQuestions = 0;
+      state.currentWrongQuestion = 0;
     },
   },
 });
@@ -255,6 +265,7 @@ export const quizPageSlice = createSlice({
 export const {
   setQuizData,
   setCurrentType,
+  setRetryQuestions,
   selectOption,
   setWordReading,
   checkReading,
