@@ -1,44 +1,45 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import tw from "twin.macro";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Button from "../../Button";
+import { setPage } from "store/app/appSlice";
+import { resetQuiz } from "store/app/quizPageSlice";
 
 const BackButtonContainer = styled.div`
-  ${tw`w-full mr-auto mb-5 sm:mb-8 flex flex-row justify-between`}
+  ${tw` sm:w-full mr-auto sm:mb-8 flex flex-row justify-between`}
+  ${({ mobile }) =>
+    mobile &&
+    css`
+      ${tw`sm:hidden`}
+    `}
+  ${({ desktop }) =>
+    desktop &&
+    css`
+      ${tw`hidden sm:block`}
+    `}
 `;
 
 const BackButton = styled.div`
   ${tw`w-fit`}
 `;
 
-const ScoreContainer = styled.div`
-  ${tw`flex flex-col sm:flex-row gap-2 sm:gap-4 text-xl sm:text-2xl`}
-`;
+const BackButtonContainerComponent = ({mobile, desktop}) => {
+  const dispatch = useDispatch();
+  const handleBackToStudy = () => {
+    dispatch(setPage("study"));
+    dispatch(resetQuiz());
+  };
 
-const CorrectAnswersScore = styled.div`
-  ${tw`text-green-500`}
-`;
-
-const WrongAnswersScore = styled.div`
-  ${tw`text-red-500`}
-`;
-
-const BackButtonContainerComponent = ({ onClick, current, quizData, score }) => (
-  <BackButtonContainer>
-    <BackButton>
-      <Button onClick={onClick} full>
-        Back
-      </Button>
-    </BackButton>
-    {current.set <= quizData.length - 1 && (
-      <ScoreContainer>
-        <CorrectAnswersScore>
-          Correct: {score.correctAnswers}
-        </CorrectAnswersScore>
-        <WrongAnswersScore>Wrong: {score.wrongAnswers}</WrongAnswersScore>
-      </ScoreContainer>
-    )}
-  </BackButtonContainer>
-);
+  return (
+    <BackButtonContainer mobile={mobile} desktop={desktop}>
+      <BackButton>
+        <Button onClick={() => handleBackToStudy()} full>
+          Back
+        </Button>
+      </BackButton>
+    </BackButtonContainer>
+  )
+};
 
 export default BackButtonContainerComponent;

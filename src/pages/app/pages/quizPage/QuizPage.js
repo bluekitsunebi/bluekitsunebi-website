@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { setPage } from "store/app/appSlice";
 import {
   setQuizData,
   setCurrentType,
@@ -11,18 +10,13 @@ import {
   setAnswered,
   nextQuestion,
   nextWrongQuestion,
-  resetQuiz,
 } from "store/app/quizPageSlice";
 import BackButtonContainer from "./BackButtonContainer";
 import QuizCard from "./QuizCard";
 
 const QuizPageContainer = styled.div`
   ${tw`w-full flex flex-col gap-2 sm:gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
-    justify-evenly`}
-  height: calc(100vh - 8rem);
-  @media (min-width: 640px) {
-    height: auto;
-  }
+    justify-start`}
 `;
 
 const QuizPage = () => {
@@ -274,19 +268,9 @@ const QuizPage = () => {
     }
   };
 
-  const handleBackToStudy = () => {
-    dispatch(setPage("study"));
-    dispatch(resetQuiz());
-  };
-
   return (
     <>
-      <BackButtonContainer
-        onClick={handleBackToStudy}
-        current={current}
-        quizData={quizData}
-        score={score}
-      />
+      <BackButtonContainer desktop/>
       <QuizPageContainer>
         <QuizCard
           handleWordReadingChange={handleWordReadingChange}

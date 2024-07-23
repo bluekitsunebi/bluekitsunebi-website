@@ -16,10 +16,10 @@ import {
 const StudyPageContainer = styled.div`
   ${tw`w-full flex flex-col gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
     justify-evenly`}
-  height: calc(100vh - 8rem);
-  @media (min-width: 640px) {
-    height: auto;
-  }
+
+
+
+
 `;
 
 const BackButtonContainer = styled.div`
@@ -31,11 +31,17 @@ const BackButton = styled.div`
 `;
 
 const Card = styled.div`
-  ${tw`flex flex-col gap-5 w-full h-full
+  ${tw`flex flex-col gap-5 w-full
       justify-evenly
+      
+
       sm:h-fit sm:my-auto
       sm:bg-white sm:px-16 sm:py-16 sm:gap-16 sm:rounded-3xl sm:max-w-screen-lg
       sm:min-h-52r`}
+      min-height: calc(100vh - 4rem - 66px);
+      @media (min-width: 640px) {
+      height: auto;
+      }
 `;
 
 const KanjiContainer = styled.div`

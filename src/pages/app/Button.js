@@ -103,6 +103,25 @@ const ButtonWrapper = styled.div`
     css`
       ${tw`pointer-events-none cursor-default opacity-50`}
     `}
+  ${({ roundColored }) =>
+    roundColored &&
+    css`
+      ${tw`
+      rounded-full px-2 sm:px-4 sm:rounded text-5xl sm:text-2xl
+
+      bg-primary-500 text-white border-0
+      hover:bg-primary-600 
+      hover:text-white 
+      hover:border-0
+
+      sm:bg-gray-300
+      sm:text-gray-700
+      sm:border-gray-400
+      sm:hover:bg-gray-400
+      sm:hover:text-gray-800
+      
+      `}
+    `}
 `;
 
 const Button = ({
@@ -120,6 +139,7 @@ const Button = ({
   transparent,
   full,
   disabled,
+  roundColored,
 }) => {
   return (
     <ButtonWrapper
@@ -136,6 +156,7 @@ const Button = ({
       transparent={transparent}
       full={full}
       disabled={disabled}
+      roundColored={roundColored}
     >
       {children}
     </ButtonWrapper>

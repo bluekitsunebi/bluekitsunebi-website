@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const AppWraper = styled.div`
   ${tw`
-    w-screen 
+    w-full
     min-h-screen 
     flex 
     flex-col 
@@ -21,6 +21,8 @@ const AppWraper = styled.div`
     text-base 
     sm:text-lg
     md:text-xl
+    bg-white
+    sm:bg-transparent
     `}
 `;
 
