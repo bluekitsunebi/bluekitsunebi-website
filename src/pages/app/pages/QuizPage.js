@@ -16,6 +16,7 @@ import {
   retryQuiz,
   resetQuiz,
 } from "store/app/quizPageSlice";
+import ConfettiComponent from "./quizPage/ConfettiComponent";
 
 const BackButtonContainer = styled.div`
   ${tw`w-full mr-auto mb-5 sm:mb-8 flex flex-row
@@ -149,6 +150,11 @@ const Title = styled.div`
 
 const FinalScoreContainer = styled.div`
   ${tw`flex flex-col gap-2`}
+  ${({ perfectScore }) =>
+    perfectScore &&
+    css`
+      ${tw`mx-auto`}
+    `}
 `;
 
 const FinalScore = styled.div`
@@ -225,6 +231,10 @@ const Divider = styled.div`
 
 const RetryButtonContainer = styled.div`
   ${tw`w-fit mx-auto`}
+`;
+
+const ConfettiContainer = styled.div`
+  ${tw`flex flex-col`}
 `;
 
 const QuizPage = () => {
@@ -571,9 +581,14 @@ const QuizPage = () => {
                 <>
                   <Title>
                     <div>Quiz ended</div>
-                    {score.wrongAnswers === 0 && <div>Congratulations!</div>}
+                    {score.wrongAnswers === 0 && (
+                      <ConfettiContainer>
+                        <div>Congratulations!</div>
+                        <ConfettiComponent />
+                      </ConfettiContainer>
+                    )}
                   </Title>
-                  <FinalScoreContainer>
+                  <FinalScoreContainer perfectScore={score.wrongAnswers === 0}>
                     <div>Your result</div>
                     <FinalScore>
                       <FinalScoreCorrectAnswers>
