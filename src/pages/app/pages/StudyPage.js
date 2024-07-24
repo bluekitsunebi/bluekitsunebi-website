@@ -16,10 +16,6 @@ import {
 const StudyPageContainer = styled.div`
   ${tw`w-full flex flex-col gap-5 sm:gap-10 items-center text-xl sm:text-3xl sm:my-auto
     justify-evenly`}
-
-
-
-
 `;
 
 const BackButtonContainer = styled.div`
@@ -33,8 +29,6 @@ const BackButton = styled.div`
 const Card = styled.div`
   ${tw`flex flex-col gap-5 w-full
       justify-evenly
-      
-
       sm:h-fit sm:my-auto
       sm:bg-white sm:px-16 sm:py-16 sm:gap-16 sm:rounded-3xl sm:max-w-screen-lg
       sm:min-h-52r`}

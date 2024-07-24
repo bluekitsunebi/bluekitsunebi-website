@@ -131,10 +131,10 @@ const KanjisContainer = styled.div`
   `}
   ${({ showAllKanjis }) =>
     showAllKanjis ?
-    css`
+      css`
       ${tw`h-full`}
     ` :
-    css`
+      css`
       ${tw`h-fit`}
     `}
   min-height: 7.75rem;
@@ -176,6 +176,7 @@ const LessonSelector = ({ show }) => {
   // const database = useSelector((state) => state.database.database);
   const levels = useSelector((state) => state.studySettings.levels);
   const studyLevel = useSelector((state) => state.studySettings.studyLevel);
+  const studyType = useSelector((state) => state.studySettings.studyType);
   const studyLesson = useSelector((state) => state.studySettings.studyLesson);
   const studyKanji = useSelector((state) => state.studySettings.studyKanji);
   const responseStudyLessons = useSelector(
@@ -225,7 +226,7 @@ const LessonSelector = ({ show }) => {
   const goToKanjiPage = (idKanji, idLesson) => {
     idLesson && dispatch(setStudyLesson(idLesson));
     dispatch(setStudyKanji(idKanji));
-    if(studyLevel && (studyLesson || idLesson) && (studyKanji || idKanji)){
+    if (studyLevel && (studyLesson || idLesson) && (studyKanji || idKanji)) {
       dispatch(setPage("study"));
     }
   };
@@ -234,18 +235,20 @@ const LessonSelector = ({ show }) => {
     <LessonSelectorWrapper show={show}>
       {(studyLesson || showAllKanjis) && (
         <SelectedLesson>
-          <MobileBrowseLessons>
-            <Icon hide={showAllKanjis}>
-              <PreviousIcon onClick={() => previousLesson()}></PreviousIcon>
-            </Icon>
-            <MobileIcon>
-              <Icon
-                hide={studyLesson === responseStudyLessons[studyLevel]?.length}
-              >
-                <NextIcon onClick={() => nextLesson()}></NextIcon>
+          {studyType === "kanji" &&
+            <MobileBrowseLessons>
+              <Icon hide={showAllKanjis}>
+                <PreviousIcon onClick={() => previousLesson()}></PreviousIcon>
               </Icon>
-            </MobileIcon>
-          </MobileBrowseLessons>
+              <MobileIcon>
+                <Icon
+                  hide={studyLesson === responseStudyLessons[studyLevel]?.length}
+                >
+                  <NextIcon onClick={() => nextLesson()}></NextIcon>
+                </Icon>
+              </MobileIcon>
+            </MobileBrowseLessons>
+          }
 
           <NameAndExpand>
             <Button
@@ -259,7 +262,7 @@ const LessonSelector = ({ show }) => {
                 {!showAllKanjis ? ` Lesson ${studyLesson}` : " All lessons"}
               </LessonName>
             </Button>
-            {(studyLesson || showAllKanjis) && (
+            {(studyLesson || showAllKanjis) && studyType === "kanji" && (
               <Icon onClick={() => handleShowAllLessons(!showAllLessons)}>
                 {!showAllLessons ? (
                   <CaretDown></CaretDown>
@@ -270,13 +273,15 @@ const LessonSelector = ({ show }) => {
             )}
           </NameAndExpand>
 
-          <DesktopIcon>
-            <Icon
-              hide={studyLesson === responseStudyLessons[studyLevel]?.length}
-            >
-              <NextIcon onClick={() => nextLesson()}></NextIcon>
-            </Icon>
-          </DesktopIcon>
+          {studyType === "kanji" &&
+            <DesktopIcon>
+              <Icon
+                hide={studyLesson === responseStudyLessons[studyLevel]?.length}
+              >
+                <NextIcon onClick={() => nextLesson()}></NextIcon>
+              </Icon>
+            </DesktopIcon>
+          }
         </SelectedLesson>
       )}
 
@@ -326,29 +331,29 @@ const LessonSelector = ({ show }) => {
             <KanjiList>
               {!showAllKanjis && studyLesson
                 ? responseStudyLessons[studyLevel]
-                    .find((lesson) => lesson.id === studyLesson)
-                    .kanjis.map((kanji) => (
-                      <Kanji
-                        key={`${kanji.id}`}
-                        onClick={() => goToKanjiPage(kanji.id)}
-                      >
-                        <Button monochrome isKanji>
-                          {kanji.kanji}
-                        </Button>
-                      </Kanji>
-                    ))
+                  .find((lesson) => lesson.id === studyLesson)
+                  .kanjis.map((kanji) => (
+                    <Kanji
+                      key={`${kanji.id}`}
+                      onClick={() => goToKanjiPage(kanji.id)}
+                    >
+                      <Button monochrome isKanji>
+                        {kanji.kanji}
+                      </Button>
+                    </Kanji>
+                  ))
                 : responseStudyLessons[studyLevel].map((kanjiLesson) =>
-                    kanjiLesson.kanjis.map((kanji) => (
-                      <Kanji
-                        key={`${kanji.id}`}
-                        onClick={() => goToKanjiPage(kanji.id, kanjiLesson.id)}
-                      >
-                        <Button monochrome isKanji>
-                          {kanji.kanji}
-                        </Button>
-                      </Kanji>
-                    ))
-                  )}
+                  kanjiLesson.kanjis.map((kanji) => (
+                    <Kanji
+                      key={`${kanji.id}`}
+                      onClick={() => goToKanjiPage(kanji.id, kanjiLesson.id)}
+                    >
+                      <Button monochrome isKanji>
+                        {kanji.kanji}
+                      </Button>
+                    </Kanji>
+                  ))
+                )}
             </KanjiList>
           </KanjisContainer>
         )}
