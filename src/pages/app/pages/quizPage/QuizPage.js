@@ -261,20 +261,12 @@ const QuizPage = () => {
     };
   }, [current, answered, quizData]);
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      e.target.blur();
-    }
-  };
-
   return (
     <>
       <BackButtonContainer desktop/>
       <QuizPageContainer>
         <QuizCard
           handleWordReadingChange={handleWordReadingChange}
-          handleKeyPress={handleKeyPress}
           handleNextQuestion={handleNextQuestion}
         ></QuizCard>
       </QuizPageContainer>

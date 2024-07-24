@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 import ProgressBar from "./ProgressBar";
@@ -39,6 +39,11 @@ const OptionsContainer = styled.div`
 
 const Option = styled.div`
   ${tw`w-full py-2 px-4 border border-primary-500 border-2 rounded hover:bg-gray-200 cursor-pointer select-none`}
+  ${({ preselect }) =>
+    preselect &&
+    css`
+      ${tw`bg-gray-200`}
+    `}
   ${({ isSelected }) =>
     isSelected &&
     css`
@@ -95,10 +100,10 @@ ${({ showAnswer, isCorrect }) =>
     showAnswer &&
     (isCorrect
       ? css`
-          ${tw`border-green-500 bg-green-500`}
+          ${tw`border-green-500 bg-green-500 focus:bg-green-500`}
         `
       : css`
-          ${tw`border-red-500 bg-red-500`}
+          ${tw`border-red-500 bg-red-500 focus:bg-red-500`}
         `)}
 `;
 
@@ -120,7 +125,6 @@ const Title = styled.div`
 
 const QuizCard = ({
   handleWordReadingChange,
-  handleKeyPress,
   handleNextQuestion,
 }) => {
   const dispatch = useDispatch();
@@ -132,6 +136,7 @@ const QuizCard = ({
   );
   const score = useSelector((state) => state.quizPage.score);
   const inputRef = useRef(null);
+  const [preselectedOptionIndex, setPreselectedOptionIndex] = useState(-1);
 
   const handleRetry = () => {
     dispatch(retryQuiz());
@@ -141,6 +146,59 @@ const QuizCard = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
+  }, [current]);
+
+  const handleKeyPress = (e) => {
+    if(current.type === "wordQuestions") {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.target.blur();
+      }
+    }
+  };
+
+  // preselect option with arrow up/down key
+
+  const handleKeyDown = (event) => {
+    if (current.type === "kanjiQuestion") {
+      if (event.key === "ArrowDown") {
+        setPreselectedOptionIndex((prevIndex) =>
+          prevIndex < quizData[current.set]?.kanjiQuestion?.options.length - 1
+            ? prevIndex + 1
+            : 0
+        );
+      } else if (event.key === "ArrowUp") {
+        setPreselectedOptionIndex((prevIndex) => {
+          return prevIndex > 0
+            ? prevIndex - 1
+            : quizData[current.set]?.kanjiQuestion?.options?.length - 1
+        }
+        );
+      } else if (event.key === "Enter") {
+        if (preselectedOptionIndex >= 0 && preselectedOptionIndex < quizData[current.set]?.kanjiQuestion?.options.length) {
+          const selectedOption = quizData[current.set]?.kanjiQuestion?.options[preselectedOptionIndex];
+          dispatch(selectOption([preselectedOptionIndex, selectedOption]));
+          setPreselectedOptionIndex(-1);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (current.type === "wordQuestions" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [current.type]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [preselectedOptionIndex, current, quizData]);
+
+  useEffect(() => {
+    setPreselectedOptionIndex(-1);
   }, [current]);
 
   return (
@@ -179,6 +237,7 @@ const QuizCard = ({
                         onTouchStart={() =>
                           dispatch(selectOption([optionIndex, option]))
                         }
+                        preselect={preselectedOptionIndex === optionIndex}
                       >
                         {option?.value.join(", ")}
                       </Option>
@@ -248,7 +307,6 @@ const QuizCard = ({
           )}
         </CardContent>
       )}
-      {/* 640px */}
       {quizData && current && current.set <= quizData.length - 1 && (
         <NextButtonContainer>
           {current.type === "kanjiQuestion" ||
