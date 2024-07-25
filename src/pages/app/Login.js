@@ -9,7 +9,7 @@ import initSqlJs from "sql.js";
 import dataBase from "../../db/kanji_vocab_database.db";
 import { setDatabase } from "store/app/databaseSlice";
 import { loginSuccess, logout } from "store/app/authSlice";
-import { setResponseStudyLessons } from "store/app/studySettingsSlice";
+import { setResponseStudyKanjiLessons } from "store/app/studySettingsSlice";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
@@ -113,7 +113,7 @@ const LoginPage = () => {
             kanjis: kanjis,
           });
         }
-        dispatch(setResponseStudyLessons({ lessons: lessons, level: level }));
+        dispatch(setResponseStudyKanjiLessons({ lessons: lessons, level: level }));
         stmt.free();
       } catch (error) {
         console.error(

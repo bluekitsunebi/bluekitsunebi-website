@@ -32,10 +32,10 @@ const Card = styled.div`
       sm:h-fit sm:my-auto
       sm:bg-white sm:px-16 sm:py-16 sm:gap-16 sm:rounded-3xl sm:max-w-screen-lg
       sm:min-h-52r`}
-      min-height: calc(100vh - 4rem - 66px);
-      @media (min-width: 640px) {
-      height: auto;
-      }
+  min-height: calc(100vh - 4rem - 66px);
+  @media (min-width: 640px) {
+    height: auto;
+  }
 `;
 
 const KanjiContainer = styled.div`
@@ -140,8 +140,8 @@ const StudyPage = () => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
-  const responseStudyLessons = useSelector(
-    (state) => state.studySettings.responseStudyLessons
+  const responseStudyKanjiLessons = useSelector(
+    (state) => state.studySettings.responseStudyKanjiLessons
   );
   const kanjiList = useSelector((state) => state.studyPage.kanjiList);
   const currentKanjiIndex = useSelector(
@@ -176,9 +176,9 @@ const StudyPage = () => {
   }, [kanjiId]);
 
   const getKanjiList = () => {
-    if (responseStudyLessons && level) {
+    if (responseStudyKanjiLessons && level) {
       if (!showAllKanjis && lessonId) {
-        const lesson = responseStudyLessons[level]?.find(
+        const lesson = responseStudyKanjiLessons[level]?.find(
           (lesson) => lesson?.id === lessonId
         );
         if (lesson && lesson.kanjis) {
@@ -202,7 +202,7 @@ const StudyPage = () => {
         }
       } else if (showAllKanjis) {
         let list =
-          responseStudyLessons[level]?.flatMap((lesson) =>
+          responseStudyKanjiLessons[level]?.flatMap((lesson) =>
             lesson.kanjis.map((kanji) => ({
               level: level,
               idLesson: lesson.id,
@@ -229,7 +229,6 @@ const StudyPage = () => {
       return null;
     }
   };
-  
 
   const getKanjiData = async () => {
     if (level && lessonId && kanjiId) {
@@ -257,8 +256,10 @@ const StudyPage = () => {
         while (stmt.step()) {
           const row = stmt.getAsObject();
           let words = [];
-          try {words = JSON.parse(row.words)} catch (error) {
-            console.error('Failed to convert words', error);
+          try {
+            words = JSON.parse(row.words);
+          } catch (error) {
+            console.error("Failed to convert words", error);
           }
 
           return {
@@ -299,7 +300,7 @@ const StudyPage = () => {
 
   const goToQuiz = () => {
     dispatch(setPage("quiz"));
-  }
+  };
 
   return (
     <>
@@ -352,7 +353,9 @@ const StudyPage = () => {
             ) : (
               <StartQuizContainer>
                 <StartQuizButtonContainer>
-                  <Button full onClick={() => goToQuiz()}>Start quiz</Button>
+                  <Button full onClick={() => goToQuiz()}>
+                    Start quiz
+                  </Button>
                 </StartQuizButtonContainer>
               </StartQuizContainer>
             )}
@@ -361,7 +364,8 @@ const StudyPage = () => {
               <WordsList hide={kanjiList[currentKanjiIndex]?.lessonDone}>
                 {kanjiData?.words?.map((word) => (
                   <div key={word.id}>
-                    {word.word} ({word.kana_reading}) = {word?.meanings.join(", ")}
+                    {word.word} ({word.kana_reading}) ={" "}
+                    {word?.meanings.join(", ")}
                   </div>
                 ))}
               </WordsList>

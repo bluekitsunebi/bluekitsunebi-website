@@ -4,7 +4,15 @@ const initialState = {
   // study
 
   levels: ["N5", "N4", "N3", "N2", "N1"],
-  responseStudyLessons: {
+  responseStudyKanjiLessons: {
+    N5: [],
+    N4: [],
+    N3: [],
+    N2: [],
+    N1: [],
+  },
+  // TO DO
+  responseStudyVocabularyLessons: {
     N5: [],
     N4: [],
     N3: [],
@@ -19,8 +27,9 @@ const initialState = {
   studyType: null, // vocabulary, kanji
   studyLesson: null, // number
   studyKanji: null,
-
-  showAllKanjis: false, // LessonSelector
+  // LessonSelector
+  showAllKanjis: false, 
+  showAllLessons: false,
 
   // quiz
 
@@ -88,9 +97,12 @@ export const studySettingsSlice = createSlice({
   initialState,
   reducers: {
     //lessons
-    setResponseStudyLessons(state, action) {
-      const {lessons, level} = action.payload;
-      state.responseStudyLessons[level] = lessons;
+    setResponseStudyKanjiLessons(state, action) {
+      const { lessons, level } = action.payload;
+      state.responseStudyKanjiLessons[level] = lessons;
+    },
+    // TO DO
+    setResponseStudyVocabularyLessons() {
     },
     setResponseQuizLessons(state, action) {
       state.responseQuizLessons = action.payload;
@@ -106,6 +118,14 @@ export const studySettingsSlice = createSlice({
     },
     setStudyType(state, action) {
       state.studyType = action.payload;
+      state.studyLesson = null;
+      state.showAllLessons = true;
+      if (action.payload === "vocabulary") {
+        state.showAllKanjis = false;
+        state.studyKanji = null;
+      } else if (action.payload === "vocabulary") {
+        
+      }
     },
     setStudyLesson(state, action) {
       state.studyLesson = action.payload;
@@ -116,9 +136,13 @@ export const studySettingsSlice = createSlice({
     setQuizSettings(state, action) {
       state.quizSettings = action.payload;
     },
+    // LessonSelector
     setShowAllKanjis(state, action) {
       state.showAllKanjis = action.payload;
-    }, // LessonSelector
+    },
+    setShowAllLessons(state, action) {
+      state.showAllLessons = action.payload;
+    },
     // quiz
     levelDisplay(state, action) {
       const level = action.payload;
@@ -174,7 +198,8 @@ export const studySettingsSlice = createSlice({
 
 export const {
   // lessons
-  setResponseStudyLessons,
+  setResponseStudyKanjiLessons,
+  setResponseStudyVocabularyLessons,
   setResponseQuizLessons,
 
   //settings
@@ -184,7 +209,9 @@ export const {
   setStudyType,
   setStudyLesson,
   setStudyKanji,
-  setShowAllKanjis, // LessonSelector
+  // LessonSelector
+  setShowAllKanjis, 
+  setShowAllLessons,
   // quiz
   setQuizSettings,
   levelDisplay,
