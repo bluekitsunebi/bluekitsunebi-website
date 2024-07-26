@@ -98,8 +98,10 @@ export const studySettingsSlice = createSlice({
   reducers: {
     //lessons
     setResponseStudyKanjiLessons(state, action) {
-      const { lessons, level } = action.payload;
-      state.responseStudyKanjiLessons[level] = lessons;
+      const lessons = action.payload;
+      state.levels.forEach(level => {
+        state.responseStudyKanjiLessons[level] = lessons[level];
+      });
     },
     // TO DO
     setResponseStudyVocabularyLessons() {

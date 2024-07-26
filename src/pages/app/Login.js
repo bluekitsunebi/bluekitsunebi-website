@@ -9,7 +9,10 @@ import initSqlJs from "sql.js";
 import dataBase from "../../db/kanji_vocab_database.db";
 import { setDatabase } from "store/app/databaseSlice";
 import { loginSuccess, logout } from "store/app/authSlice";
-import { setResponseStudyKanjiLessons } from "store/app/studySettingsSlice";
+import {
+  setResponseStudyKanjiLessons,
+  setResponseStudyVocabularyLessons,
+} from "store/app/studySettingsSlice";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
@@ -88,32 +91,99 @@ const LoginPage = () => {
 
   const levels = useSelector((state) => state.studySettings.levels);
 
-  const getLessons = async (level) => {
+  const getKanjiLessons = async (level) => {
     if (level) {
       try {
         const query = `
-      SELECT kl.id_lesson, 
-      '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
-      FROM (
-        SELECT DISTINCT level, id_lesson, id_kanji 
-        FROM kanji_lessons
-        WHERE level = '${level}'
-      ) kl
-      JOIN kanjis k ON kl.id_kanji = k.id
-      GROUP BY kl.level, kl.id_lesson
-      ORDER BY kl.level DESC, kl.id_lesson ASC;
-      `;
+          WITH KanjiList AS (
+            SELECT 
+              kl.level,
+              kl.id_lesson, 
+              '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
+            FROM (
+              SELECT DISTINCT level, id_lesson, id_kanji 
+              FROM kanji_lessons
+            ) kl
+            JOIN kanjis k ON kl.id_kanji = k.id
+            GROUP BY kl.level, kl.id_lesson
+          )
+          SELECT 
+            kl.level,
+            kl.id_lesson,
+            kl.kanjis
+          FROM KanjiList kl
+          ORDER BY kl.level DESC, kl.id_lesson ASC;
+        `;
         const stmt = database.prepare(query);
-        const lessons = [];
+        const lessons = {
+          N5: [],
+          N4: [],
+          N3: [],
+          N2: [],
+          N1: [],
+        };
         while (stmt.step()) {
           const row = stmt.getAsObject();
           const kanjis = JSON.parse(row.kanjis);
-          lessons.push({
+          const level = row.level;
+          lessons[level].push({
             id: row.id_lesson,
             kanjis: kanjis,
           });
         }
-        dispatch(setResponseStudyKanjiLessons({ lessons: lessons, level: level }));
+        dispatch(setResponseStudyKanjiLessons(lessons));
+        stmt.free();
+      } catch (error) {
+        console.error(
+          `Failed to load lessons for ${level} from database`,
+          error
+        );
+      }
+    }
+  };
+
+  // TO DO
+  const getVocabularyLessons = async (level) => {
+    if (level) {
+      try {
+        const query = `
+          WITH KanjiList AS (
+            SELECT 
+              kl.level,
+              kl.id_lesson, 
+              '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
+            FROM (
+              SELECT DISTINCT level, id_lesson, id_kanji 
+              FROM kanji_lessons
+            ) kl
+            JOIN kanjis k ON kl.id_kanji = k.id
+            GROUP BY kl.level, kl.id_lesson
+          )
+          SELECT 
+            kl.level,
+            kl.id_lesson,
+            kl.kanjis
+          FROM KanjiList kl
+          ORDER BY kl.level DESC, kl.id_lesson ASC;
+        `;
+        const stmt = database.prepare(query);
+        const lessons = {
+          N5: [],
+          N4: [],
+          N3: [],
+          N2: [],
+          N1: [],
+        };
+        while (stmt.step()) {
+          const row = stmt.getAsObject();
+          const kanjis = JSON.parse(row.kanjis);
+          const level = row.level;
+          lessons[level].push({
+            id: row.id_lesson,
+            kanjis: kanjis,
+          });
+        }
+        dispatch(setResponseStudyKanjiLessons(lessons));
         stmt.free();
       } catch (error) {
         console.error(
@@ -126,14 +196,24 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (database) {
+      // Kanji Lessons
       const setLessons = async () => {
         await Promise.all(
           levels.map((level) => {
-            getLessons(level);
+            getKanjiLessons(level);
           })
         );
       };
       setLessons();
+      // Vocabulary Lessons
+      const setVocabularyLessons = async () => {
+        await Promise.all(
+          levels.map((level) => {
+            getVocabularyLessons(level);
+          })
+        );
+      };
+      setVocabularyLessons();
     }
   }, [database]);
 

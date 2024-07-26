@@ -42,7 +42,7 @@ const Option = styled.div`
   ${({ preselect }) =>
     preselect &&
     css`
-      ${tw`bg-gray-200`}
+      ${tw`bg-gray-300 hover:bg-gray-300`}
     `}
   ${({ isSelected }) =>
     isSelected &&

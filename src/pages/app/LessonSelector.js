@@ -181,6 +181,10 @@ const LessonSelector = ({ show }) => {
   const responseStudyKanjiLessons = useSelector(
     (state) => state.studySettings.responseStudyKanjiLessons
   );
+  // TO DO
+  const responseStudyVocabularyLessons = useSelector(
+    (state) => state.studySettings.responseStudyVocabularyLessons
+  );
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
