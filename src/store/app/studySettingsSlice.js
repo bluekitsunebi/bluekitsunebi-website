@@ -98,11 +98,9 @@ export const studySettingsSlice = createSlice({
     //lessons
     setResponseStudyKanjiLessons(state, action) {
       state.responseStudyKanjiLessons = action.payload;
-      console.log("Kanji Lessons: ", state.responseStudyKanjiLessons);
     },
     setResponseStudyVocabularyLessons(state, action) {
       state.responseStudyVocabularyLessons = action.payload;
-      console.log("Vocabulary Lessons: ", state.responseStudyVocabularyLessons);
     },
     setResponseQuizLessons(state, action) {
       state.responseQuizLessons = action.payload;
@@ -123,14 +121,7 @@ export const studySettingsSlice = createSlice({
       if (action.payload === "vocabulary") {
         state.showAllKanjis = false;
         state.studyKanji = null;
-        // if(state.studyLesson) {
-        //   state.studyLesson = null;
-        // }
-        console.log("studyLevel: ", state.studyLevel);
       } else if (action.payload === "kanji") {
-        // if(state.studyLesson) {
-        //   state.studyLesson = null;
-        // }
       }
     },
     setStudyLesson(state, action) {

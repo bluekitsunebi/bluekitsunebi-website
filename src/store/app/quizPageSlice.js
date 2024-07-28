@@ -25,6 +25,9 @@ const initialState = {
   retry: false,
   retryQuestions: 0,
   currentWrongQuestion: 0,
+
+  // vocabulary
+  currentVocabularyQuestion: 0,
 };
 
 export const quizPageSlice = createSlice({
@@ -258,6 +261,12 @@ export const quizPageSlice = createSlice({
       state.retryQuestions = 0;
       state.currentWrongQuestion = 0;
     },
+
+    // vocabulary
+
+    setCurrentVocabularyQuestion(state, action) {
+      state.currentVocabularyQuestion = action.payload;
+    }
   },
 });
 

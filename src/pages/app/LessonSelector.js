@@ -200,14 +200,19 @@ const LessonSelector = ({ show }) => {
   };
 
   const nextLesson = () => {
-    dispatch(setShowAllKanjis(false));
-
-    if (!showAllKanjis) {
-      if (studyLesson < responseStudyKanjiLessons[studyLevel]?.length) {
+    if (studyType === "kanji") {
+      dispatch(setShowAllKanjis(false));
+      if (!showAllKanjis) {
+        if (studyLesson < responseStudyKanjiLessons[studyLevel]?.length) {
+          dispatch(setStudyLesson(studyLesson + 1));
+        }
+      } else {
+        dispatch(setStudyLesson(1));
+      }
+    } else if (studyType === "vocabulary") {
+      if (studyLesson < responseStudyVocabularyLessons[studyLevel]?.length) {
         dispatch(setStudyLesson(studyLesson + 1));
       }
-    } else {
-      dispatch(setStudyLesson(1));
     }
   };
 
@@ -215,15 +220,15 @@ const LessonSelector = ({ show }) => {
     if (studyLesson && studyLesson > 1) {
       dispatch(setStudyLesson(studyLesson - 1));
     } else if (studyLesson === 1) {
-      dispatch(setStudyLesson(null));
-      dispatch(setShowAllKanjis(true));
+      if (studyType === "kanji") {
+        dispatch(setStudyLesson(null));
+        dispatch(setShowAllKanjis(true));
+      }
     }
   };
 
   const handleShowAllLessons = (showAll) => {
-    if (studyType === "kanji") {
-      dispatch(setShowAllLessons(showAll));
-    }
+    dispatch(setShowAllLessons(showAll));
   };
 
   const handleShowAllKanjis = async (showAllKanjis = !showAllKanjis) => {
@@ -242,7 +247,7 @@ const LessonSelector = ({ show }) => {
 
   const goToVocabularyPage = (idLesson) => {
     if (idLesson) {
-      if (idLesson !== "allLessons") {
+      if (idLesson !== studyLesson) {
         dispatch(setStudyLesson(idLesson));
       }
       dispatch(setPage("study"));
@@ -253,27 +258,25 @@ const LessonSelector = ({ show }) => {
     <LessonSelectorWrapper show={show}>
       {(studyLesson || showAllKanjis) && (
         <SelectedLesson>
-          {studyType === "kanji" && (
-            <MobileBrowseLessons>
-              <Icon hide={showAllKanjis}>
-                <PreviousIcon onClick={() => previousLesson()}></PreviousIcon>
+          <MobileBrowseLessons>
+            <Icon hide={(studyType === "kanji" && showAllKanjis) || (studyType === "vocabulary" && studyLesson === 1)}>
+              <PreviousIcon onClick={() => previousLesson()}></PreviousIcon>
+            </Icon>
+            <MobileIcon>
+              <Icon
+                hide={(studyType === "kanji" &&
+                  (studyLesson === responseStudyKanjiLessons[studyLevel]?.length || showAllKanjis)) || (studyType === "vocabulary" && studyLesson === responseStudyVocabularyLessons[studyLevel]?.length)
+                }
+              >
+                <NextIcon onClick={() => nextLesson()}></NextIcon>
               </Icon>
-              <MobileIcon>
-                <Icon
-                  hide={
-                    studyLesson === responseStudyKanjiLessons[studyLevel]?.length
-                  }
-                >
-                  <NextIcon onClick={() => nextLesson()}></NextIcon>
-                </Icon>
-              </MobileIcon>
-            </MobileBrowseLessons>
-          )}
+            </MobileIcon>
+          </MobileBrowseLessons>
 
           <NameAndExpand>
             <Button
               onClick={() => {
-                handleShowAllLessons(!showAllLessons);
+                studyType === "kanji" ? handleShowAllLessons(!showAllLessons) : goToVocabularyPage(studyLesson);
               }}
               monochrome
             >
@@ -293,21 +296,19 @@ const LessonSelector = ({ show }) => {
             )}
           </NameAndExpand>
 
-          {studyType === "kanji" && (
-            <DesktopIcon>
-              <Icon
-                hide={studyLesson === responseStudyKanjiLessons[studyLevel]?.length}
-              >
-                <NextIcon onClick={() => nextLesson()}></NextIcon>
-              </Icon>
-            </DesktopIcon>
-          )}
+          <DesktopIcon>
+            <Icon
+              hide={((studyType === "kanji") && (studyLesson === responseStudyKanjiLessons[studyLevel]?.length || showAllKanjis)) || (studyType === "vocabulary" && studyLesson === responseStudyVocabularyLessons[studyLevel]?.length)}
+            >
+              <NextIcon onClick={() => nextLesson()}></NextIcon>
+            </Icon>
+          </DesktopIcon>
         </SelectedLesson>
       )}
 
       {((((!studyLesson && !showAllKanjis) || showAllLessons) &&
         responseStudyKanjiLessons[studyLevel]?.length !== 0) ||
-        (studyType === "vocabulary" && responseStudyVocabularyLessons[studyLevel]?.length !== 0) ) &&
+        (studyType === "vocabulary" && responseStudyVocabularyLessons[studyLevel]?.length !== 0)) &&
         <Lessons>
           {studyType === "kanji" &&
             <LessonContainer

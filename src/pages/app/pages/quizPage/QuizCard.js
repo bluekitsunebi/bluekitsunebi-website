@@ -10,7 +10,7 @@ import FinalScoreContainer from "./FinalScoreContainer";
 import ReviewContainer from "./ReviewContainer";
 import RetryButtonContainer from "./RetryButtonContainer";
 import ConfettiComponent from "./ConfettiComponent";
-import { GoChevronRight as NextQuestionIcon} from "react-icons/go";
+import { GoChevronRight as NextQuestionIcon } from "react-icons/go";
 
 const Card = styled.div`
   ${tw`flex flex-col gap-5 sm:gap-2 justify-between h-full w-full sm:h-fit sm:my-auto sm:bg-white sm:px-16 sm:py-16 sm:rounded-3xl sm:max-w-screen-lg sm:min-h-35r`}
@@ -60,10 +60,10 @@ const Option = styled.div`
           ${tw`bg-green-500 border-green-500`}
         `
       : isSelected && !isCorrect
-      ? css`
+        ? css`
           ${tw`bg-red-500 border-red-500`}
         `
-      : disabled &&
+        : disabled &&
         !isSelected &&
         isCorrect &&
         css`
@@ -123,11 +123,13 @@ const Title = styled.div`
   ${tw`mx-auto flex flex-col text-center gap-4`}
 `;
 
+// TO DO
 const QuizCard = ({
   handleWordReadingChange,
   handleNextQuestion,
 }) => {
   const dispatch = useDispatch();
+  const type = useSelector((state) => state.studySettings.studyType);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
   const answered = useSelector((state) => state.quizPage.answered);
@@ -137,6 +139,8 @@ const QuizCard = ({
   const score = useSelector((state) => state.quizPage.score);
   const inputRef = useRef(null);
   const [preselectedOptionIndex, setPreselectedOptionIndex] = useState(-1);
+  // vocabulary
+  const currentVocabularyQuestion = useSelector((state) => state.quizPage.currentVocabularyQuestion);
 
   const handleRetry = () => {
     dispatch(retryQuiz());
@@ -149,7 +153,7 @@ const QuizCard = ({
   }, [current]);
 
   const handleKeyPress = (e) => {
-    if(current.type === "wordQuestions") {
+    if (current.type === "wordQuestions") {
       if (e.key === "Enter") {
         e.preventDefault();
         e.target.blur();
@@ -203,8 +207,9 @@ const QuizCard = ({
 
   return (
     <Card>
-      {quizData && current && <ProgressBar />}
-      {quizData && current && score && (
+      {/* TO DO - currentVocabularyQuestion, current */}
+      {quizData && ((type === "kanji" && current) || (type === "vocabulary")) && <ProgressBar />}
+      {quizData && ((type === "kanji" && current) || type === "vocabulary") && score && (
         <CardContent>
           {current.set <= quizData.length - 1 ? (
             <>
@@ -217,7 +222,7 @@ const QuizCard = ({
                 {current.type === "kanjiQuestion"
                   ? quizData[current.set]?.kanjiQuestion?.kanji.kanji
                   : quizData[current.set]?.wordQuestions[current.wordIndex].word
-                      .word}
+                    .word}
               </Symbols>
 
               {current.type === "kanjiQuestion" ? (
@@ -310,7 +315,7 @@ const QuizCard = ({
       {quizData && current && current.set <= quizData.length - 1 && (
         <NextButtonContainer>
           {current.type === "kanjiQuestion" ||
-          (current.type === "wordQuestions" && answered) ? (
+            (current.type === "wordQuestions" && answered) ? (
             <Button
               full
               monochrome

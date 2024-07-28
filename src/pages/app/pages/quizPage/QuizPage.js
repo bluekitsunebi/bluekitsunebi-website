@@ -32,6 +32,9 @@ const QuizPage = () => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
+  const wordsData = useSelector(
+    (state) => state.studyPage.wordsData
+  );
 
   const getQuizData = async () => {
     if (level && lessonId) {
@@ -107,7 +110,36 @@ const QuizPage = () => {
 
         // VOCABULARY
       } else if (type === "vocabulary") {
-        let query = ``;
+        let quizData = [];
+        let wordsMeanings = [];
+        wordsData.forEach(word => {
+          wordsMeanings.push(word.meanings);
+        });
+        wordsData.forEach(word => {
+          let options = [];
+          let correctOption = null;
+          wordsMeanings.forEach(meaning => {
+            let isCorrect = meaning === word.meanings;
+            let option = {
+              value: meaning,
+              isCorrect: isCorrect,
+              isSelected: false,
+            };
+            if (!isCorrect) {
+              options.push(option);
+            } else correctOption = option;
+          });
+          options = options.slice(0, 2);
+          options.push(correctOption);
+          options.sort(() => Math.random() - 0.5);
+          let question = {
+            word: word.word,
+            options: options
+          };
+          quizData.push(question);
+        });
+        quizData.sort(() => Math.random() - 0.5);
+        return quizData;
       } else return null;
     } else return null;
   };
@@ -214,6 +246,10 @@ const QuizPage = () => {
       dispatch(setCurrentType("kanjiQuestion"));
     }
   }, []);
+
+  useEffect(() => {
+    console.log("quizData: ", quizData);
+  }, [quizData]);
 
   const handleWordReadingChange = (e) => {
     if (type === "kanji") {
