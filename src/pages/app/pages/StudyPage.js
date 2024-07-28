@@ -250,7 +250,6 @@ const StudyPage = () => {
             w.word,
             w.meanings,
             w.parts_of_speech,
-            w.romaji_reading,
             w.kana_reading
           FROM 
             vocab_lessons vl
@@ -268,7 +267,6 @@ const StudyPage = () => {
               word: row.word,
               meanings: JSON.parse(row.meanings),
               parts_of_speech: JSON.parse(row.parts_of_speech),
-              romaji_reading: row.romaji_reading,
               kana_reading: row.kana_reading,
             }
           );

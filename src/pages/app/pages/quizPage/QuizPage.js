@@ -210,64 +210,69 @@ const QuizPage = () => {
       dispatch(setQuizData(data));
     };
     fetchQuizData();
-    dispatch(setCurrentType("kanjiQuestion"));
+    if (type === "kanji") {
+      dispatch(setCurrentType("kanjiQuestion"));
+    }
   }, []);
 
   const handleWordReadingChange = (e) => {
-    const value = e.target.value.replace(/\s+/g, "");
-    const regex =
-      /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
-    if (regex.test(value)) {
-      dispatch(setWordReading(value));
+    if (type === "kanji") {
+      const value = e.target.value.replace(/\s+/g, "");
+      const regex =
+        /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
+      if (regex.test(value)) {
+        dispatch(setWordReading(value));
+      }
     }
   };
 
   const handleNextQuestion = () => {
-    if (!retry) {
-      dispatch(nextQuestion());
-    } else {
-      dispatch(nextWrongQuestion());
+    if (type === "kanji") {
+      if (!retry) {
+        dispatch(nextQuestion());
+      } else {
+        dispatch(nextWrongQuestion());
+      }
+      current.type === "wordQuestions" && dispatch(setAnswered(false));
     }
-    current.type === "wordQuestions" && dispatch(setAnswered(false));
   };
 
   useEffect(() => {
-    const handleGlobalKeyPress = (e) => {
-      if (e.key !== "Enter") return;
-      let isDisabled = false;
-      if (current.set > quizData.length - 1) {
-        isDisabled = true;
-      } else if (current.type === "kanjiQuestion") {
-        isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some(
-          (opt) => opt.isSelected
-        );
-      } else if (current.type === "wordQuestions") {
-        if (!answered) {
-          e.preventDefault();
-          if (
-            quizData[current.set]?.wordQuestions[current.wordIndex].userInput
-              .value
-          ) {
-            dispatch(checkReading());
-            dispatch(setAnswered(true));
-          }
+    if (type === "kanji") {
+      const handleGlobalKeyPress = (e) => {
+        if (e.key !== "Enter") return;
+        let isDisabled = false;
+        if (current.set > quizData.length - 1) {
           isDisabled = true;
-        } else {
-          isDisabled = false;
+        } else if (current.type === "kanjiQuestion") {
+          isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some(
+            (opt) => opt.isSelected
+          );
+        } else if (current.type === "wordQuestions") {
+          if (!answered) {
+            e.preventDefault();
+            if (
+              quizData[current.set]?.wordQuestions[current.wordIndex].userInput
+                .value
+            ) {
+              dispatch(checkReading());
+              dispatch(setAnswered(true));
+            }
+            isDisabled = true;
+          } else {
+            isDisabled = false;
+          }
         }
-      }
-
-      if (!isDisabled) {
-        e.preventDefault();
-        handleNextQuestion();
-      }
-    };
-
-    document.addEventListener("keydown", handleGlobalKeyPress);
-
-    return () => {
-      document.removeEventListener("keydown", handleGlobalKeyPress);
-    };
+        if (!isDisabled) {
+          e.preventDefault();
+          handleNextQuestion();
+        }
+      };
+      document.addEventListener("keydown", handleGlobalKeyPress);
+      return () => {
+        document.removeEventListener("keydown", handleGlobalKeyPress);
+      };
+    }
   }, [current, answered, quizData]);
 
   return (
