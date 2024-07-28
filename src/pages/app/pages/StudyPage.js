@@ -10,6 +10,7 @@ import {
   setKanjiList,
   setCurrentKanjiIndex,
   setKanjiData,
+  setWordsData,
   reset,
 } from "store/app/studyPageSlice";
 
@@ -39,7 +40,16 @@ const Card = styled.div`
 `;
 
 const KanjiContainer = styled.div`
-  ${tw`flex flex-row gap-2 text-center w-full justify-between items-center h-36 sm:gap-10`}
+  ${tw`flex flex-row gap-2 text-center w-full justify-between items-center sm:gap-10`}
+  ${({ type  }) =>
+    type === "kanji" ?
+    css`
+      ${tw`h-36`}
+    ` : 
+    css`
+      ${tw`h-20`}
+    `
+  }
 `;
 
 const Icon = styled.div`
@@ -123,8 +133,72 @@ const WordsList = styled.div`
   }
 `;
 
+const LessonName = styled.div`
+  ${tw`text-3xl sm:text-4xl`}
+`;
+
+const VocabularyList = styled.div`
+  ${tw`flex flex-col gap-4 text-xl sm:text-3xl`}
+`;
+
+const Item = styled.span`
+  ${tw``}
+  line-height: 95%;
+  @media (min-width: 640px) {
+    line-height: 50%;
+  }
+`;
+
+const WordContainer = styled.div`
+  ${tw`w-fit inline-block `}
+  line-height: normal;
+  @media (min-width: 640px) {
+    line-height: 100%;
+  }
+`;
+
+const Word = styled.div`
+  ${tw`w-fit mx-auto text-3xl sm:text-4xl font-thin`}
+  line-height: 90%;
+`;
+
+const ReadingContainer = styled.div`
+  ${tw`w-full text-sm text-gray-500 `}
+  
+`;
+
+const Reading = styled.div`
+  ${tw`w-fit mx-auto`}
+  
+`;
+
+const Meanings = styled.span`
+  ${tw``}
+  line-height: normal;
+  @media (min-width: 640px) {
+    line-height: 110%;
+  }
+`;
+
+const PartsOfSpeech = styled.div`
+  ${tw`text-xs sm:text-xl text-gray-500 w-fit h-fit inline-block`}
+  line-height: normal;
+  @media (min-width: 640px) {
+    line-height: 90%;
+  }
+`;
+
 const StartQuizContainer = styled.div`
-  ${tw`w-full flex flex-col items-center justify-center min-h-28 sm:min-h-44`}
+  ${tw`w-full flex flex-col items-center justify-center`}
+  ${({ type  }) =>
+    type === "kanji" ?
+    css`
+      ${tw`min-h-28 sm:min-h-44`}
+    ` : 
+    css`
+      ${tw`mt-4 sm:mt-0`}
+    `
+  }
 `;
 
 const StartQuizButtonContainer = styled.div`
@@ -135,6 +209,7 @@ const StudyPage = () => {
   const dispatch = useDispatch();
   const database = useSelector((state) => state.database.database);
   const level = useSelector((state) => state.studySettings.studyLevel);
+  const type = useSelector((state) => state.studySettings.studyType);
   const lessonId = useSelector((state) => state.studySettings.studyLesson);
   const kanjiId = useSelector((state) => state.studySettings.studyKanji);
   const showAllKanjis = useSelector(
@@ -143,36 +218,97 @@ const StudyPage = () => {
   const responseStudyKanjiLessons = useSelector(
     (state) => state.studySettings.responseStudyKanjiLessons
   );
+  const responseStudyVocabularyLessons = useSelector(
+    (state) => state.studySettings.responseStudyVocabularyLessons
+  );
   const kanjiList = useSelector((state) => state.studyPage.kanjiList);
   const currentKanjiIndex = useSelector(
     (state) => state.studyPage.currentKanjiIndex
   );
   const kanjiData = useSelector((state) => state.studyPage.kanjiData);
+  const wordsData = useSelector((state) => state.studyPage.wordsData);
+
+
+  const fetchWordsData = async (newLessonId = lessonId) => {
+    const data = await getWordsData(newLessonId);
+    dispatch(setWordsData(data));
+  };
 
   useEffect(() => {
-    dispatch(setKanjiList(getKanjiList()));
+    if (type === "kanji") {
+      dispatch(setKanjiList(getKanjiList()));
+    } else if (type === "vocabulary") {
+      fetchWordsData();
+    }
   }, []);
 
+  const getWordsData = async (newLessonId) => {
+    if (level && newLessonId) {
+      try {
+        const query = `
+          SELECT 
+            w.word,
+            w.meanings,
+            w.parts_of_speech,
+            w.romaji_reading,
+            w.kana_reading
+          FROM 
+            vocab_lessons vl
+          JOIN 
+            words w ON vl.id_word = w.id
+          WHERE 
+            vl.level = "${level}" AND vl.id_lesson = ${newLessonId};
+        `;
+        const stmt = database.prepare(query);
+        let data = [];
+        while (stmt.step()) {
+          const row = stmt.getAsObject();
+          data.push(
+            {
+              word: row.word,
+              meanings: JSON.parse(row.meanings),
+              parts_of_speech: JSON.parse(row.parts_of_speech),
+              romaji_reading: row.romaji_reading,
+              kana_reading: row.kana_reading,
+            }
+          );
+        }
+        return data;
+      } catch (error) {
+        console.error(
+          `Failed to load words data for ${level}, lesson ${newLessonId} from database`,
+          error
+        );
+      }
+    } else return null;
+  };
+
   useEffect(() => {
-    kanjiList.length !== 0 &&
-      dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
+    if (type === "kanji") {
+      kanjiList.length !== 0 &&
+        dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
+    }
   }, [kanjiList]);
 
   useEffect(() => {
-    if (currentKanjiIndex !== null && kanjiList?.length !== 0) {
-      dispatch(setStudyKanji(kanjiList[currentKanjiIndex]?.idKanji));
-      if (showAllKanjis && kanjiList[currentKanjiIndex]?.idLesson) {
-        dispatch(setStudyLesson(kanjiList[currentKanjiIndex].idLesson));
+    if (type === "kanji") {
+      if (currentKanjiIndex !== null && kanjiList?.length !== 0) {
+        dispatch(setStudyKanji(kanjiList[currentKanjiIndex]?.idKanji));
+        if (showAllKanjis && kanjiList[currentKanjiIndex]?.idLesson) {
+          dispatch(setStudyLesson(kanjiList[currentKanjiIndex].idLesson));
+        }
       }
     }
   }, [currentKanjiIndex]);
 
   useEffect(() => {
-    const fetchKanjiData = async () => {
-      const data = await getKanjiData();
-      dispatch(setKanjiData(data));
-    };
-    fetchKanjiData();
+    if (type === "kanji") {
+      const fetchKanjiData = async () => {
+        const data = await getKanjiData();
+        dispatch(setKanjiData(data));
+      };
+      fetchKanjiData();
+    }
   }, [kanjiId]);
 
   const getKanjiList = () => {
@@ -281,8 +417,10 @@ const StudyPage = () => {
   };
 
   const handleBackToLessons = () => {
-    showAllKanjis && dispatch(setStudyLesson(null));
-    dispatch(reset());
+    if (type === "kanji") {
+      showAllKanjis && dispatch(setStudyLesson(null));
+    }
+    dispatch(reset(type));
     dispatch(setPage("learningSettings"));
   };
 
@@ -295,6 +433,20 @@ const StudyPage = () => {
   const nextKanji = () => {
     if (!kanjiList[currentKanjiIndex]?.lessonDone) {
       dispatch(setCurrentKanjiIndex(currentKanjiIndex + 1));
+    }
+  };
+
+  const previousLesson = () => {
+    if (lessonId > 1) {
+      dispatch(setStudyLesson(lessonId - 1));
+      fetchWordsData(lessonId - 1);
+    }
+  };
+
+  const nextLesson = () => {
+    if (responseStudyVocabularyLessons[level] && lessonId < responseStudyVocabularyLessons[level].length) {
+      dispatch(setStudyLesson(lessonId + 1));
+      fetchWordsData(lessonId + 1);
     }
   };
 
@@ -313,25 +465,28 @@ const StudyPage = () => {
       </BackButtonContainer>
       <StudyPageContainer>
         <Card>
-          <KanjiContainer>
-            <Icon hide={currentKanjiIndex === 0}>
-              <PreviousIcon onClick={() => previousKanji()}></PreviousIcon>
+          <KanjiContainer type={type}>
+            <Icon hide={type === "kanji" ? currentKanjiIndex === 0 : lessonId <= 1}>
+              <PreviousIcon onClick={() => type === "kanji" ? previousKanji() : previousLesson()}></PreviousIcon>
             </Icon>
-            {!kanjiList[currentKanjiIndex]?.lessonDone ? (
-              <KanjiSymbol>{kanjiData?.kanji?.kanji}</KanjiSymbol>
-            ) : (
-              <TitleContainer>
-                <Title>Lesson done.</Title>
-                <Title>Ready for the quiz?</Title>
-              </TitleContainer>
-            )}
-            <Icon hide={kanjiList[currentKanjiIndex]?.lessonDone}>
-              <NextIcon onClick={() => nextKanji()}></NextIcon>
+            {type === "kanji" ?
+              (!kanjiList[currentKanjiIndex]?.lessonDone ? (
+                <KanjiSymbol>{kanjiData?.kanji?.kanji}</KanjiSymbol>
+              ) : (
+                <TitleContainer>
+                  <Title>Lesson done.</Title>
+                  <Title>Ready for the quiz?</Title>
+                </TitleContainer>
+              ))
+              : <LessonName>Lesson {lessonId}</LessonName>
+            }
+            <Icon hide={type === "kanji" ? kanjiList[currentKanjiIndex]?.lessonDone : lessonId >= responseStudyVocabularyLessons[level].length}>
+              <NextIcon onClick={() => type === "kanji" ? nextKanji() : nextLesson()}></NextIcon>
             </Icon>
           </KanjiContainer>
 
           <>
-            {!kanjiList[currentKanjiIndex]?.lessonDone ? (
+            {type === "kanji" && !kanjiList[currentKanjiIndex]?.lessonDone && (
               <MainDetails>
                 <div>
                   {kanjiData?.kanji?.meanings.length > 3
@@ -350,17 +505,9 @@ const StudyPage = () => {
                   </div>
                 )}
               </MainDetails>
-            ) : (
-              <StartQuizContainer>
-                <StartQuizButtonContainer>
-                  <Button full onClick={() => goToQuiz()}>
-                    Start quiz
-                  </Button>
-                </StartQuizButtonContainer>
-              </StartQuizContainer>
             )}
 
-            {kanjiData?.words?.length !== 0 && (
+            {type === "kanji" && kanjiData?.words?.length !== 0 && (
               <WordsList hide={kanjiList[currentKanjiIndex]?.lessonDone}>
                 {kanjiData?.words?.map((word) => (
                   <div key={word.id}>
@@ -370,6 +517,50 @@ const StudyPage = () => {
                 ))}
               </WordsList>
             )}
+
+            {type === "kanji" && kanjiList[currentKanjiIndex]?.lessonDone && (
+              <StartQuizContainer type={type}>
+                <StartQuizButtonContainer>
+                  <Button full onClick={() => goToQuiz()}>
+                    Start quiz
+                  </Button>
+                </StartQuizButtonContainer>
+              </StartQuizContainer>
+            )}
+
+            {type === "vocabulary" && wordsData && wordsData.length !== 0 &&
+              (
+                <>
+                  <VocabularyList>
+                    {wordsData.map((word, index) =>
+                      <Item key={index}>
+                        <WordContainer>
+                          <ReadingContainer>
+                            <Reading>{word?.kana_reading}</Reading>
+                          </ReadingContainer>
+                          <Word>{word?.word}</Word>
+                        </WordContainer>
+                        <Meanings>{" = " + word?.meanings?.join(", ") + (word?.parts_of_speech ? " " : "")}</Meanings>
+
+                          
+                          <PartsOfSpeech>
+                            {word?.parts_of_speech?.join(", ")}
+                          </PartsOfSpeech>
+                          
+
+                      </Item>
+                    )}
+                  </VocabularyList>
+                  <StartQuizContainer type={type}>
+                    <StartQuizButtonContainer>
+                      <Button full onClick={() => goToQuiz()}>
+                        Start quiz
+                      </Button>
+                    </StartQuizButtonContainer>
+                  </StartQuizContainer>
+                </>
+              )
+            }
           </>
         </Card>
       </StudyPageContainer>

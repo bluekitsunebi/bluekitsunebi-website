@@ -4,6 +4,7 @@ const initialState = {
   kanjiList: [],
   currentKanjiIndex: null,
   kanjiData: null,
+  wordsData: null,
 };
 
 export const studyPageSlice = createSlice({
@@ -19,11 +20,19 @@ export const studyPageSlice = createSlice({
     setKanjiData(state, action) {
       state.kanjiData = action.payload;
     },
-    reset(state) {
-      state.kanjiList = [];
-      state.currentKanjiIndex = null;
-      state.kanjiData = null;
-    }
+    setWordsData(state, action) {
+      state.wordsData = action.payload;
+    },
+    reset(state, action) {
+      const type = action.payload;
+      if(type === "kanji") {
+        state.kanjiList = [];
+        state.currentKanjiIndex = null;
+        state.kanjiData = null;
+      } else if (type === "vocabulary") {
+        state.wordsData = null;
+      }
+    },
   },
 });
 
@@ -34,5 +43,6 @@ export const {
   setCurrentKanjiIndex,
   setKanjiData,
   reset,
+  setWordsData,
 } = studyPageSlice.actions;
 export default studyPageSlice.reducer;

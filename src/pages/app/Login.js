@@ -89,12 +89,9 @@ const LoginPage = () => {
     }
   });
 
-  const levels = useSelector((state) => state.studySettings.levels);
-
-  const getKanjiLessons = async (level) => {
-    if (level) {
-      try {
-        const query = `
+  const getKanjiLessons = async () => {
+    try {
+      const query = `
           WITH KanjiList AS (
             SELECT 
               kl.level,
@@ -114,104 +111,90 @@ const LoginPage = () => {
           FROM KanjiList kl
           ORDER BY kl.level DESC, kl.id_lesson ASC;
         `;
-        const stmt = database.prepare(query);
-        const lessons = {
-          N5: [],
-          N4: [],
-          N3: [],
-          N2: [],
-          N1: [],
-        };
-        while (stmt.step()) {
-          const row = stmt.getAsObject();
-          const kanjis = JSON.parse(row.kanjis);
-          const level = row.level;
-          lessons[level].push({
-            id: row.id_lesson,
-            kanjis: kanjis,
-          });
-        }
-        dispatch(setResponseStudyKanjiLessons(lessons));
-        stmt.free();
-      } catch (error) {
-        console.error(
-          `Failed to load lessons for ${level} from database`,
-          error
-        );
+      const stmt = database.prepare(query);
+      const lessons = {
+        N5: [],
+        N4: [],
+        N3: [],
+        N2: [],
+        N1: [],
+      };
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        const kanjis = JSON.parse(row.kanjis);
+        const level = row.level;
+        lessons[level].push({
+          id: row.id_lesson,
+          kanjis: kanjis,
+        });
       }
+      dispatch(setResponseStudyKanjiLessons(lessons));
+      stmt.free();
+    } catch (error) {
+      console.error(
+        `Failed to load kanji lessons from database`,
+        error
+      );
     }
   };
 
-  // TO DO
-  const getVocabularyLessons = async (level) => {
-    if (level) {
-      try {
-        const query = `
-          WITH KanjiList AS (
+  const getVocabularyLessons = async () => {
+    try {
+      const query = `
+          WITH VocabularyLessons AS (
             SELECT 
-              kl.level,
-              kl.id_lesson, 
-              '[' || GROUP_CONCAT('{"id": ' || kl.id_kanji || ', "kanji": "' || k.kanji || '"}', ', ') || ']' as kanjis
+              vl.id_lesson,
+              vl.level,
+              '[' || GROUP_CONCAT('{"id": ' || vl.id_word || ', "word": "' || w.word || '"}', ', ') || ']' as words
             FROM (
-              SELECT DISTINCT level, id_lesson, id_kanji 
-              FROM kanji_lessons
-            ) kl
-            JOIN kanjis k ON kl.id_kanji = k.id
-            GROUP BY kl.level, kl.id_lesson
+              SELECT DISTINCT level, id_lesson, id_word 
+              FROM vocab_lessons
+            ) vl
+            JOIN words w ON vl.id_word = w.id
+            GROUP BY vl.level, vl.id_lesson
           )
           SELECT 
-            kl.level,
-            kl.id_lesson,
-            kl.kanjis
-          FROM KanjiList kl
-          ORDER BY kl.level DESC, kl.id_lesson ASC;
+            vl.level,
+            vl.id_lesson,
+            vl.words
+          FROM VocabularyLessons vl
+          ORDER BY vl.level DESC, vl.id_lesson ASC;
         `;
-        const stmt = database.prepare(query);
-        const lessons = {
-          N5: [],
-          N4: [],
-          N3: [],
-          N2: [],
-          N1: [],
-        };
-        while (stmt.step()) {
-          const row = stmt.getAsObject();
-          const kanjis = JSON.parse(row.kanjis);
-          const level = row.level;
-          lessons[level].push({
-            id: row.id_lesson,
-            kanjis: kanjis,
-          });
-        }
-        dispatch(setResponseStudyKanjiLessons(lessons));
-        stmt.free();
-      } catch (error) {
-        console.error(
-          `Failed to load lessons for ${level} from database`,
-          error
-        );
+      const stmt = database.prepare(query);
+      const lessons = {
+        N5: [],
+        N4: [],
+        N3: [],
+        N2: [],
+        N1: [],
+      };
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        const words = JSON.parse(row.words);
+        const level = row.level;
+        lessons[level].push({
+          id: row.id_lesson,
+          words: words,
+        });
       }
+      dispatch(setResponseStudyVocabularyLessons(lessons));
+      stmt.free();
+    } catch (error) {
+      console.error(
+        `Failed to load vocabulary lessons from database`,
+        error
+      );
     }
   };
 
   useEffect(() => {
     if (database) {
-      // Kanji Lessons
-      const setLessons = async () => {
-        await Promise.all(
-          levels.map((level) => {
-            getKanjiLessons(level);
-          })
-        );
+      const setKanjiLessons = async () => {
+        await getKanjiLessons();
       };
-      setLessons();
-      // Vocabulary Lessons
+      setKanjiLessons();
       const setVocabularyLessons = async () => {
-        await Promise.all(
-          levels.map((level) => {
-            getVocabularyLessons(level);
-          })
-        );
+        await getVocabularyLessons();
       };
       setVocabularyLessons();
     }

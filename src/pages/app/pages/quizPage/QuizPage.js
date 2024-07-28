@@ -23,10 +23,10 @@ const QuizPage = () => {
   const dispatch = useDispatch();
   const database = useSelector((state) => state.database.database);
   const level = useSelector((state) => state.studySettings.studyLevel);
+  const type = useSelector((state) => state.studySettings.studyType);
   const lessonId = useSelector((state) => state.studySettings.studyLesson);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
-  const score = useSelector((state) => state.quizPage.score);
   const answered = useSelector((state) => state.quizPage.answered);
   const retry = useSelector((state) => state.quizPage.retry);
   const showAllKanjis = useSelector(
@@ -35,71 +35,80 @@ const QuizPage = () => {
 
   const getQuizData = async () => {
     if (level && lessonId) {
-      let query = `
-        SELECT 
-          kl.id_kanji, 
-          k.kanji,
-          k.meanings,
-          '[' || GROUP_CONCAT(
-            json_object(
-              'id', kl.id_word,
-              'word', w.word,
-              'kana_reading', w.kana_reading,
-              'romaji_reading', w.romaji_reading
-            )
-          ) || ']' AS words
-        FROM 
-          kanji_lessons kl
-        JOIN 
-          kanjis k ON kl.id_kanji = k.id
-        JOIN 
-          words w ON kl.id_word = w.id
-        WHERE 
-          kl.level = "${level}"`;
-      if (!showAllKanjis) {
-        query += ` AND kl.id_lesson = ${lessonId}`;
-      }
-      query += `
-        GROUP BY 
-        kl.id_kanji,`;
-      if (!showAllKanjis) {
-        query += ` 
-          kl.level, 
-          kl.id_lesson, `;
-      }
-      query += `
-        k.kanji, 
-        k.meanings;`;
-      try {
-        const stmt = database.prepare(query);
-        let quizData = [];
-        let originalData = [];
-        while (stmt.step()) {
-          let row = stmt.getAsObject();
-          row.meanings = JSON.parse(row.meanings).slice(0, 3);
-          let words = JSON.parse(row.words).slice(0, 5);
-          words.sort(() => Math.random() - 0.5);
-          row.words = words.slice(0, 3);
-          originalData.push(row);
+
+      // KANJI
+      if (type === "kanji") {
+        let query = `
+          SELECT 
+            kl.id_kanji, 
+            k.kanji,
+            k.meanings,
+            '[' || GROUP_CONCAT(
+              json_object(
+                'id', kl.id_word,
+                'word', w.word,
+                'kana_reading', w.kana_reading,
+                'romaji_reading', w.romaji_reading
+              )
+            ) || ']' AS words
+          FROM 
+            kanji_lessons kl
+          JOIN 
+            kanjis k ON kl.id_kanji = k.id
+          JOIN 
+            words w ON kl.id_word = w.id
+          WHERE 
+            kl.level = "${level}"
+        `;
+        if (!showAllKanjis) {
+          query += ` AND kl.id_lesson = ${lessonId}`;
         }
-        stmt.free();
-        for (let i = 0; i < originalData.length; i++) {
-          let questionsSet = {
-            kanjiQuestion: null,
-            wordQuestions: [],
-          };
-          questionsSet.kanjiQuestion = await getKanjiQuestion(originalData, i);
-          questionsSet.wordQuestions = getWordQuestions(originalData, i);
-          quizData.push(questionsSet);
+        query += `
+          GROUP BY 
+          kl.id_kanji,`;
+        if (!showAllKanjis) {
+          query += ` 
+            kl.level, 
+            kl.id_lesson, `;
         }
-        quizData.sort(() => Math.random() - 0.5);
-        return quizData;
-      } catch (error) {
-        console.error(
-          `Failed to load quiz data for ${level}, lesson ${lessonId} from database`,
-          error
-        );
-      }
+        query += `
+          k.kanji, 
+          k.meanings;`;
+        try {
+          const stmt = database.prepare(query);
+          let quizData = [];
+          let originalData = [];
+          while (stmt.step()) {
+            let row = stmt.getAsObject();
+            row.meanings = JSON.parse(row.meanings).slice(0, 3);
+            let words = JSON.parse(row.words).slice(0, 5);
+            words.sort(() => Math.random() - 0.5);
+            row.words = words.slice(0, 3);
+            originalData.push(row);
+          }
+          stmt.free();
+          for (let i = 0; i < originalData.length; i++) {
+            let questionsSet = {
+              kanjiQuestion: null,
+              wordQuestions: [],
+            };
+            questionsSet.kanjiQuestion = await getKanjiQuestion(originalData, i);
+            questionsSet.wordQuestions = getWordQuestions(originalData, i);
+            quizData.push(questionsSet);
+          }
+          quizData.sort(() => Math.random() - 0.5);
+          return quizData;
+        } catch (error) {
+          console.error(
+            `Failed to load quiz data for ${level}, lesson ${lessonId} from database`,
+            error
+          );
+        }
+
+        // VOCABULARY
+      } else if (type === "vocabulary") {
+        let query = ``;
+      } else return null;
     } else return null;
   };
 
@@ -263,7 +272,7 @@ const QuizPage = () => {
 
   return (
     <>
-      <BackButtonContainer desktop/>
+      <BackButtonContainer desktop />
       <QuizPageContainer>
         <QuizCard
           handleWordReadingChange={handleWordReadingChange}

@@ -181,7 +181,6 @@ const LessonSelector = ({ show }) => {
   const responseStudyKanjiLessons = useSelector(
     (state) => state.studySettings.responseStudyKanjiLessons
   );
-  // TO DO
   const responseStudyVocabularyLessons = useSelector(
     (state) => state.studySettings.responseStudyVocabularyLessons
   );
@@ -241,7 +240,6 @@ const LessonSelector = ({ show }) => {
     }
   };
 
-  // TO DO
   const goToVocabularyPage = (idLesson) => {
     if (idLesson) {
       if (idLesson !== "allLessons") {
@@ -309,14 +307,11 @@ const LessonSelector = ({ show }) => {
 
       {((((!studyLesson && !showAllKanjis) || showAllLessons) &&
         responseStudyKanjiLessons[studyLevel]?.length !== 0) ||
-        studyType === "vocabulary") && (
-        <>
-          <Lessons>
+        (studyType === "vocabulary" && responseStudyVocabularyLessons[studyLevel]?.length !== 0) ) &&
+        <Lessons>
+          {studyType === "kanji" &&
             <LessonContainer
-              onClick={() => {
-                studyType === "kanji" && handleShowAllKanjis(true);
-                studyType === "vocabulary" && goToVocabularyPage("allLessons");
-              }}
+              onClick={() => handleShowAllKanjis(true)}
               isSelected={showAllKanjis}
               key={`allLessons`}
             >
@@ -324,13 +319,14 @@ const LessonSelector = ({ show }) => {
                 <LessonName isSelected={showAllKanjis}>All lessons</LessonName>
               </Button>
             </LessonContainer>
+          }
 
-            {responseStudyKanjiLessons[studyLevel]?.map((lesson) => (
+          {studyType === "kanji" &&
+            responseStudyKanjiLessons[studyLevel]?.map((lesson) => (
               <LessonContainer
                 onClick={() => {
                   handleSetStudyLesson(lesson.id);
-                  studyType === "kanji" && handleShowAllLessons(false);
-                  studyType === "vocabulary" && goToVocabularyPage(lesson.id);
+                  handleShowAllLessons(false);
                 }}
                 isSelected={studyLesson === lesson.id}
                 key={`${lesson.id} ${studyLevel}`}
@@ -342,9 +338,27 @@ const LessonSelector = ({ show }) => {
                 </Button>
               </LessonContainer>
             ))}
-          </Lessons>
-        </>
-      )}
+
+          {studyType === "vocabulary" &&
+            responseStudyVocabularyLessons[studyLevel]?.map((lesson) => (
+              <LessonContainer
+                onClick={() => {
+                  handleSetStudyLesson(lesson.id);
+                  goToVocabularyPage(lesson.id);
+                }}
+                isSelected={studyLesson === lesson.id}
+                key={`${lesson.id} ${studyLevel}`}
+              >
+                <Button isSelected={studyLesson === lesson.id} isLessonSelector>
+                  <LessonName isSelected={studyLesson === lesson.id}>
+                    Lesson {lesson.id}
+                  </LessonName>
+                </Button>
+              </LessonContainer>
+            ))
+          }
+        </Lessons>
+      }
 
       {studyLevel &&
         studyType === "kanji" &&
@@ -354,29 +368,29 @@ const LessonSelector = ({ show }) => {
             <KanjiList>
               {!showAllKanjis && studyLesson
                 ? responseStudyKanjiLessons[studyLevel]
-                    .find((lesson) => lesson.id === studyLesson)
-                    .kanjis.map((kanji) => (
-                      <Kanji
-                        key={`${kanji.id}`}
-                        onClick={() => goToKanjiPage(kanji.id)}
-                      >
-                        <Button monochrome isKanji>
-                          {kanji.kanji}
-                        </Button>
-                      </Kanji>
-                    ))
+                  .find((lesson) => lesson.id === studyLesson)
+                  .kanjis.map((kanji) => (
+                    <Kanji
+                      key={`${kanji.id}`}
+                      onClick={() => goToKanjiPage(kanji.id)}
+                    >
+                      <Button monochrome isKanji>
+                        {kanji.kanji}
+                      </Button>
+                    </Kanji>
+                  ))
                 : responseStudyKanjiLessons[studyLevel].map((kanjiLesson) =>
-                    kanjiLesson.kanjis.map((kanji) => (
-                      <Kanji
-                        key={`${kanji.id}`}
-                        onClick={() => goToKanjiPage(kanji.id, kanjiLesson.id)}
-                      >
-                        <Button monochrome isKanji>
-                          {kanji.kanji}
-                        </Button>
-                      </Kanji>
-                    ))
-                  )}
+                  kanjiLesson.kanjis.map((kanji) => (
+                    <Kanji
+                      key={`${kanji.id}`}
+                      onClick={() => goToKanjiPage(kanji.id, kanjiLesson.id)}
+                    >
+                      <Button monochrome isKanji>
+                        {kanji.kanji}
+                      </Button>
+                    </Kanji>
+                  ))
+                )}
             </KanjiList>
           </KanjisContainer>
         )}

@@ -11,7 +11,6 @@ const initialState = {
     N2: [],
     N1: [],
   },
-  // TO DO
   responseStudyVocabularyLessons: {
     N5: [],
     N4: [],
@@ -28,7 +27,7 @@ const initialState = {
   studyLesson: null, // number
   studyKanji: null,
   // LessonSelector
-  showAllKanjis: false, 
+  showAllKanjis: false,
   showAllLessons: false,
 
   // quiz
@@ -98,13 +97,12 @@ export const studySettingsSlice = createSlice({
   reducers: {
     //lessons
     setResponseStudyKanjiLessons(state, action) {
-      const lessons = action.payload;
-      state.levels.forEach(level => {
-        state.responseStudyKanjiLessons[level] = lessons[level];
-      });
+      state.responseStudyKanjiLessons = action.payload;
+      console.log("Kanji Lessons: ", state.responseStudyKanjiLessons);
     },
-    // TO DO
-    setResponseStudyVocabularyLessons() {
+    setResponseStudyVocabularyLessons(state, action) {
+      state.responseStudyVocabularyLessons = action.payload;
+      console.log("Vocabulary Lessons: ", state.responseStudyVocabularyLessons);
     },
     setResponseQuizLessons(state, action) {
       state.responseQuizLessons = action.payload;
@@ -125,8 +123,14 @@ export const studySettingsSlice = createSlice({
       if (action.payload === "vocabulary") {
         state.showAllKanjis = false;
         state.studyKanji = null;
-      } else if (action.payload === "vocabulary") {
-        
+        // if(state.studyLesson) {
+        //   state.studyLesson = null;
+        // }
+        console.log("studyLevel: ", state.studyLevel);
+      } else if (action.payload === "kanji") {
+        // if(state.studyLesson) {
+        //   state.studyLesson = null;
+        // }
       }
     },
     setStudyLesson(state, action) {
@@ -184,9 +188,9 @@ export const studySettingsSlice = createSlice({
       const { level, kanjiLessons, vocabularyLessons } = action.payload;
       if (
         state.quizSettings[level].kanji.lessons.length ===
-          kanjiLessons.length &&
+        kanjiLessons.length &&
         state.quizSettings[level].vocabulary.lessons.length ===
-          vocabularyLessons.length
+        vocabularyLessons.length
       ) {
         state.quizSettings[level].kanji.lessons = [];
         state.quizSettings[level].vocabulary.lessons = [];
@@ -212,7 +216,7 @@ export const {
   setStudyLesson,
   setStudyKanji,
   // LessonSelector
-  setShowAllKanjis, 
+  setShowAllKanjis,
   setShowAllLessons,
   // quiz
   setQuizSettings,
