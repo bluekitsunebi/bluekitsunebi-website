@@ -1,7 +1,7 @@
 import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectLesson } from "store/app/quizSettingsSlice";
 import { FaCheckSquare, FaRegSquare as UncheckIcon } from "react-icons/fa";
 
@@ -42,7 +42,7 @@ const QuizLesson = ({ level, type, lesson, isSelected }) => {
   const dispatch = useDispatch();
 
   return (
-    <LessonItem onClick={() => dispatch(selectLesson({ level, type, lesson }))}>
+    <LessonItem onClick={() => dispatch(selectLesson({ level, type, lesson}))}>
       <CheckboxContainer>
         {isSelected ? <FaCheckSquare /> : <UncheckIcon />}
       </CheckboxContainer>

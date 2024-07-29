@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+    levels: ["N5", "N4", "N3", "N2", "N1"],
     responseQuizLessons: null,
-    
+    allSelected: false,
+    allDeselected: true,
+    allExpanded: false,
+    allShrunk: true,
+
     quizSettings: {
         N5: {
             expanded: false,
@@ -86,10 +91,12 @@ export const quizSettingsSlice = createSlice({
             state.quizSettings[level][type].expanded =
                 !state.quizSettings[level][type].expanded;
         },
+
         selectLesson(state, action) {
             const { level, type, lesson } = action.payload;
-            let lessons = state.quizSettings[level][type].lessons;
+            const lessons = state.quizSettings[level][type].lessons;
             const lessonExists = lessons.some((obj) => obj.id === lesson.id);
+
             if (!lessonExists) {
                 state.quizSettings[level][type].lessons.push(lesson);
             } else {
@@ -97,17 +104,79 @@ export const quizSettingsSlice = createSlice({
                     (obj) => obj.id !== lesson.id
                 );
             }
+
+            // set allSelected
+            let allLessonsSelected = true;
+            state.levels.forEach((lessonLevel) => {
+                if (
+                    state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
+                ) {
+                    allLessonsSelected = false;
+                }
+
+                if (
+                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
+                ) {
+                    allLessonsSelected = false;
+                }
+            });
+            state.allSelected = allLessonsSelected;
+
+            // set allDeselected
+            let allLessonsDeselected = true;
+            state.levels.forEach((lessonLevel) => {
+                if (state.quizSettings[lessonLevel].kanji.lessons.length !== 0) {
+                    allLessonsDeselected = false;
+                }
+                if (state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0) {
+                    allLessonsDeselected = false;
+                }
+            });
+            state.allDeselected = allLessonsDeselected;
         },
+
         selectType(state, action) {
-            const { level, type, lessons } = action.payload;
+            const {level, type, lessons } = action.payload;
             if (state.quizSettings[level][type].lessons.length === lessons.length) {
                 state.quizSettings[level][type].lessons = [];
             } else {
                 state.quizSettings[level][type].lessons = lessons;
             }
+
+            // set allSelected
+            let allLessonsSelected = true;
+            state.levels.forEach((lessonLevel) => {
+                if (
+                    state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
+                ) {
+                    allLessonsSelected = false;
+                }
+                if (
+                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
+                ) {
+                    allLessonsSelected = false;
+                }
+            });
+            state.allSelected = allLessonsSelected;
+            // set allDeselected
+            let allLessonsDeselected = true;
+            state.levels.forEach((lessonLevel) => {
+                if (
+                    state.quizSettings[lessonLevel].kanji.lessons.length !== 0
+                ) {
+                    allLessonsDeselected = false;
+                }
+                if (
+                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0
+                ) {
+                    allLessonsDeselected = false;
+                }
+            });
+            state.allDeselected = allLessonsDeselected;
         },
+
         selectLevel(state, action) {
-            const { level, kanjiLessons, vocabularyLessons } = action.payload;
+            const { level, kanjiLessons, vocabularyLessons} = action.payload;
             if (
                 state.quizSettings[level].kanji.lessons.length ===
                 kanjiLessons.length &&
@@ -120,7 +189,85 @@ export const quizSettingsSlice = createSlice({
                 state.quizSettings[level].kanji.lessons = kanjiLessons;
                 state.quizSettings[level].vocabulary.lessons = vocabularyLessons;
             }
+
+            // set allSelected
+            let allLessonsSelected = true;
+            state.levels.forEach((lessonLevel) => {
+                    if (
+                        state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
+                    ) {
+                        allLessonsSelected = false;
+                    }
+                    if (
+                        state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
+                    ) {
+                        allLessonsSelected = false;
+                    }
+            });
+            state.allSelected = allLessonsSelected;
+            // set allDeselected
+            let allLessonsDeselected = true;
+            state.levels.forEach((lessonLevel) => {
+                    if (
+                        state.quizSettings[lessonLevel].kanji.lessons.length !== 0
+                    ) {
+                        allLessonsDeselected = false;
+                    }
+                    if (
+                        state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0
+                    ) {
+                        allLessonsDeselected = false;
+                    }
+            });
+            state.allDeselected = allLessonsDeselected;
         },
+
+        selectAll(state, action) {
+            const lessons = action.payload;
+            state.allSelected = true;
+            state.allDeselected = false;
+            state.levels.forEach(level => {
+                state.quizSettings[level].kanji.lessons = [];
+                state.quizSettings[level].vocabulary.lessons = [];
+                lessons[level].kanji.forEach((lesson) => {
+                    state.quizSettings[level].kanji.lessons.push(lesson);
+                });
+                lessons[level].vocabulary.forEach((lesson) => {
+                    state.quizSettings[level].vocabulary.lessons.push(lesson);
+                });
+                state.quizSettings[level].expanded = true;
+            });
+        },
+        deselectAll(state) {
+            state.allDeselected = true;
+            state.allSelected = false;
+            state.levels.forEach(level => {
+                state.quizSettings[level].expanded = false;
+                state.quizSettings[level].kanji.expanded = false;
+                state.quizSettings[level].vocabulary.expanded = false;
+                state.quizSettings[level].kanji.lessons = [];
+                state.quizSettings[level].vocabulary.lessons = [];
+            });
+        },
+        // TO DO - show/hide all
+        expandAll(state) {
+            state.allExpanded = true;
+            state.allShrunk = false;
+            state.levels.forEach(level => {
+                state.quizSettings[level].expanded = true;
+                state.quizSettings[level].kanji.expanded = true;
+                state.quizSettings[level].vocabulary.expanded = true;
+            });
+        },
+        shrinkAll(state) {
+            state.allShrunk = true;
+            state.allExpanded = false;
+            state.levels.forEach(level => {
+                state.quizSettings[level].expanded = false;
+                state.quizSettings[level].kanji.expanded = false;
+                state.quizSettings[level].vocabulary.expanded = false;
+            });
+        }
     },
 });
 
@@ -132,5 +279,9 @@ export const {
     selectLesson,
     selectType,
     selectLevel,
+    selectAll,
+    deselectAll,
+    expandAll,
+    shrinkAll,
 } = quizSettingsSlice.actions;
 export default quizSettingsSlice.reducer;
