@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -190,12 +190,40 @@ const LessonSelector = ({ show }) => {
   const showAllLessons = useSelector(
     (state) => state.studySettings.showAllLessons
   );
+
+  // scrollToSelectedLesson
+  const lessonsRef = useRef(null);
+  const lessonRefs = useRef({});
+
+  useEffect(() => {
+    if (studyLesson && lessonsRef.current) {
+      const lessonElement = lessonRefs.current[studyLesson];
+      if (lessonElement) {
+        const lessonRect = lessonElement.getBoundingClientRect();
+        const lessonsRect = lessonsRef.current.getBoundingClientRect();
+        if (
+          lessonRect.top < lessonsRect.top ||
+          lessonRect.bottom > lessonsRect.bottom
+        ) {
+          lessonElement.scrollIntoView({ behavior: "instant", block: "center" });
+        }
+      }
+    }
+  }, [studyLesson, showAllLessons]);
+
+  // scroll to top
+  useEffect(() => {
+    if (!studyLesson && lessonsRef.current) {
+      lessonsRef.current.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [studyLevel, studyType]);
+  // ------------------------
+
   const handleSetStudyLesson = (lessonId) => {
     dispatch(setStudyLesson(lessonId));
     if (studyType === "kanji") {
       dispatch(setShowAllLessons(false));
       dispatch(setShowAllKanjis(false));
-    } else if (studyType === "vocabulary") {
     }
   };
 
@@ -309,12 +337,13 @@ const LessonSelector = ({ show }) => {
       {((((!studyLesson && !showAllKanjis) || showAllLessons) &&
         responseStudyKanjiLessons[studyLevel]?.length !== 0) ||
         (studyType === "vocabulary" && responseStudyVocabularyLessons[studyLevel]?.length !== 0)) &&
-        <Lessons>
+        <Lessons ref={lessonsRef}>
           {studyType === "kanji" &&
             <LessonContainer
               onClick={() => handleShowAllKanjis(true)}
               isSelected={showAllKanjis}
               key={`allLessons`}
+              ref={(el) => (lessonRefs.current["allLessons"] = el)}
             >
               <Button isSelected={showAllKanjis} isLessonSelector>
                 <LessonName isSelected={showAllKanjis}>All lessons</LessonName>
@@ -330,7 +359,8 @@ const LessonSelector = ({ show }) => {
                   handleShowAllLessons(false);
                 }}
                 isSelected={studyLesson === lesson.id}
-                key={`${lesson.id} ${studyLevel}`}
+                key={lesson.id}
+                ref={(el) => (lessonRefs.current[lesson.id] = el)}
               >
                 <Button isSelected={studyLesson === lesson.id} isLessonSelector>
                   <LessonName isSelected={studyLesson === lesson.id}>
@@ -348,7 +378,8 @@ const LessonSelector = ({ show }) => {
                   goToVocabularyPage(lesson.id);
                 }}
                 isSelected={studyLesson === lesson.id}
-                key={`${lesson.id} ${studyLevel}`}
+                key={lesson.id}
+                ref={(el) => (lessonRefs.current[lesson.id] = el)}
               >
                 <Button isSelected={studyLesson === lesson.id} isLessonSelector>
                   <LessonName isSelected={studyLesson === lesson.id}>
