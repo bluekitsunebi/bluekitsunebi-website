@@ -134,6 +134,7 @@ const QuizPage = () => {
           options.sort(() => Math.random() - 0.5);
           let question = {
             word: word.word,
+            reading: word.kana_reading,
             options: options
           };
           quizData.push(question);

@@ -13,6 +13,9 @@ import {
   setResponseStudyKanjiLessons,
   setResponseStudyVocabularyLessons,
 } from "store/app/studySettingsSlice";
+import {
+  setResponseQuizLessons,
+} from "store/app/quizSettingsSlice";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
@@ -63,6 +66,18 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [displayMessage, setDisplayMessage] = useState(false);
   const [message, setMessage] = useState("");
+  const responseStudyKanjiLessons = useSelector(
+    (state) => state.studySettings.responseStudyKanjiLessons
+  );
+  const responseStudyVocabularyLessons = useSelector(
+    (state) => state.studySettings.responseStudyVocabularyLessons
+  );
+  const responseQuizLessons = useSelector(
+    (state) => state.quizSettings.responseQuizLessons
+  );
+  const levels = useSelector(
+    (state) => state.studySettings.levels
+  );
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -145,7 +160,7 @@ const LoginPage = () => {
             SELECT 
               vl.id_lesson,
               vl.level,
-              '[' || GROUP_CONCAT('{"id": ' || vl.id_word || ', "word": "' || w.word || '"}', ', ') || ']' as words
+              '[' || GROUP_CONCAT('{"id": ' || vl.id_word || ', "word": "' || w.word || '", "reading": "' || w.kana_reading ||  '"}', ', ') || ']' as words
             FROM (
               SELECT DISTINCT level, id_lesson, id_word 
               FROM vocab_lessons
@@ -187,16 +202,69 @@ const LoginPage = () => {
     }
   };
 
+  // TO DO
+  const getQuizLessons = () => {
+    let quizLessons = {
+      N5: {
+        kanji: [],
+        vocabulary: [],
+      },
+      N4: {
+        kanji: [],
+        vocabulary: [],
+      },
+      N3: {
+        kanji: [],
+        vocabulary: [],
+      },
+      N2: {
+        kanji: [],
+        vocabulary: [],
+      },
+      N1: {
+        kanji: [],
+        vocabulary: [],
+      },
+    };
+    levels.forEach(level => {
+      responseStudyKanjiLessons[level].forEach((lesson) => {
+        let kanjis = [];
+        lesson.kanjis.forEach(kanji => kanjis.push(kanji.kanji));
+        quizLessons[level].kanji.push({
+          id: lesson.id,
+          kanji: kanjis
+        });
+      })
+      responseStudyVocabularyLessons[level].forEach((lesson) => {
+        let words = [];
+        lesson.words.forEach(word => words.push({
+          word: word.word,
+          reading: word.reading
+        }));
+        quizLessons[level].vocabulary.push({
+          id: lesson.id,
+          words: words
+        });
+      })
+    });
+    dispatch(setResponseQuizLessons(quizLessons))
+  }
+
   useEffect(() => {
     if (database) {
       const setKanjiLessons = async () => {
         await getKanjiLessons();
       };
-      setKanjiLessons();
       const setVocabularyLessons = async () => {
         await getVocabularyLessons();
       };
+      const setQuizLessons = async () => {
+        await Promise.all([setKanjiLessons(), setVocabularyLessons()]);
+        getQuizLessons();
+      };
+      setKanjiLessons();
       setVocabularyLessons();
+      setQuizLessons();
     }
   }, [database]);
 

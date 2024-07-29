@@ -24,12 +24,33 @@ const ExerciseStatement = styled.div`
   ${tw`w-full flex flex-row justify-center`}
 `;
 
-const Symbols = styled.div`
+const SymbolsContainer = styled.div`
   ${tw`font-thin text-gray-800 w-full flex flex-row justify-center select-none pb-3 sm:pb-6`}
   line-height: 70%;
   font-size: 4rem;
   @media (min-width: 640px) {
     font-size: 10rem;
+  }
+`;
+
+const Symbols = styled.div`
+  ${tw`flex flex-col items-center gap-2 sm:gap-0`}
+  font-size: 3rem;
+  @media (min-width: 640px) {
+    font-size: 6rem;
+  }
+`;
+
+const Word = styled.div`
+  ${tw``}
+`;
+
+const Reading = styled.div`
+  ${tw`text-gray-500`}
+  line-height: 90%;
+  font-size: 1rem;
+  @media (min-width: 640px) {
+    font-size: 2rem;
   }
 `;
 
@@ -205,8 +226,8 @@ const QuizCard = ({
 
   return (
     <Card>
-      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && 
-        <ProgressBar /> 
+      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
+        <ProgressBar />
       }
       {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && score && (
         <CardContent>
@@ -222,7 +243,7 @@ const QuizCard = ({
                   "Select the meaning of the word:"
                 )}
               </ExerciseStatement>
-              <Symbols>
+              <SymbolsContainer>
                 {type === "kanji" && (
                   current.type === "kanjiQuestion"
                     ? quizData[current.set]?.kanjiQuestion?.kanji.kanji
@@ -230,9 +251,16 @@ const QuizCard = ({
                       .word
                 )}
                 {type === "vocabulary" &&
-                  quizData[currentVocabularyQuestion].word
+                  <Symbols>
+                    <Reading>
+                      {quizData[currentVocabularyQuestion].reading}
+                    </Reading>
+                    <Word>
+                      {quizData[currentVocabularyQuestion].word}
+                    </Word>
+                  </Symbols>
                 }
-              </Symbols>
+              </SymbolsContainer>
 
               {(type === "kanji" && current.type === "kanjiQuestion") || (type === "vocabulary") ? (
                 <OptionsContainer>

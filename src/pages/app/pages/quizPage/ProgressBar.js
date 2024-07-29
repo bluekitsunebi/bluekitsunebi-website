@@ -117,7 +117,6 @@ const ProgressBar = () => {
       {((type === "kanji" && current.set <= quizData.length - 1) || (type === "vocabulary" && (currentVocabularyQuestion <= quizData.length - 1))) && (
         <ScoreContainer>
           <CorrectAnswersScore>
-            {`${currentQuestionIndex} <= ${quizData.length} - 1 \n`}
             Correct: {score.correctAnswers}
           </CorrectAnswersScore>
           <WrongAnswersScore>Wrong: {score.wrongAnswers}</WrongAnswersScore>

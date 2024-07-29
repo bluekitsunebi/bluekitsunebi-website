@@ -24,6 +24,7 @@ import appReducer from './app/appSlice';
 import authReducer from './app/authSlice';
 import databaseReducer from './app/databaseSlice';
 import studySettingsReducer from './app/studySettingsSlice';
+import quizSettingsReducer from './app/quizSettingsSlice';
 import studyPageReducer from './app/studyPageSlice';
 import quizPageReducer from './app/quizPageSlice';
 
@@ -53,6 +54,7 @@ export const store = configureStore({
     auth: authReducer,
     database: databaseReducer,
     studySettings: studySettingsReducer,
+    quizSettings: quizSettingsReducer,
     studyPage: studyPageReducer,
     quizPage: quizPageReducer,
   },

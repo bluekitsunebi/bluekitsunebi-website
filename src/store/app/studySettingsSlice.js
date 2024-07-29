@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // study
-
   levels: ["N5", "N4", "N3", "N2", "N1"],
   responseStudyKanjiLessons: {
     N5: [],
@@ -18,10 +16,7 @@ const initialState = {
     N2: [],
     N1: [],
   },
-  responseQuizLessons: [],
-
   action: null, // study, quiz
-
   studyLevel: null, // N5->N1
   studyType: null, // vocabulary, kanji
   studyLesson: null, // number
@@ -29,66 +24,6 @@ const initialState = {
   // LessonSelector
   showAllKanjis: false,
   showAllLessons: false,
-
-  // quiz
-
-  quizSettings: {
-    N5: {
-      expanded: false,
-      kanji: {
-        expanded: false,
-        lessons: [],
-      },
-      vocabulary: {
-        expanded: false,
-        lessons: [],
-      },
-    },
-    N4: {
-      expanded: false,
-      kanji: {
-        expanded: false,
-        lessons: [],
-      },
-      vocabulary: {
-        expanded: false,
-        lessons: [],
-      },
-    },
-    N3: {
-      expanded: false,
-      kanji: {
-        expanded: false,
-        lessons: [],
-      },
-      vocabulary: {
-        expanded: false,
-        lessons: [],
-      },
-    },
-    N2: {
-      expanded: false,
-      kanji: {
-        expanded: false,
-        lessons: [],
-      },
-      vocabulary: {
-        expanded: false,
-        lessons: [],
-      },
-    },
-    N1: {
-      expanded: false,
-      kanji: {
-        expanded: false,
-        lessons: [],
-      },
-      vocabulary: {
-        expanded: false,
-        lessons: [],
-      },
-    },
-  },
 };
 
 export const studySettingsSlice = createSlice({
@@ -101,9 +36,6 @@ export const studySettingsSlice = createSlice({
     },
     setResponseStudyVocabularyLessons(state, action) {
       state.responseStudyVocabularyLessons = action.payload;
-    },
-    setResponseQuizLessons(state, action) {
-      state.responseQuizLessons = action.payload;
     },
 
     //settings
@@ -130,65 +62,12 @@ export const studySettingsSlice = createSlice({
     setStudyKanji(state, action) {
       state.studyKanji = action.payload;
     },
-    setQuizSettings(state, action) {
-      state.quizSettings = action.payload;
-    },
     // LessonSelector
     setShowAllKanjis(state, action) {
       state.showAllKanjis = action.payload;
     },
     setShowAllLessons(state, action) {
       state.showAllLessons = action.payload;
-    },
-    // quiz
-    levelDisplay(state, action) {
-      const level = action.payload;
-      const isDisplayed = state.quizSettings[level].expanded;
-      if (isDisplayed) {
-        state.quizSettings[level].kanji.expanded = false;
-        state.quizSettings[level].vocabulary.expanded = false;
-      }
-      state.quizSettings[level].expanded = !isDisplayed;
-    },
-    typeDisplay(state, action) {
-      const { level, type } = action.payload;
-      state.quizSettings[level][type].expanded =
-        !state.quizSettings[level][type].expanded;
-    },
-    selectLesson(state, action) {
-      const { level, type, lesson } = action.payload;
-      let lessons = state.quizSettings[level][type].lessons;
-      const lessonExists = lessons.some((obj) => obj.id === lesson.id);
-      if (!lessonExists) {
-        state.quizSettings[level][type].lessons.push(lesson);
-      } else {
-        state.quizSettings[level][type].lessons = lessons.filter(
-          (obj) => obj.id !== lesson.id
-        );
-      }
-    },
-    selectType(state, action) {
-      const { level, type, lessons } = action.payload;
-      if (state.quizSettings[level][type].lessons.length === lessons.length) {
-        state.quizSettings[level][type].lessons = [];
-      } else {
-        state.quizSettings[level][type].lessons = lessons;
-      }
-    },
-    selectLevel(state, action) {
-      const { level, kanjiLessons, vocabularyLessons } = action.payload;
-      if (
-        state.quizSettings[level].kanji.lessons.length ===
-        kanjiLessons.length &&
-        state.quizSettings[level].vocabulary.lessons.length ===
-        vocabularyLessons.length
-      ) {
-        state.quizSettings[level].kanji.lessons = [];
-        state.quizSettings[level].vocabulary.lessons = [];
-      } else {
-        state.quizSettings[level].kanji.lessons = kanjiLessons;
-        state.quizSettings[level].vocabulary.lessons = vocabularyLessons;
-      }
     },
   },
 });
@@ -197,7 +76,6 @@ export const {
   // lessons
   setResponseStudyKanjiLessons,
   setResponseStudyVocabularyLessons,
-  setResponseQuizLessons,
 
   //settings
   setAction,
@@ -209,12 +87,5 @@ export const {
   // LessonSelector
   setShowAllKanjis,
   setShowAllLessons,
-  // quiz
-  setQuizSettings,
-  levelDisplay,
-  typeDisplay,
-  selectLesson,
-  selectType,
-  selectLevel,
 } = studySettingsSlice.actions;
 export default studySettingsSlice.reducer;

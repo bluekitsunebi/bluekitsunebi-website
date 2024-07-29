@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setStudyLevel,
   setStudyType,
-  setResponseQuizLessons,
   setStudyLesson,
   setShowAllKanjis,
 } from "store/app/studySettingsSlice";
+import {
+  setResponseQuizLessons,
+} from "store/app/quizSettingsSlice";
 import Card from "../Card";
 import PrimarySettings from "../PrimarySettings";
 import ActionSelector from "../ActionSelector";
@@ -23,41 +25,13 @@ const LearningSettingsPage = () => {
   const dispatch = useDispatch();
   const levels = useSelector((state) => state.studySettings.levels);
   const responseQuizLessons = useSelector(
-    (state) => state.studySettings.responseQuizLessons
+    (state) => state.quizSettings.responseQuizLessons
   );
-
-  useEffect(() => {
-    dispatch(
-      setResponseQuizLessons({
-        N5: {
-          kanji: [{ id: 1 }],
-          vocabulary: [{ id: 2 }, { id: 3 }, { id: 4 }],
-        },
-        N4: {
-          kanji: [{ id: 5 }, { id: 6 }],
-          vocabulary: [{ id: 7 }, { id: 8 }],
-        },
-        N3: {
-          kanji: [{ id: 7 }, { id: 8 }],
-          vocabulary: [{ id: 9 }, { id: 10 }],
-        },
-        N2: {
-          kanji: [{ id: 11 }, { id: 12 }],
-          vocabulary: [{ id: 13 }, { id: 14 }],
-        },
-        N1: {
-          kanji: [{ id: 15 }, { id: 16 }],
-          vocabulary: [{ id: 17 }, { id: 18 }],
-        },
-      })
-    );
-  }, []);
-
   const action = useSelector((state) => state.studySettings.action);
   const studyLevel = useSelector((state) => state.studySettings.studyLevel);
   const studyType = useSelector((state) => state.studySettings.studyType);
 
-  const quizSettings = useSelector((state) => state.studySettings.quizSettings);
+  const quizSettings = useSelector((state) => state.quizSettings.quizSettings);
 
   const handleSetStudyType = (type) => {
     dispatch(setStudyType(type));

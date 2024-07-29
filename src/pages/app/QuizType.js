@@ -6,7 +6,7 @@ import {
   FaCaretUp as CloseListIcon,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { typeDisplay, selectType } from "store/app/studySettingsSlice";
+import { typeDisplay, selectType } from "store/app/quizSettingsSlice";
 import { FaCheckSquare } from "react-icons/fa";
 import { FaRegSquare } from "react-icons/fa";
 
@@ -29,9 +29,9 @@ const QuizType = ({ level, type, children }) => {
   const dispatch = useDispatch();
 
   const quizLessons = useSelector(
-    (state) => state.studySettings.responseQuizLessons
+    (state) => state.quizSettings.responseQuizLessons
   );
-  const quizSettings = useSelector((state) => state.studySettings.quizSettings);
+  const quizSettings = useSelector((state) => state.quizSettings.quizSettings);
 
   const isExpanded = quizSettings[level][type].expanded;
   const isSelected =
