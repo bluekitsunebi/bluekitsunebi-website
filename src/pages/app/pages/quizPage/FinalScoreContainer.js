@@ -12,7 +12,7 @@ const FinalScoreContainer = styled.div`
 `;
 
 const FinalScore = styled.div`
-  ${tw`flex flex-col`}
+  ${tw`flex flex-col items-center sm:items-start`}
 `;
 
 const FinalScoreCorrectAnswers = styled.div`

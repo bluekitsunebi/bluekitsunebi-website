@@ -47,6 +47,7 @@ const WrongAnswersScore = styled.div`
 
 const ProgressBar = () => {
   const dispatch = useDispatch();
+  const type = useSelector((state) => state.studySettings.studyType);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
   const score = useSelector((state) => state.quizPage.score);
@@ -58,31 +59,40 @@ const ProgressBar = () => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
+  const currentVocabularyQuestion = useSelector((state) => state.quizPage.currentVocabularyQuestion);
 
   if (!retry) {
-    dispatch(
-      setRetryQuestions(
-        quizData.reduce((total, set) => {
-          return total + 1 + set.wordQuestions.length;
-        }, 0)
-      )
-    );
+    if (type === "kanji") {
+      dispatch(
+        setRetryQuestions(
+          quizData.reduce((total, set) => {
+            return total + 1 + set.wordQuestions.length;
+          }, 0)
+        )
+      );
+    } else if (type === "vocabulary") {
+      dispatch(setRetryQuestions(quizData.length));
+    }
   }
 
   let currentQuestionIndex = 0;
   if (!retry) {
-    currentQuestionIndex = quizData.reduce((index, set, setIndex) => {
-      if (setIndex < current.set) {
-        return index + 1 + set.wordQuestions.length;
-      } else if (setIndex === current.set) {
-        if (current.type === "kanjiQuestion") {
-          return index;
-        } else if (current.type === "wordQuestions") {
-          return index + 1 + current.wordIndex;
+    if (type === "kanji") {
+      currentQuestionIndex = quizData.reduce((index, set, setIndex) => {
+        if (setIndex < current.set) {
+          return index + 1 + set.wordQuestions.length;
+        } else if (setIndex === current.set) {
+          if (current.type === "kanjiQuestion") {
+            return index;
+          } else if (current.type === "wordQuestions") {
+            return index + 1 + current.wordIndex;
+          }
         }
-      }
-      return index;
-    }, 0);
+        return index;
+      }, 0);
+    } else if (type === "vocabulary") {
+      currentQuestionIndex = currentVocabularyQuestion;
+    }
   } else {
     currentQuestionIndex = currentWrongQuestion;
   }
@@ -96,7 +106,7 @@ const ProgressBar = () => {
         <ProgressBarContainer>
           <Bar percentage={progressPercentage}>
             <PercentageText>{
-              !showAllKanjis
+              (type === "kanji" && !showAllKanjis) || (type === "vocabulary")
                 ? Math.round(progressPercentage)
                 : Math.round(progressPercentage * 10) / (10)
             }%</PercentageText>
@@ -104,9 +114,10 @@ const ProgressBar = () => {
         </ProgressBarContainer>
       </ProgressBarAndBackButton>
 
-      {current.set <= quizData.length - 1 && (
+      {((type === "kanji" && current.set <= quizData.length - 1) || (type === "vocabulary" && (currentVocabularyQuestion <= quizData.length - 1))) && (
         <ScoreContainer>
           <CorrectAnswersScore>
+            {`${currentQuestionIndex} <= ${quizData.length} - 1 \n`}
             Correct: {score.correctAnswers}
           </CorrectAnswersScore>
           <WrongAnswersScore>Wrong: {score.wrongAnswers}</WrongAnswersScore>

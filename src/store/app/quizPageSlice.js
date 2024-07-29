@@ -28,6 +28,8 @@ const initialState = {
 
   // vocabulary
   currentVocabularyQuestion: 0,
+  firstVocabularyWrongQuestionIndex: null,
+  lastVocabularyWrongQuestionIndex: null,
 };
 
 export const quizPageSlice = createSlice({
@@ -44,34 +46,53 @@ export const quizPageSlice = createSlice({
       state.retryQuestions = action.payload;
     },
     selectOption(state, action) {
-      const [optionIndex, option] = [...action.payload];
+      const [optionIndex, option, type] = [...action.payload];
       if (!option.isSelected) {
-        state.quizData[state.current.set].kanjiQuestion.options.forEach(
-          (opt, idx) => {
-            if (idx !== optionIndex) {
-              opt.isSelected = false;
+        if (type === "kanji") {
+          state.quizData[state.current.set].kanjiQuestion.options.forEach(
+            (opt, idx) => {
+              if (idx !== optionIndex) {
+                opt.isSelected = false;
+              }
             }
-          }
-        );
-        state.quizData[state.current.set].kanjiQuestion.options[
-          optionIndex
-        ].isSelected = true;
-
-        if (option.isCorrect) {
-          state.score.correctAnswers += 1;
-        } else {
-          state.score.wrongAnswers += 1;
-          state.lastWrongQuestion = {
-            set: state.current.set,
-            type: state.current.type,
-            wordIndex: state.current.wordIndex,
-          };
-          if (!state.firstWrongQuestion.type) {
-            state.firstWrongQuestion = {
+          );
+          state.quizData[state.current.set].kanjiQuestion.options[
+            optionIndex
+          ].isSelected = true;
+          if (option.isCorrect) {
+            state.score.correctAnswers += 1;
+          } else {
+            state.score.wrongAnswers += 1;
+            state.lastWrongQuestion = {
               set: state.current.set,
               type: state.current.type,
               wordIndex: state.current.wordIndex,
             };
+            if (!state.firstWrongQuestion.type) {
+              state.firstWrongQuestion = {
+                set: state.current.set,
+                type: state.current.type,
+                wordIndex: state.current.wordIndex,
+              };
+            }
+          }
+        } else if (type === "vocabulary") {
+          state.quizData[state.currentVocabularyQuestion].options.forEach(
+            (opt, idx) => {
+              if (idx !== optionIndex) {
+                opt.isSelected = false;
+              }
+            }
+          );
+          state.quizData[state.currentVocabularyQuestion].options[optionIndex].isSelected = true;
+          if (option.isCorrect) {
+            state.score.correctAnswers += 1;
+          } else {
+            state.score.wrongAnswers += 1;
+            state.lastVocabularyWrongQuestionIndex = state.currentVocabularyQuestion;
+            if (!state.firstVocabularyWrongQuestionIndex && state.firstVocabularyWrongQuestionIndex !== 0) {
+              state.firstVocabularyWrongQuestionIndex = state.currentVocabularyQuestion;
+            }
           }
         }
       }
@@ -87,13 +108,13 @@ export const quizPageSlice = createSlice({
           .userInput.value;
       if (
         userInput ===
-          state.quizData[state.current.set].wordQuestions[
-            state.current.wordIndex
-          ].word.kana_reading ||
+        state.quizData[state.current.set].wordQuestions[
+          state.current.wordIndex
+        ].word.kana_reading ||
         userInput ===
-          state.quizData[state.current.set].wordQuestions[
-            state.current.wordIndex
-          ].word.romaji_reading
+        state.quizData[state.current.set].wordQuestions[
+          state.current.wordIndex
+        ].word.romaji_reading
       ) {
         state.quizData[state.current.set].wordQuestions[
           state.current.wordIndex
@@ -121,26 +142,9 @@ export const quizPageSlice = createSlice({
     setAnswered(state, action) {
       state.answered = action.payload;
     },
-    nextQuestion(state) {
-      if (state.current.type === "kanjiQuestion") {
-        state.current.wordIndex = 0;
-        state.current.type = "wordQuestions";
-      } else if (state.current.type === "wordQuestions") {
-        if (
-          state.current.wordIndex <
-          state.quizData[state.current.set].wordQuestions.length - 1
-        ) {
-          state.current.wordIndex += 1;
-        } else {
-          state.current.type = "kanjiQuestion";
-          state.current.set += 1;
-        }
-      }
-    },
-    nextWrongQuestion(state) {
-      let goToNextQuestion = true;
-
-      const nextQuestion = () => {
+    nextQuestion(state, action) {
+      const type = action.payload;
+      if (type === "kanji") {
         if (state.current.type === "kanjiQuestion") {
           state.current.wordIndex = 0;
           state.current.type = "wordQuestions";
@@ -155,28 +159,66 @@ export const quizPageSlice = createSlice({
             state.current.set += 1;
           }
         }
-        if (state.current.set <= state.quizData.length - 1) {
-          goToNextQuestion = questionWasAnswered();
-        } else {
-          goToNextQuestion = false;
+      } else if (type === "vocabulary") {
+        state.currentVocabularyQuestion += 1;
+      }
+    },
+    nextWrongQuestion(state, action) {
+      const type = action.payload;
+      let goToNextQuestion = true;
+
+      const nextQuestion = () => {
+        if (type === "kanji") {
+          if (state.current.type === "kanjiQuestion") {
+            state.current.wordIndex = 0;
+            state.current.type = "wordQuestions";
+          } else if (state.current.type === "wordQuestions") {
+            if (
+              state.current.wordIndex <
+              state.quizData[state.current.set].wordQuestions.length - 1
+            ) {
+              state.current.wordIndex += 1;
+            } else {
+              state.current.type = "kanjiQuestion";
+              state.current.set += 1;
+            }
+          }
+          if (state.current.set <= state.quizData.length - 1) {
+            goToNextQuestion = questionWasAnswered();
+          } else {
+            goToNextQuestion = false;
+          }
+        } else if (type === "vocabulary") {
+          state.currentVocabularyQuestion += 1;
+          if (state.currentVocabularyQuestion <= state.quizData.length - 1) {
+            goToNextQuestion = questionWasAnswered();
+          } else {
+            goToNextQuestion = false;
+          }
         }
       };
 
       const questionWasAnswered = () => {
-        if (state.current.type === "wordQuestions") {
-          if (
-            !state.quizData[state.current.set].wordQuestions[
-              state.current.wordIndex
-            ].userInput.value
-          ) {
-            return false;
-          } else return true;
-        } else if (state.current.type === "kanjiQuestion") {
-          if (
-            !state.quizData[state.current.set].kanjiQuestion.options.some(
-              (option) => option.isSelected
-            )
-          ) {
+        if (type === "kanji") {
+          if (state.current.type === "wordQuestions") {
+            if (
+              !state.quizData[state.current.set].wordQuestions[
+                state.current.wordIndex
+              ].userInput.value
+            ) {
+              return false;
+            } else return true;
+          } else if (state.current.type === "kanjiQuestion") {
+            if (
+              !state.quizData[state.current.set].kanjiQuestion.options.some(
+                (option) => option.isSelected
+              )
+            ) {
+              return false;
+            } else return true;
+          } else return null;
+        } else if (type === "vocabulary") {
+          if (!state.quizData[state.currentVocabularyQuestion].options.some((option) => option.isSelected)) {
             return false;
           } else return true;
         } else return null;
@@ -184,56 +226,83 @@ export const quizPageSlice = createSlice({
 
       while (
         goToNextQuestion &&
-        state.current.set <= state.quizData.length - 1
+        (
+          (
+            type === "kanji"
+            && (state.current.set <= state.quizData.length - 1)
+          )
+          ||
+          (type === "vocabulary" && (
+            state.currentVocabularyQuestion <= state.quizData.length - 1
+          ))
+        )
       ) {
         nextQuestion();
       }
-      
       state.currentWrongQuestion += 1;
     },
-    retryQuiz(state) {
+    retryQuiz(state, action) {
       state.retry = true;
-      state.quizData.forEach((set, setIndex) => {
-        set.kanjiQuestion.options.forEach((option, optionIndex) => {
-          if (option.isSelected && !option.isCorrect) {
-            state.quizData[setIndex].kanjiQuestion.options[
-              optionIndex
-            ].isSelected = false;
-          }
+      if (action.payload === "kanji") {
+        state.quizData.forEach((set, setIndex) => {
+          set.kanjiQuestion.options.forEach((option, optionIndex) => {
+            if (option.isSelected && !option.isCorrect) {
+              state.quizData[setIndex].kanjiQuestion.options[
+                optionIndex
+              ].isSelected = false;
+            }
+          });
+          set.wordQuestions.forEach((wordQuestion, wordQuestionIndex) => {
+            if (
+              wordQuestion.userInput.value &&
+              !wordQuestion.userInput.isCorrect
+            ) {
+              state.quizData[setIndex].wordQuestions[
+                wordQuestionIndex
+              ].userInput.value = "";
+              state.quizData[setIndex].wordQuestions[
+                wordQuestionIndex
+              ].userInput.isCorrect = null;
+            }
+          });
         });
-        set.wordQuestions.forEach((wordQuestion, wordQuestionIndex) => {
-          if (
-            wordQuestion.userInput.value &&
-            !wordQuestion.userInput.isCorrect
-          ) {
-            state.quizData[setIndex].wordQuestions[
-              wordQuestionIndex
-            ].userInput.value = "";
-            state.quizData[setIndex].wordQuestions[
-              wordQuestionIndex
-            ].userInput.isCorrect = null;
-          }
+      } else if (action.payload === "vocabulary") {
+        state.quizData.forEach((question, questionIndex) => {
+          question.options.forEach((option, optionIndex) => {
+            if (option.isSelected && !option.isCorrect) {
+              state.quizData[questionIndex].options[optionIndex].isSelected = false;
+            }
+          });
         });
-      });
+      }
       state.lastWrongQuestion = {
         set: 0,
         type: "",
         wordIndex: 0,
       };
-      state.answered = false;
+      state.lastVocabularyWrongQuestionIndex = null;
+      if (action.payload === "kanji") state.answered = false;
       state.retryQuestions = state.score.wrongAnswers;
       state.currentWrongQuestion = 0;
       state.score.wrongAnswers = 0;
-      state.current = {
-        set: state.firstWrongQuestion.set,
-        type: state.firstWrongQuestion.type,
-        wordIndex: state.firstWrongQuestion.wordIndex,
-      };
-      state.firstWrongQuestion = {
-        set: 0,
-        type: "",
-        wordIndex: 0,
-      };
+      if (action.payload === "kanji") {
+        state.current = {
+          set: state.firstWrongQuestion.set,
+          type: state.firstWrongQuestion.type,
+          wordIndex: state.firstWrongQuestion.wordIndex,
+        };
+      } else if (action.payload === "vocabulary") {
+        state.currentVocabularyQuestion = state.firstVocabularyWrongQuestionIndex;
+      }
+      if (action.payload === "kanji") {
+        state.firstWrongQuestion = {
+          set: 0,
+          type: "",
+          wordIndex: 0,
+        };
+      } else if (action.payload === "vocabulary") {
+        state.firstVocabularyWrongQuestionIndex = null;
+      }
     },
     resetQuiz(state) {
       state.quizData = [];
@@ -260,6 +329,10 @@ export const quizPageSlice = createSlice({
       state.retry = false;
       state.retryQuestions = 0;
       state.currentWrongQuestion = 0;
+      // vocabulary
+      state.currentVocabularyQuestion = 0;
+      state.firstVocabularyWrongQuestionIndex = null;
+      state.lastVocabularyWrongQuestionIndex = null;
     },
 
     // vocabulary

@@ -7,7 +7,7 @@ import { setPage } from "store/app/appSlice";
 import { resetQuiz } from "store/app/quizPageSlice";
 
 const BackButtonContainer = styled.div`
-  ${tw` sm:w-full mr-auto sm:mb-8 flex flex-row justify-between`}
+  ${tw`z-10 sm:w-full mr-auto sm:mb-8 flex flex-row justify-between`}
   ${({ mobile }) =>
     mobile &&
     css`

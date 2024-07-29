@@ -247,10 +247,6 @@ const QuizPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("quizData: ", quizData);
-  }, [quizData]);
-
   const handleWordReadingChange = (e) => {
     if (type === "kanji") {
       const value = e.target.value.replace(/\s+/g, "");
@@ -263,12 +259,12 @@ const QuizPage = () => {
   };
 
   const handleNextQuestion = () => {
+    if (!retry) {
+      dispatch(nextQuestion(type));
+    } else {
+      dispatch(nextWrongQuestion(type));
+    }
     if (type === "kanji") {
-      if (!retry) {
-        dispatch(nextQuestion());
-      } else {
-        dispatch(nextWrongQuestion());
-      }
       current.type === "wordQuestions" && dispatch(setAnswered(false));
     }
   };
