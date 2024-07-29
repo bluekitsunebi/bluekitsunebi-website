@@ -41,12 +41,12 @@ const Card = styled.div`
 
 const KanjiContainer = styled.div`
   ${tw`flex flex-row gap-2 text-center w-full justify-between items-center sm:gap-10`}
-  ${({ type  }) =>
+  ${({ type }) =>
     type === "kanji" ?
-    css`
+      css`
       ${tw`h-36`}
-    ` : 
-    css`
+    ` :
+      css`
       ${tw`h-20`}
     `
   }
@@ -181,7 +181,15 @@ const Meanings = styled.span`
 `;
 
 const PartsOfSpeech = styled.div`
-  ${tw`text-xs sm:text-xl text-gray-500 w-fit h-fit inline-block`}
+  ${tw`text-xs sm:text-xl text-gray-500 w-fit h-fit inline-block mr-1`}
+  line-height: normal;
+  @media (min-width: 640px) {
+    line-height: 90%;
+  }
+`;
+
+const UsuallyKana = styled.div`
+  ${tw`text-xs sm:text-xl text-blue-300 w-fit h-fit inline-block`}
   line-height: normal;
   @media (min-width: 640px) {
     line-height: 90%;
@@ -190,12 +198,12 @@ const PartsOfSpeech = styled.div`
 
 const StartQuizContainer = styled.div`
   ${tw`w-full flex flex-col items-center justify-center`}
-  ${({ type  }) =>
+  ${({ type }) =>
     type === "kanji" ?
-    css`
+      css`
       ${tw`min-h-28 sm:min-h-44`}
-    ` : 
-    css`
+    ` :
+      css`
       ${tw`mt-4 sm:mt-0`}
     `
   }
@@ -250,7 +258,8 @@ const StudyPage = () => {
             w.word,
             w.meanings,
             w.parts_of_speech,
-            w.kana_reading
+            w.kana_reading,
+            w.usually_kana
           FROM 
             vocab_lessons vl
           JOIN 
@@ -268,6 +277,7 @@ const StudyPage = () => {
               meanings: JSON.parse(row.meanings),
               parts_of_speech: JSON.parse(row.parts_of_speech),
               kana_reading: row.kana_reading,
+              usually_kana: row.usually_kana === "True"
             }
           );
         }
@@ -539,13 +549,10 @@ const StudyPage = () => {
                           <Word>{word?.word}</Word>
                         </WordContainer>
                         <Meanings>{" = " + word?.meanings?.join(", ") + (word?.parts_of_speech ? " " : "")}</Meanings>
-
-                          
-                          <PartsOfSpeech>
-                            {word?.parts_of_speech?.join(", ")}
-                          </PartsOfSpeech>
-                          
-
+                        <PartsOfSpeech>
+                          {word?.parts_of_speech?.join(", ")}
+                        </PartsOfSpeech>
+                        {word?.usually_kana && <UsuallyKana>Usually not using kanji</UsuallyKana>}
                       </Item>
                     )}
                   </VocabularyList>
