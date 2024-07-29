@@ -67,6 +67,36 @@ const initialState = {
     },
 };
 
+const updateAllSelected = (state) => {
+    let allLessonsSelected = true;
+    state.levels.forEach((lessonLevel) => {
+        if (
+            state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
+        ) {
+            allLessonsSelected = false;
+        }
+        if (
+            state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
+        ) {
+            allLessonsSelected = false;
+        }
+    });
+    state.allSelected = allLessonsSelected;
+};
+
+const updateAllDeselected = (state) => {
+    let allLessonsDeselected = true;
+    state.levels.forEach((lessonLevel) => {
+        if (state.quizSettings[lessonLevel].kanji.lessons.length !== 0) {
+            allLessonsDeselected = false;
+        }
+        if (state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0) {
+            allLessonsDeselected = false;
+        }
+    });
+    state.allDeselected = allLessonsDeselected;
+};
+
 export const quizSettingsSlice = createSlice({
     name: "quizSettings",
     initialState,
@@ -104,79 +134,23 @@ export const quizSettingsSlice = createSlice({
                     (obj) => obj.id !== lesson.id
                 );
             }
-
-            // set allSelected
-            let allLessonsSelected = true;
-            state.levels.forEach((lessonLevel) => {
-                if (
-                    state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
-                ) {
-                    allLessonsSelected = false;
-                }
-
-                if (
-                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
-                ) {
-                    allLessonsSelected = false;
-                }
-            });
-            state.allSelected = allLessonsSelected;
-
-            // set allDeselected
-            let allLessonsDeselected = true;
-            state.levels.forEach((lessonLevel) => {
-                if (state.quizSettings[lessonLevel].kanji.lessons.length !== 0) {
-                    allLessonsDeselected = false;
-                }
-                if (state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0) {
-                    allLessonsDeselected = false;
-                }
-            });
-            state.allDeselected = allLessonsDeselected;
+            updateAllSelected(state);
+            updateAllDeselected(state);
         },
 
         selectType(state, action) {
-            const {level, type, lessons } = action.payload;
+            const { level, type, lessons } = action.payload;
             if (state.quizSettings[level][type].lessons.length === lessons.length) {
                 state.quizSettings[level][type].lessons = [];
             } else {
                 state.quizSettings[level][type].lessons = lessons;
             }
-
-            // set allSelected
-            let allLessonsSelected = true;
-            state.levels.forEach((lessonLevel) => {
-                if (
-                    state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
-                ) {
-                    allLessonsSelected = false;
-                }
-                if (
-                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
-                ) {
-                    allLessonsSelected = false;
-                }
-            });
-            state.allSelected = allLessonsSelected;
-            // set allDeselected
-            let allLessonsDeselected = true;
-            state.levels.forEach((lessonLevel) => {
-                if (
-                    state.quizSettings[lessonLevel].kanji.lessons.length !== 0
-                ) {
-                    allLessonsDeselected = false;
-                }
-                if (
-                    state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0
-                ) {
-                    allLessonsDeselected = false;
-                }
-            });
-            state.allDeselected = allLessonsDeselected;
+            updateAllSelected(state);
+            updateAllDeselected(state);
         },
 
         selectLevel(state, action) {
-            const { level, kanjiLessons, vocabularyLessons} = action.payload;
+            const { level, kanjiLessons, vocabularyLessons } = action.payload;
             if (
                 state.quizSettings[level].kanji.lessons.length ===
                 kanjiLessons.length &&
@@ -189,37 +163,8 @@ export const quizSettingsSlice = createSlice({
                 state.quizSettings[level].kanji.lessons = kanjiLessons;
                 state.quizSettings[level].vocabulary.lessons = vocabularyLessons;
             }
-
-            // set allSelected
-            let allLessonsSelected = true;
-            state.levels.forEach((lessonLevel) => {
-                    if (
-                        state.quizSettings[lessonLevel].kanji.lessons.length !== state.responseQuizLessons[lessonLevel].kanji.length
-                    ) {
-                        allLessonsSelected = false;
-                    }
-                    if (
-                        state.quizSettings[lessonLevel].vocabulary.lessons.length !== state.responseQuizLessons[lessonLevel].vocabulary.length
-                    ) {
-                        allLessonsSelected = false;
-                    }
-            });
-            state.allSelected = allLessonsSelected;
-            // set allDeselected
-            let allLessonsDeselected = true;
-            state.levels.forEach((lessonLevel) => {
-                    if (
-                        state.quizSettings[lessonLevel].kanji.lessons.length !== 0
-                    ) {
-                        allLessonsDeselected = false;
-                    }
-                    if (
-                        state.quizSettings[lessonLevel].vocabulary.lessons.length !== 0
-                    ) {
-                        allLessonsDeselected = false;
-                    }
-            });
-            state.allDeselected = allLessonsDeselected;
+            updateAllSelected(state);
+            updateAllDeselected(state);
         },
 
         selectAll(state, action) {
