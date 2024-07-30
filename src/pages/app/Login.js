@@ -67,16 +67,22 @@ const LoginPage = () => {
   const responseStudyVocabularyLessons = useSelector(
     (state) => state.studySettings.responseStudyVocabularyLessons
   );
+  const responseQuizLessons = useSelector(
+    (state) => state.quizSettings.responseQuizLessons
+  );
   const levels = useSelector(
     (state) => state.studySettings.levels
   );
+  const [kanjiLessonsFetched, setKanjiLessonsFetched] = useState(false);
+  const [vocabularyLessonsFetched, setVocabularyLessonsFetched] = useState(false);
+  const [quizListFetched, setQuizListFetched] = useState(false);
 
   useEffect(() => {
     const loadDatabase = async () => {
       try {
         if (!database) {
           const SQL = await initSqlJs({
-            locateFile: (file) => `https://sql.js.org/dist/sql-wasm.wasm`,
+            locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.wasm`,
           });
           const response = await fetch(dataBase);
           const buffer = await response.arrayBuffer();
@@ -143,6 +149,7 @@ const LoginPage = () => {
       }
       dispatch(setResponseStudyKanjiLessons(lessons));
       stmt.free();
+      setKanjiLessonsFetched(true);
     } catch (error) {
       console.error(
         `Failed to load kanji lessons from database`,
@@ -192,6 +199,7 @@ const LoginPage = () => {
       }
       dispatch(setResponseStudyVocabularyLessons(lessons));
       stmt.free();
+      setVocabularyLessonsFetched(true);
     } catch (error) {
       console.error(
         `Failed to load vocabulary lessons from database`,
@@ -200,7 +208,7 @@ const LoginPage = () => {
     }
   };
 
-  const getQuizLessons = () => {
+  const getQuizLessons = async () => {
     let quizLessons = {
       N5: {
         kanji: [],
@@ -244,26 +252,22 @@ const LoginPage = () => {
         });
       })
     });
-    dispatch(setResponseQuizLessons(quizLessons))
+    dispatch(setResponseQuizLessons(quizLessons));
+    setQuizListFetched(true);
   }
 
   useEffect(() => {
     if (database) {
-      const setKanjiLessons = async () => {
-        await getKanjiLessons();
-      };
-      const setVocabularyLessons = async () => {
-        await getVocabularyLessons();
-      };
-      const setQuizLessons = async () => {
-        await Promise.all([setKanjiLessons(), setVocabularyLessons()]);
-        getQuizLessons();
-      };
-      setKanjiLessons();
-      setVocabularyLessons();
-      setQuizLessons();
+      getKanjiLessons(); 
+      getVocabularyLessons();
     }
   }, [database]);
+
+  useEffect(() => {
+    if(kanjiLessonsFetched && vocabularyLessonsFetched) {
+      getQuizLessons();
+    }
+  }, [kanjiLessonsFetched, vocabularyLessonsFetched]);
 
   const handleLogin = async (event) => {
     event.preventDefault();

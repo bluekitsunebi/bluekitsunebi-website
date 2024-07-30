@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -150,21 +150,35 @@ const QuizPage = () => {
     let quizData = [];
     let selectedLessons = {};
     levels.forEach((level) => {
-      quizSettings[level].kanji.lessons.forEach((lesson) => {
-        selectedLessons[level].kanji.push(
-          lesson.id
-        )
-        selectedLessons[level].vocabulary.push(
-          lesson.id
-        )
-      })
+      const hasKanjiLessons = quizSettings[level].kanji.lessons.length !== 0;
+      const hasVocabularyLessons = quizSettings[level].vocabulary.lessons.length !== 0;
+      if (hasKanjiLessons || hasVocabularyLessons) {
+        selectedLessons[level] = {};
+      }
+      if (hasKanjiLessons) {
+        selectedLessons[level].kanji = [];
+        quizSettings[level].kanji.lessons.forEach((lesson) => {
+          selectedLessons[level].kanji.push(
+            lesson.id
+          )
+        })
+      }
+      if (hasVocabularyLessons) {
+        selectedLessons[level].vocabulary = [];
+        quizSettings[level].vocabulary.lessons.forEach((lesson) => {
+          selectedLessons[level].vocabulary.push(
+            lesson.id
+          )
+        })
+
+      }
     })
     console.log("selectedLessons: ", selectedLessons);
     return quizData;
   }
 
 
-  const getQuizData = async () => {
+  const getQuizData = useCallback(async () => {
     let quizData = [];
     if (action === "study") {
       if (level && lessonId) {
@@ -181,7 +195,7 @@ const QuizPage = () => {
       quizData = setQuizDataFromQuizSettings();
     };
     return quizData;
-  };
+  }, []);
 
   const getKanjiQuestion = async (originalData, i) => {
     let options = [];
@@ -275,17 +289,17 @@ const QuizPage = () => {
     return wordQuestions;
   };
 
+
   useEffect(() => {
-    console.log("quiz started");
     const fetchQuizData = async () => {
       const data = await getQuizData();
       dispatch(setQuizData(data));
     };
     fetchQuizData();
-    if (type === "kanji") {
+    if (action === "study" && type === "kanji") {
       dispatch(setCurrentType("kanjiQuestion"));
     }
-  });
+  }, []);
 
   const handleWordReadingChange = (e) => {
     if (type === "kanji") {
@@ -309,8 +323,10 @@ const QuizPage = () => {
     }
   };
 
+  
+
   useEffect(() => {
-    if (type === "kanji") {
+    if (action === "study" && type === "kanji") {
       const handleGlobalKeyPress = (e) => {
         if (e.key !== "Enter") return;
         let isDisabled = false;
@@ -345,7 +361,7 @@ const QuizPage = () => {
         document.removeEventListener("keydown", handleGlobalKeyPress);
       };
     }
-  }, [current, answered, quizData, type, handleNextQuestion(), dispatch]);
+  }, [current, answered, quizData]);
 
   return (
     <>

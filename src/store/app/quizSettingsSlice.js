@@ -102,6 +102,7 @@ export const quizSettingsSlice = createSlice({
     initialState,
     reducers: {
         setResponseQuizLessons(state, action) {
+            console.log("Response Quiz Lessons: ", action.payload);
             state.responseQuizLessons = action.payload;
         },
         setQuizSettings(state, action) {
@@ -123,6 +124,7 @@ export const quizSettingsSlice = createSlice({
         },
 
         selectLesson(state, action) {
+            console.log("select Lesson");
             const { level, type, lesson } = action.payload;
             const lessons = state.quizSettings[level][type].lessons;
             const lessonExists = lessons.some((obj) => obj.id === lesson.id);
@@ -139,6 +141,7 @@ export const quizSettingsSlice = createSlice({
         },
 
         selectType(state, action) {
+            console.log("select Type");
             const { level, type, lessons } = action.payload;
             if (state.quizSettings[level][type].lessons.length === lessons.length) {
                 state.quizSettings[level][type].lessons = [];
@@ -150,6 +153,7 @@ export const quizSettingsSlice = createSlice({
         },
 
         selectLevel(state, action) {
+            console.log("select Level");
             const { level, kanjiLessons, vocabularyLessons } = action.payload;
             if (
                 state.quizSettings[level].kanji.lessons.length ===
