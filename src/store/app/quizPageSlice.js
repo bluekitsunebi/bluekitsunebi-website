@@ -37,6 +37,7 @@ export const quizPageSlice = createSlice({
   initialState,
   reducers: {
     setQuizData(state, action) {
+      console.log("quiz Data: ", action.payload);
       state.quizData = action.payload;
     },
     setCurrentType(state, action) {

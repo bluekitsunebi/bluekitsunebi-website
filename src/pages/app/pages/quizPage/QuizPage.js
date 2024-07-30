@@ -146,8 +146,7 @@ const QuizPage = () => {
     return quizData;
   }
 
-  const setQuizDataFromQuizSettings = () => {
-    let quizData = [];
+  const getSelectedLessons = () => {
     let selectedLessons = {};
     levels.forEach((level) => {
       const hasKanjiLessons = quizSettings[level].kanji.lessons.length !== 0;
@@ -170,10 +169,169 @@ const QuizPage = () => {
             lesson.id
           )
         })
-
       }
     })
-    console.log("selectedLessons: ", selectedLessons);
+    return selectedLessons;
+  }
+
+  const getCombinedQuestionsQuery = (selectedLessons, kanjiLessonsExists, vocabularyLessonsExists) => {
+    let query = ``;
+    if (kanjiLessonsExists) {
+      query += `
+    SELECT 
+      k.kanji AS question,
+      k.meanings AS meanings,
+      '[' || GROUP_CONCAT(
+        json_object(
+          'word', w.word,
+          'kana_reading', w.kana_reading,
+          'romaji_reading', w.romaji_reading
+        )
+      ) || ']' AS words,
+      'kanji' AS question_type
+    FROM 
+      kanji_lessons kl
+    JOIN 
+      kanjis k ON kl.id_kanji = k.id
+    JOIN 
+      words w ON kl.id_word = w.id
+    WHERE
+    `;
+      let firstExists = false;
+      if (selectedLessons?.N5?.kanji) {
+        firstExists = true;
+        query += `(kl.level = "N5" AND kl.id_lesson IN (${selectedLessons.N5.kanji}))`;
+      }
+      if (selectedLessons?.N4?.kanji) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(kl.level = "N4" AND kl.id_lesson IN (${selectedLessons.N4.kanji}))`;
+      }
+      if (selectedLessons?.N3?.kanji) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(kl.level = "N3" AND kl.id_lesson IN (${selectedLessons.N3.kanji}))`;
+      }
+      if (selectedLessons?.N2?.kanji) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(kl.level = "N2" AND kl.id_lesson IN (${selectedLessons.N2.kanji}))`;
+      }
+      if (selectedLessons?.N1?.kanji) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(kl.level = "N1" AND kl.id_lesson IN (${selectedLessons.N1.kanji}))`;
+      }
+      query += `
+    GROUP BY 
+      kl.id_kanji,
+      kl.level, 
+      k.kanji, 
+      k.meanings
+    `;
+    }
+
+    if (kanjiLessonsExists && vocabularyLessonsExists) {
+      query += `
+      UNION ALL
+      `;
+    }
+
+    if (vocabularyLessonsExists) {
+      query += `
+    SELECT 
+      w.word AS question,
+      w.meanings AS meanings,
+      w.kana_reading AS words,
+      'vocabulary' AS question_type
+    FROM 
+      vocab_lessons vl
+    JOIN 
+      words w ON vl.id_word = w.id
+    WHERE
+    `;
+      let firstExists = false;
+      if (selectedLessons?.N5?.vocabulary) {
+        firstExists = true;
+        query += `(vl.level = "N5" AND vl.id_lesson IN (${selectedLessons.N5.vocabulary}))`;
+      }
+      if (selectedLessons?.N4?.vocabulary) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(vl.level = "N4" AND vl.id_lesson IN (${selectedLessons.N4.vocabulary}))`;
+      }
+      if (selectedLessons?.N3?.vocabulary) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(vl.level = "N3" AND vl.id_lesson IN (${selectedLessons.N3.vocabulary}))`;
+      }
+      if (selectedLessons?.N2?.vocabulary) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(vl.level = "N2" AND vl.id_lesson IN (${selectedLessons.N2.vocabulary}))`;
+      }
+      if (selectedLessons?.N1?.vocabulary) {
+        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        query += `(vl.level = "N1" AND vl.id_lesson IN (${selectedLessons.N1.vocabulary}))`;
+      }
+    }
+    query += `;`;
+    return query;
+  };
+
+  const getCombinedQuestionsOriginalData = (query) => {
+    let kanjiData = [];
+    let vocabularyData = [];
+    try {
+      const stmt = database.prepare(query);
+      while (stmt.step()) {
+        let row = stmt.getAsObject();
+        if (row.question_type === 'kanji') {
+          kanjiData.push({
+            kanji: row.question,
+            meanings: JSON.parse(row.meanings).slice(0, 3),
+            words: JSON.parse(row.words).slice(0, 5).sort(() => Math.random() - 0.5).slice(0, 3)
+          });
+        } else if (row.question_type === 'vocabulary') {
+          vocabularyData.push({
+            word: row.question,
+            meanings: JSON.parse(row.meanings),
+            kanaReading: row.words
+          });
+        }
+      }
+      stmt.free();
+    } catch (error) {
+      console.error(`Failed to load quiz data from database`, error);
+    }
+    return { kanjiData, vocabularyData };
+  };
+
+  const setQuizDataFromQuizSettings = async () => {
+    let selectedLessons = getSelectedLessons();
+    let combinedQuery = "";
+    let quizData = [];
+    let originalData = [];
+    const kanjiLessonsExists = selectedLessons?.N5?.kanji || selectedLessons?.N4?.kanji || selectedLessons?.N3?.kanji || selectedLessons?.N2?.kanji || selectedLessons?.N1?.kanji;
+    const vocabularyLessonsExists = selectedLessons?.N5?.vocabulary || selectedLessons?.N4?.vocabulary || selectedLessons?.N3?.vocabulary || selectedLessons?.N2?.vocabulary || selectedLessons?.N1?.vocabulary;
+
+    if (kanjiLessonsExists || vocabularyLessonsExists) {
+      combinedQuery = getCombinedQuestionsQuery(selectedLessons, kanjiLessonsExists, vocabularyLessonsExists);
+      originalData = getCombinedQuestionsOriginalData(combinedQuery);
+    }
+
+    // TO DO - process originalData.vocabularyData
+
+    if (originalData?.kanjiData?.length && originalData?.kanjiData?.length !== 0) {
+      for (let i = 0; i < originalData.kanjiData.length; i++) {
+        let questionsSet = {
+          kanjiQuestion: null,
+          wordQuestions: [],
+        };
+
+        const randomLessonId = Math.floor(Math.random() * 16) + 1;
+        const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+        questionsSet.kanjiQuestion = await getKanjiQuestion(originalData.kanjiData, i, randomLessonId, randomLevel);
+        questionsSet.wordQuestions = getWordQuestions(originalData.kanjiData, i);
+        quizData.push(questionsSet);
+      }
+      quizData.sort(() => Math.random() - 0.5);
+    }
+    console.log("quizData: ", quizData);
+
     return quizData;
   }
 
@@ -197,7 +355,7 @@ const QuizPage = () => {
     return quizData;
   }, []);
 
-  const getKanjiQuestion = async (originalData, i) => {
+  const getKanjiQuestion = async (originalData, i, randomLessonId = null, randomLevel = null) => {
     let options = [];
     let correctOption = null;
     for (let j = 0; j < originalData.length; j++) {
@@ -216,8 +374,8 @@ const QuizPage = () => {
       }
     }
     options = options.slice(0, 2);
-    if (options.length < 2 && lessonId > 1) {
-      let previousLessonKanjis = await getPreviousLessonKanjis();
+    if (options.length < 2 && (lessonId > 1 || randomLessonId !== null)) {
+      let previousLessonKanjis = await getPreviousLessonKanjis(randomLessonId, randomLevel);
       previousLessonKanjis.sort(() => Math.random() - 0.5);
       previousLessonKanjis = previousLessonKanjis.slice(0, 2 - options.length);
       options = [...options, ...previousLessonKanjis];
@@ -234,7 +392,7 @@ const QuizPage = () => {
     return kanjiQuestion;
   };
 
-  const getPreviousLessonKanjis = async () => {
+  const getPreviousLessonKanjis = async (randomLessonId = null, randomLevel = null) => {
     let query = `
       SELECT 
         kl.id_kanji, 
@@ -245,7 +403,7 @@ const QuizPage = () => {
       JOIN 
         kanjis k ON kl.id_kanji = k.id
       WHERE 
-        kl.level = "${level}" AND kl.id_lesson = ${lessonId - 1}
+        kl.level = "${randomLevel || level}" AND kl.id_lesson = ${randomLessonId || (lessonId - 1)}
       GROUP BY 
         kl.id_kanji, 
         kl.level, 
@@ -322,8 +480,6 @@ const QuizPage = () => {
       current.type === "wordQuestions" && dispatch(setAnswered(false));
     }
   };
-
-  
 
   useEffect(() => {
     if (action === "study" && type === "kanji") {

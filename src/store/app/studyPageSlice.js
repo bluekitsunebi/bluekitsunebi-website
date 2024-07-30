@@ -25,7 +25,7 @@ export const studyPageSlice = createSlice({
     },
     reset(state, action) {
       const type = action.payload;
-      if(type === "kanji") {
+      if (type === "kanji") {
         state.kanjiList = [];
         state.currentKanjiIndex = null;
         state.kanjiData = null;

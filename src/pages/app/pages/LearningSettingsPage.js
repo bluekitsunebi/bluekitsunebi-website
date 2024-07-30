@@ -76,7 +76,9 @@ const LearningSettingsPage = () => {
   // ---------------------
 
   const handleStartQuiz = () => {
-    dispatch(setPage("quiz"));
+    if (!allDeselected) {
+      dispatch(setPage("quiz"));
+    }
   };
 
   return (
@@ -180,7 +182,7 @@ const LearningSettingsPage = () => {
                 ))}
               </QuizListWrapper>
               <ButtonContainer onClick={() => handleStartQuiz()}>
-                <Button>Start</Button>
+                <Button disabled={allDeselected}>Start Quiz</Button>
               </ButtonContainer>
             </>
           )
