@@ -149,6 +149,7 @@ const QuizCard = ({
   handleNextQuestion,
 }) => {
   const dispatch = useDispatch();
+  const action = useSelector((state) => state.studySettings.action);
   const type = useSelector((state) => state.studySettings.studyType);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
@@ -226,7 +227,7 @@ const QuizCard = ({
 
   return (
     <Card>
-      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
+      {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
         <ProgressBar />
       }
       {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && score && (
