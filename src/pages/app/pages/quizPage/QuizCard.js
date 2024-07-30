@@ -149,6 +149,7 @@ const QuizCard = ({
   handleNextQuestion,
 }) => {
   const dispatch = useDispatch();
+  const action = useSelector((state) => state.studySettings.action);
   const type = useSelector((state) => state.studySettings.studyType);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
@@ -226,15 +227,15 @@ const QuizCard = ({
 
   return (
     <Card>
-      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
+      {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
         <ProgressBar />
       }
-      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && score && (
+      {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && score && (
         <CardContent>
-          {(type === "kanji" && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1) ? (
+          {((type === "kanji" || action === "quiz") && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1) ? (
             <>
               <ExerciseStatement>
-                {type === "kanji" && (
+                {(type === "kanji" || action === "quiz") && (
                   current.type === "kanjiQuestion"
                     ? "Select the meaning of the kanji:"
                     : "Write the reading of the word:"
