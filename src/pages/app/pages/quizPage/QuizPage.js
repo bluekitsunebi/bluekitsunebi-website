@@ -35,9 +35,7 @@ const QuizPage = () => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
-  const wordsData = useSelector(
-    (state) => state.studyPage.wordsData
-  );
+  const wordsData = useSelector((state) => state.studyPage.wordsData);
 
   const kanjiQuery = () => {
     let query = `
@@ -77,7 +75,7 @@ const QuizPage = () => {
           k.kanji, 
           k.meanings;`;
     return query;
-  }
+  };
 
   const setKanjiData = async (query) => {
     try {
@@ -110,18 +108,18 @@ const QuizPage = () => {
         error
       );
     }
-  }
+  };
 
   const setVocabularyData = () => {
     let quizData = [];
     let wordsMeanings = [];
-    wordsData.forEach(word => {
+    wordsData.forEach((word) => {
       wordsMeanings.push(word.meanings);
     });
-    wordsData.forEach(word => {
+    wordsData.forEach((word) => {
       let options = [];
       let correctOption = null;
-      wordsMeanings.forEach(meaning => {
+      wordsMeanings.forEach((meaning) => {
         let isCorrect = meaning === word.meanings;
         let option = {
           value: meaning,
@@ -138,43 +136,44 @@ const QuizPage = () => {
       let question = {
         word: word.word,
         reading: word.kana_reading,
-        options: options
+        options: options,
       };
       quizData.push(question);
     });
     quizData.sort(() => Math.random() - 0.5);
     return quizData;
-  }
+  };
 
   const getSelectedLessons = () => {
     let selectedLessons = {};
     levels.forEach((level) => {
       const hasKanjiLessons = quizSettings[level].kanji.lessons.length !== 0;
-      const hasVocabularyLessons = quizSettings[level].vocabulary.lessons.length !== 0;
+      const hasVocabularyLessons =
+        quizSettings[level].vocabulary.lessons.length !== 0;
       if (hasKanjiLessons || hasVocabularyLessons) {
         selectedLessons[level] = {};
       }
       if (hasKanjiLessons) {
         selectedLessons[level].kanji = [];
         quizSettings[level].kanji.lessons.forEach((lesson) => {
-          selectedLessons[level].kanji.push(
-            lesson.id
-          )
-        })
+          selectedLessons[level].kanji.push(lesson.id);
+        });
       }
       if (hasVocabularyLessons) {
         selectedLessons[level].vocabulary = [];
         quizSettings[level].vocabulary.lessons.forEach((lesson) => {
-          selectedLessons[level].vocabulary.push(
-            lesson.id
-          )
-        })
+          selectedLessons[level].vocabulary.push(lesson.id);
+        });
       }
-    })
+    });
     return selectedLessons;
-  }
+  };
 
-  const getCombinedQuestionsQuery = (selectedLessons, kanjiLessonsExists, vocabularyLessonsExists) => {
+  const getCombinedQuestionsQuery = (
+    selectedLessons,
+    kanjiLessonsExists,
+    vocabularyLessonsExists
+  ) => {
     let query = ``;
     if (kanjiLessonsExists) {
       query += `
@@ -203,19 +202,35 @@ const QuizPage = () => {
         query += `(kl.level = "N5" AND kl.id_lesson IN (${selectedLessons.N5.kanji}))`;
       }
       if (selectedLessons?.N4?.kanji) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(kl.level = "N4" AND kl.id_lesson IN (${selectedLessons.N4.kanji}))`;
       }
       if (selectedLessons?.N3?.kanji) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(kl.level = "N3" AND kl.id_lesson IN (${selectedLessons.N3.kanji}))`;
       }
       if (selectedLessons?.N2?.kanji) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(kl.level = "N2" AND kl.id_lesson IN (${selectedLessons.N2.kanji}))`;
       }
       if (selectedLessons?.N1?.kanji) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(kl.level = "N1" AND kl.id_lesson IN (${selectedLessons.N1.kanji}))`;
       }
       query += `
@@ -252,19 +267,35 @@ const QuizPage = () => {
         query += `(vl.level = "N5" AND vl.id_lesson IN (${selectedLessons.N5.vocabulary}))`;
       }
       if (selectedLessons?.N4?.vocabulary) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(vl.level = "N4" AND vl.id_lesson IN (${selectedLessons.N4.vocabulary}))`;
       }
       if (selectedLessons?.N3?.vocabulary) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(vl.level = "N3" AND vl.id_lesson IN (${selectedLessons.N3.vocabulary}))`;
       }
       if (selectedLessons?.N2?.vocabulary) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(vl.level = "N2" AND vl.id_lesson IN (${selectedLessons.N2.vocabulary}))`;
       }
       if (selectedLessons?.N1?.vocabulary) {
-        if (!firstExists) { firstExists = true; } else { query += ` OR `; }
+        if (!firstExists) {
+          firstExists = true;
+        } else {
+          query += ` OR `;
+        }
         query += `(vl.level = "N1" AND vl.id_lesson IN (${selectedLessons.N1.vocabulary}))`;
       }
     }
@@ -279,17 +310,20 @@ const QuizPage = () => {
       const stmt = database.prepare(query);
       while (stmt.step()) {
         let row = stmt.getAsObject();
-        if (row.question_type === 'kanji') {
+        if (row.question_type === "kanji") {
           kanjiData.push({
             kanji: row.question,
             meanings: JSON.parse(row.meanings).slice(0, 3),
-            words: JSON.parse(row.words).slice(0, 5).sort(() => Math.random() - 0.5).slice(0, 3)
+            words: JSON.parse(row.words)
+              .slice(0, 5)
+              .sort(() => Math.random() - 0.5)
+              .slice(0, 3),
           });
-        } else if (row.question_type === 'vocabulary') {
+        } else if (row.question_type === "vocabulary") {
           vocabularyData.push({
             word: row.question,
             meanings: JSON.parse(row.meanings),
-            kanaReading: row.words
+            kanaReading: row.words,
           });
         }
       }
@@ -305,17 +339,34 @@ const QuizPage = () => {
     let combinedQuery = "";
     let quizData = [];
     let originalData = [];
-    const kanjiLessonsExists = selectedLessons?.N5?.kanji || selectedLessons?.N4?.kanji || selectedLessons?.N3?.kanji || selectedLessons?.N2?.kanji || selectedLessons?.N1?.kanji;
-    const vocabularyLessonsExists = selectedLessons?.N5?.vocabulary || selectedLessons?.N4?.vocabulary || selectedLessons?.N3?.vocabulary || selectedLessons?.N2?.vocabulary || selectedLessons?.N1?.vocabulary;
+    const kanjiLessonsExists =
+      selectedLessons?.N5?.kanji ||
+      selectedLessons?.N4?.kanji ||
+      selectedLessons?.N3?.kanji ||
+      selectedLessons?.N2?.kanji ||
+      selectedLessons?.N1?.kanji;
+    const vocabularyLessonsExists =
+      selectedLessons?.N5?.vocabulary ||
+      selectedLessons?.N4?.vocabulary ||
+      selectedLessons?.N3?.vocabulary ||
+      selectedLessons?.N2?.vocabulary ||
+      selectedLessons?.N1?.vocabulary;
 
     if (kanjiLessonsExists || vocabularyLessonsExists) {
-      combinedQuery = getCombinedQuestionsQuery(selectedLessons, kanjiLessonsExists, vocabularyLessonsExists);
+      combinedQuery = getCombinedQuestionsQuery(
+        selectedLessons,
+        kanjiLessonsExists,
+        vocabularyLessonsExists
+      );
       originalData = getCombinedQuestionsOriginalData(combinedQuery);
     }
 
     // TO DO - process originalData.vocabularyData
 
-    if (originalData?.kanjiData?.length && originalData?.kanjiData?.length !== 0) {
+    if (
+      originalData?.kanjiData?.length &&
+      originalData?.kanjiData?.length !== 0
+    ) {
       for (let i = 0; i < originalData.kanjiData.length; i++) {
         let questionsSet = {
           kanjiQuestion: null,
@@ -324,8 +375,16 @@ const QuizPage = () => {
 
         const randomLessonId = Math.floor(Math.random() * 16) + 1;
         const randomLevel = levels[Math.floor(Math.random() * levels.length)];
-        questionsSet.kanjiQuestion = await getKanjiQuestion(originalData.kanjiData, i, randomLessonId, randomLevel);
-        questionsSet.wordQuestions = getWordQuestions(originalData.kanjiData, i);
+        questionsSet.kanjiQuestion = await getKanjiQuestion(
+          originalData.kanjiData,
+          i,
+          randomLessonId,
+          randomLevel
+        );
+        questionsSet.wordQuestions = getWordQuestions(
+          originalData.kanjiData,
+          i
+        );
         quizData.push(questionsSet);
       }
       quizData.sort(() => Math.random() - 0.5);
@@ -333,8 +392,7 @@ const QuizPage = () => {
     console.log("quizData: ", quizData);
 
     return quizData;
-  }
-
+  };
 
   const getQuizData = useCallback(async () => {
     let quizData = [];
@@ -347,15 +405,20 @@ const QuizPage = () => {
           // VOCABULARY
         } else if (type === "vocabulary") {
           quizData = setVocabularyData();
-        };
-      };
+        }
+      }
     } else if (action === "quiz") {
       quizData = setQuizDataFromQuizSettings();
-    };
+    }
     return quizData;
   }, []);
 
-  const getKanjiQuestion = async (originalData, i, randomLessonId = null, randomLevel = null) => {
+  const getKanjiQuestion = async (
+    originalData,
+    i,
+    randomLessonId = null,
+    randomLevel = null
+  ) => {
     let options = [];
     let correctOption = null;
     for (let j = 0; j < originalData.length; j++) {
@@ -375,7 +438,10 @@ const QuizPage = () => {
     }
     options = options.slice(0, 2);
     if (options.length < 2 && (lessonId > 1 || randomLessonId !== null)) {
-      let previousLessonKanjis = await getPreviousLessonKanjis(randomLessonId, randomLevel);
+      let previousLessonKanjis = await getPreviousLessonKanjis(
+        randomLessonId,
+        randomLevel
+      );
       previousLessonKanjis.sort(() => Math.random() - 0.5);
       previousLessonKanjis = previousLessonKanjis.slice(0, 2 - options.length);
       options = [...options, ...previousLessonKanjis];
@@ -392,7 +458,10 @@ const QuizPage = () => {
     return kanjiQuestion;
   };
 
-  const getPreviousLessonKanjis = async (randomLessonId = null, randomLevel = null) => {
+  const getPreviousLessonKanjis = async (
+    randomLessonId = null,
+    randomLevel = null
+  ) => {
     let query = `
       SELECT 
         kl.id_kanji, 
@@ -403,7 +472,9 @@ const QuizPage = () => {
       JOIN 
         kanjis k ON kl.id_kanji = k.id
       WHERE 
-        kl.level = "${randomLevel || level}" AND kl.id_lesson = ${randomLessonId || (lessonId - 1)}
+        kl.level = "${randomLevel || level}" AND kl.id_lesson = ${
+      randomLessonId || lessonId - 1
+    }
       GROUP BY 
         kl.id_kanji, 
         kl.level, 
@@ -447,20 +518,19 @@ const QuizPage = () => {
     return wordQuestions;
   };
 
-
   useEffect(() => {
     const fetchQuizData = async () => {
       const data = await getQuizData();
       dispatch(setQuizData(data));
     };
     fetchQuizData();
-    if (action === "study" && type === "kanji") {
+    if ((action === "study" && type === "kanji") || action === "quiz") {
       dispatch(setCurrentType("kanjiQuestion"));
     }
   }, []);
 
   const handleWordReadingChange = (e) => {
-    if (type === "kanji") {
+    if ((action === "study" && type === "kanji") || action === "quiz") {
       const value = e.target.value.replace(/\s+/g, "");
       const regex =
         /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
@@ -476,13 +546,13 @@ const QuizPage = () => {
     } else {
       dispatch(nextWrongQuestion(type));
     }
-    if (type === "kanji") {
+    if ((action === "study" && type === "kanji") || action === "quiz") {
       current.type === "wordQuestions" && dispatch(setAnswered(false));
     }
   };
 
   useEffect(() => {
-    if (action === "study" && type === "kanji") {
+    if ((action === "study" && type === "kanji") || action === "quiz") {
       const handleGlobalKeyPress = (e) => {
         if (e.key !== "Enter") return;
         let isDisabled = false;

@@ -47,6 +47,7 @@ const WrongAnswersScore = styled.div`
 
 const ProgressBar = () => {
   const dispatch = useDispatch();
+  const action = useSelector((state) => state.studySettings.action);
   const type = useSelector((state) => state.studySettings.studyType);
   const quizData = useSelector((state) => state.quizPage.quizData);
   const current = useSelector((state) => state.quizPage.current);
@@ -62,7 +63,7 @@ const ProgressBar = () => {
   const currentVocabularyQuestion = useSelector((state) => state.quizPage.currentVocabularyQuestion);
 
   if (!retry) {
-    if (type === "kanji") {
+    if (type === "kanji" || action === "quiz") {
       dispatch(
         setRetryQuestions(
           quizData.reduce((total, set) => {
@@ -77,7 +78,7 @@ const ProgressBar = () => {
 
   let currentQuestionIndex = 0;
   if (!retry) {
-    if (type === "kanji") {
+    if (type === "kanji" || action === "quiz") {
       currentQuestionIndex = quizData.reduce((index, set, setIndex) => {
         if (setIndex < current.set) {
           return index + 1 + set.wordQuestions.length;
@@ -114,7 +115,7 @@ const ProgressBar = () => {
         </ProgressBarContainer>
       </ProgressBarAndBackButton>
 
-      {((type === "kanji" && current.set <= quizData.length - 1) || (type === "vocabulary" && (currentVocabularyQuestion <= quizData.length - 1))) && (
+      {(((type === "kanji" || action === "quiz") && current.set <= quizData.length - 1) || (type === "vocabulary" && (currentVocabularyQuestion <= quizData.length - 1))) && (
         <ScoreContainer>
           <CorrectAnswersScore>
             Correct: {score.correctAnswers}
