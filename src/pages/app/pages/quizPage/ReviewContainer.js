@@ -58,6 +58,7 @@ const Divider = styled.div`
 `;
 
 const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
+  const action = useSelector((state) => state.studySettings.action);
   const type = useSelector((state) => state.studySettings.studyType);
   const lastVocabularyWrongQuestionIndex = useSelector((state) => state.quizPage.lastVocabularyWrongQuestionIndex);
 
@@ -65,7 +66,7 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
     <ReviewContainer>
       <div>Review wrong answers</div>
       <WrongQuestionsContainer>
-        {type === "kanji" && quizData.map((set, setIndex) => (
+        {(type === "kanji" || action === "quiz") && quizData.map((set, setIndex) => (
           <React.Fragment key={`set-${setIndex}`}>
             {set.kanjiQuestion.options.some(
               (option) =>

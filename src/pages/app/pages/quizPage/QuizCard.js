@@ -163,7 +163,7 @@ const QuizCard = ({
   const currentVocabularyQuestion = useSelector((state) => state.quizPage.currentVocabularyQuestion);
 
   const handleRetry = () => {
-    dispatch(retryQuiz(type));
+    dispatch(retryQuiz([type, action]));
   };
 
   useEffect(() => {
@@ -201,7 +201,7 @@ const QuizCard = ({
       } else if (event.key === "Enter") {
         if (preselectedOptionIndex >= 0 && preselectedOptionIndex < quizData[current.set]?.kanjiQuestion?.options.length) {
           const selectedOption = quizData[current.set]?.kanjiQuestion?.options[preselectedOptionIndex];
-          dispatch(selectOption([preselectedOptionIndex, selectedOption, type]));
+          dispatch(selectOption([preselectedOptionIndex, selectedOption, type, action]));
           setPreselectedOptionIndex(-1);
         }
       }
@@ -245,7 +245,7 @@ const QuizCard = ({
                 )}
               </ExerciseStatement>
               <SymbolsContainer>
-                {type === "kanji" && (
+                {(type === "kanji" || action === "quiz")  && (
                   current.type === "kanjiQuestion"
                     ? quizData[current.set]?.kanjiQuestion?.kanji.kanji
                     : quizData[current.set]?.wordQuestions[current.wordIndex].word
@@ -263,9 +263,9 @@ const QuizCard = ({
                 }
               </SymbolsContainer>
 
-              {(type === "kanji" && current.type === "kanjiQuestion") || (type === "vocabulary") ? (
+              {((type === "kanji" || action === "quiz") && current.type === "kanjiQuestion") || (type === "vocabulary") ? (
                 <OptionsContainer>
-                  {type === "kanji" && quizData[current.set]?.kanjiQuestion?.options?.map(
+                  {(type === "kanji" || action === "quiz") && quizData[current.set]?.kanjiQuestion?.options?.map(
                     (option, optionIndex) => (
                       <Option
                         key={"kanjiOption" + optionIndex}
@@ -275,10 +275,10 @@ const QuizCard = ({
                           current.set
                         ]?.kanjiQuestion?.options.some((opt) => opt.isSelected)}
                         onClick={() =>
-                          dispatch(selectOption([optionIndex, option, type]))
+                          dispatch(selectOption([optionIndex, option, type, action]))
                         }
                         onTouchStart={() =>
-                          dispatch(selectOption([optionIndex, option, type]))
+                          dispatch(selectOption([optionIndex, option, type, action]))
                         }
                         preselect={preselectedOptionIndex === optionIndex}
                       >
@@ -294,10 +294,10 @@ const QuizCard = ({
                         isCorrect={option.isCorrect}
                         disabled={quizData[currentVocabularyQuestion]?.options.some((opt) => opt.isSelected)}
                         onClick={() =>
-                          dispatch(selectOption([optionIndex, option, type]))
+                          dispatch(selectOption([optionIndex, option, type, action]))
                         }
                         onTouchStart={() =>
-                          dispatch(selectOption([optionIndex, option, type]))
+                          dispatch(selectOption([optionIndex, option, type, action]))
                         }
                         preselect={preselectedOptionIndex === optionIndex}
                       >
@@ -307,7 +307,7 @@ const QuizCard = ({
                   )}
                 </OptionsContainer>
               ) : (
-                type === "kanji" &&
+                (type === "kanji" || action === "quiz") &&
                 <FormContainer>
                   {current.type === "wordQuestions" && (
                     <Message
@@ -361,7 +361,7 @@ const QuizCard = ({
                 <>
                   <ReviewContainer
                     quizData={quizData}
-                    lastWrongQuestion={type === "kanji" ? lastWrongQuestion : quizData[lastVocabularyWrongQuestionIndex]}
+                    lastWrongQuestion={(type === "kanji" || action === "quiz") ? lastWrongQuestion : quizData[lastVocabularyWrongQuestionIndex]}
                   />
                   <RetryButtonContainer onClick={handleRetry} />
                 </>
@@ -370,9 +370,9 @@ const QuizCard = ({
           )}
         </CardContent>
       )}
-      {quizData && ((type === "kanji" && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && ((type === "kanji" && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1)) && (
+      {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && (((type === "kanji" || action === "quiz") && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1)) && (
         <NextButtonContainer>
-          {(type === "kanji" && (current.type === "kanjiQuestion" ||
+          {((type === "kanji" || action === "quiz") && (current.type === "kanjiQuestion" ||
             (current.type === "wordQuestions" && answered))) || (type === "vocabulary") ? (
             <Button
               full
@@ -380,7 +380,7 @@ const QuizCard = ({
               roundColored
               onClick={() => handleNextQuestion()}
               disabled={
-                (type === "kanji" &&
+                ((type === "kanji" || action === "quiz") &&
                   (current.type === "kanjiQuestion" &&
                     !quizData[current.set]?.kanjiQuestion?.options.some(
                       (opt) => opt.isSelected
@@ -395,7 +395,7 @@ const QuizCard = ({
               </ButtonIcon>
             </Button>
           ) : (
-            type === "kanji" &&
+            (type === "kanji" || action === "quiz") &&
             <Button
               full
               monochrome

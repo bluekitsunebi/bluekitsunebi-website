@@ -8,7 +8,7 @@ const initialState = {
   },
   current: {
     set: 0,
-    type: "", // kanjiQuestion, wordQuestions
+    type: "", // kanjiQuestion, wordQuestions, vocabularyQuestions
     wordIndex: 0,
   },
   lastWrongQuestion: {
@@ -47,9 +47,9 @@ export const quizPageSlice = createSlice({
       state.retryQuestions = action.payload;
     },
     selectOption(state, action) {
-      const [optionIndex, option, type] = [...action.payload];
+      const [optionIndex, option, type, settingsAction] = [...action.payload];
       if (!option.isSelected) {
-        if (type === "kanji") {
+        if (type === "kanji" || settingsAction === "quiz") {
           state.quizData[state.current.set].kanjiQuestion.options.forEach(
             (opt, idx) => {
               if (idx !== optionIndex) {
@@ -144,8 +144,8 @@ export const quizPageSlice = createSlice({
       state.answered = action.payload;
     },
     nextQuestion(state, action) {
-      const type = action.payload;
-      if (type === "kanji") {
+      const [type, settingsAction] = [...action.payload];
+      if (type === "kanji" || settingsAction === "quiz") {
         if (state.current.type === "kanjiQuestion") {
           state.current.wordIndex = 0;
           state.current.type = "wordQuestions";
@@ -165,11 +165,11 @@ export const quizPageSlice = createSlice({
       }
     },
     nextWrongQuestion(state, action) {
-      const type = action.payload;
+      const [type, settingsAction] = [...action.payload];
       let goToNextQuestion = true;
 
       const nextQuestion = () => {
-        if (type === "kanji") {
+        if (type === "kanji" || settingsAction === "quiz") {
           if (state.current.type === "kanjiQuestion") {
             state.current.wordIndex = 0;
             state.current.type = "wordQuestions";
@@ -200,7 +200,7 @@ export const quizPageSlice = createSlice({
       };
 
       const questionWasAnswered = () => {
-        if (type === "kanji") {
+        if (type === "kanji" || settingsAction === "quiz") {
           if (state.current.type === "wordQuestions") {
             if (
               !state.quizData[state.current.set].wordQuestions[
@@ -229,7 +229,7 @@ export const quizPageSlice = createSlice({
         goToNextQuestion &&
         (
           (
-            type === "kanji"
+            (type === "kanji" || settingsAction === "quiz")
             && (state.current.set <= state.quizData.length - 1)
           )
           ||
@@ -243,8 +243,9 @@ export const quizPageSlice = createSlice({
       state.currentWrongQuestion += 1;
     },
     retryQuiz(state, action) {
+      const [type, settingsAction] = [...action.payload]
       state.retry = true;
-      if (action.payload === "kanji") {
+      if (type === "kanji" || settingsAction === "quiz") {
         state.quizData.forEach((set, setIndex) => {
           set.kanjiQuestion.options.forEach((option, optionIndex) => {
             if (option.isSelected && !option.isCorrect) {
@@ -267,7 +268,7 @@ export const quizPageSlice = createSlice({
             }
           });
         });
-      } else if (action.payload === "vocabulary") {
+      } else if (type === "vocabulary") {
         state.quizData.forEach((question, questionIndex) => {
           question.options.forEach((option, optionIndex) => {
             if (option.isSelected && !option.isCorrect) {
@@ -282,26 +283,26 @@ export const quizPageSlice = createSlice({
         wordIndex: 0,
       };
       state.lastVocabularyWrongQuestionIndex = null;
-      if (action.payload === "kanji") state.answered = false;
+      if (type === "kanji" || settingsAction === "quiz") state.answered = false;
       state.retryQuestions = state.score.wrongAnswers;
       state.currentWrongQuestion = 0;
       state.score.wrongAnswers = 0;
-      if (action.payload === "kanji") {
+      if (type === "kanji" || settingsAction === "quiz") {
         state.current = {
           set: state.firstWrongQuestion.set,
           type: state.firstWrongQuestion.type,
           wordIndex: state.firstWrongQuestion.wordIndex,
         };
-      } else if (action.payload === "vocabulary") {
+      } else if (type === "vocabulary") {
         state.currentVocabularyQuestion = state.firstVocabularyWrongQuestionIndex;
       }
-      if (action.payload === "kanji") {
+      if (type === "kanji" || settingsAction === "quiz") {
         state.firstWrongQuestion = {
           set: 0,
           type: "",
           wordIndex: 0,
         };
-      } else if (action.payload === "vocabulary") {
+      } else if (type === "vocabulary") {
         state.firstVocabularyWrongQuestionIndex = null;
       }
     },
