@@ -5,17 +5,12 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/original/logo2.png";
 import { ReactComponent as LoginIcon } from "feather-icons/dist/icons/log-in.svg";
 import { useDispatch, useSelector } from "react-redux";
-import initSqlJs from "sql.js";
+import initSqlJs from 'sql.js';
 import dataBase from "../../db/kanji_vocab_database.db";
 import { setDatabase } from "store/app/databaseSlice";
 import { loginSuccess, logout } from "store/app/authSlice";
-import {
-  setResponseStudyKanjiLessons,
-  setResponseStudyVocabularyLessons,
-} from "store/app/studySettingsSlice";
-import {
-  setResponseQuizLessons,
-} from "store/app/quizSettingsSlice";
+import { setResponseStudyKanjiLessons, setResponseStudyVocabularyLessons } from "store/app/studySettingsSlice";
+import { setResponseQuizLessons } from "store/app/quizSettingsSlice";
 import { useNavigate } from "react-router-dom";
 import bcrypt from "bcryptjs";
 
@@ -72,29 +67,32 @@ const LoginPage = () => {
   const responseStudyVocabularyLessons = useSelector(
     (state) => state.studySettings.responseStudyVocabularyLessons
   );
-  const responseQuizLessons = useSelector(
-    (state) => state.quizSettings.responseQuizLessons
-  );
   const levels = useSelector(
     (state) => state.studySettings.levels
   );
 
   useEffect(() => {
+    const loadDatabase = async () => {
+      try {
+        if (!database) {
+          const SQL = await initSqlJs({
+            locateFile: (file) => `https://sql.js.org/dist/sql-wasm.wasm`,
+          });
+          const response = await fetch(dataBase);
+          const buffer = await response.arrayBuffer();
+          const db = new SQL.Database(new Uint8Array(buffer));
+          dispatch(setDatabase(db));
+        }
+      } catch (error) {
+        console.error("Failed to initialize database", error);
+      }
+    };
+
     if (isAuthenticated) {
       dispatch(logout());
     }
-    if (!database) {
-      const loadDataBase = async () => {
-        const SQL = await initSqlJs({
-          locateFile: (file) => `https://sql.js.org/dist/${file}`,
-        });
-        const db = new SQL.Database(
-          new Uint8Array(await (await fetch(dataBase)).arrayBuffer())
-        );
-        dispatch(setDatabase(db));
-      };
-      loadDataBase();
-    }
+
+    loadDatabase();
 
     const user = localStorage.getItem("user");
     if (user) {
@@ -102,7 +100,7 @@ const LoginPage = () => {
       setUsername(userObject.username);
       setPassword(userObject.password);
     }
-  });
+  }, [database, dispatch, isAuthenticated]);
 
   const getKanjiLessons = async () => {
     try {
@@ -202,7 +200,6 @@ const LoginPage = () => {
     }
   };
 
-  // TO DO
   const getQuizLessons = () => {
     let quizLessons = {
       N5: {

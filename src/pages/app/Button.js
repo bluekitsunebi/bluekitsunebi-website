@@ -42,11 +42,6 @@ const ButtonWrapper = styled.div`
     css`
       ${tw`border-b rounded-bl rounded-br s:border-r s:rounded-bl-none s:rounded-tr`}
     `}
-  ${({ begin }) =>
-    begin &&
-    css`
-      ${tw`w-fit`}
-    `}
   ${({ monochrome }) =>
     monochrome &&
     css`
@@ -131,7 +126,6 @@ const Button = ({
   isLevelSelector,
   isFirst,
   isLast,
-  begin,
   monochrome,
   children,
   isKanji,
@@ -149,7 +143,6 @@ const Button = ({
       isLevelSelector={isLevelSelector}
       isFirst={isFirst}
       isLast={isLast}
-      begin={begin}
       monochrome={monochrome}
       isKanji={isKanji}
       isDual={isDual}

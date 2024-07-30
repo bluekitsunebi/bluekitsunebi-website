@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
+import { setPage } from "store/app/appSlice";
 import {
   setStudyLevel,
   setStudyType,
@@ -31,7 +32,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  ${tw``}
+  ${tw`w-fit`}
 `;
 
 
@@ -65,12 +66,17 @@ const LearningSettingsPage = () => {
     dispatch(deselectAll());
   };
 
+  // TO DO - show/hide all
   const handleExpandAll = () => {
     dispatch(expandAll());
   };
-
   const handleShrinkAll = () => {
     dispatch(shrinkAll());
+  };
+  // ---------------------
+
+  const handleStartQuiz = () => {
+    dispatch(setPage("quiz"));
   };
 
   return (
@@ -173,7 +179,9 @@ const LearningSettingsPage = () => {
                   </QuizLevel>
                 ))}
               </QuizListWrapper>
-              <Button begin>Start</Button>
+              <ButtonContainer onClick={() => handleStartQuiz()}>
+                <Button>Start</Button>
+              </ButtonContainer>
             </>
           )
         )}
