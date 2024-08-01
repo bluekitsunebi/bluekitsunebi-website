@@ -541,13 +541,24 @@ const QuizPage = () => {
       dispatch(setQuizData(data));
     };
     fetchQuizData();
-    if ((action === "study" && type === "kanji") || action === "quiz") {
-      dispatch(setCurrentType("kanjiQuestion"));
-    }
   }, []);
 
+  useEffect(() => {
+    if (quizData.length !== 0) {
+      if (action === "study" && type === "kanji") {
+        dispatch(setCurrentType("kanjiQuestion"));
+      } else if (action === "quiz") {
+        if (("kanjiQuestion" in quizData[0]) && ("wordQuestions" in quizData[0])) {
+          dispatch(setCurrentType("kanjiQuestion"));
+        } else if ("vocabularyQuestion" in quizData[0]) {
+          dispatch(setCurrentType("vocabularyQuestion"));
+        }
+      }
+    }
+  }, [quizData]);
+
   const handleWordReadingChange = (e) => {
-    if ((action === "study" && type === "kanji") || action === "quiz") {
+    if (type === "kanji" || (action === "quiz" && current.type === "wordQuestions")) {
       const value = e.target.value.replace(/\s+/g, "");
       const regex =
         /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
@@ -559,17 +570,18 @@ const QuizPage = () => {
 
   const handleNextQuestion = () => {
     if (!retry) {
+      console.log("next");
       dispatch(nextQuestion([type, action]));
     } else {
       dispatch(nextWrongQuestion([type, action]));
     }
-    if ((action === "study" && type === "kanji") || action === "quiz") {
+    if (type === "kanji" || action === "quiz") {
       current.type === "wordQuestions" && dispatch(setAnswered(false));
     }
   };
 
   useEffect(() => {
-    if ((action === "study" && type === "kanji") || action === "quiz") {
+    if ((action === "study" && type === "kanji") || (action === "quiz")) {
       const handleGlobalKeyPress = (e) => {
         if (e.key !== "Enter") return;
         let isDisabled = false;
@@ -577,6 +589,10 @@ const QuizPage = () => {
           isDisabled = true;
         } else if (current.type === "kanjiQuestion") {
           isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some(
+            (opt) => opt.isSelected
+          );
+        } else if (current.type === "vocabularyQuestion") {
+          isDisabled = !quizData[current.set]?.vocabularyQuestion?.options.some(
             (opt) => opt.isSelected
           );
         } else if (current.type === "wordQuestions") {

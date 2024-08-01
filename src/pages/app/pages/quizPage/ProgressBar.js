@@ -63,39 +63,74 @@ const ProgressBar = () => {
   const currentVocabularyQuestion = useSelector((state) => state.quizPage.currentVocabularyQuestion);
 
   if (!retry) {
-    if (type === "kanji" || action === "quiz") {
-      dispatch(
-        setRetryQuestions(
-          quizData.reduce((total, set) => {
-            return total + 1 + set.wordQuestions.length;
-          }, 0)
-        )
-      );
-    } else if (type === "vocabulary") {
-      dispatch(setRetryQuestions(quizData.length));
+    if (action === "study") {
+      if (type === "kanji") {
+        dispatch(
+          setRetryQuestions(
+            quizData.reduce((total, set) => {
+              return total + 1 + set.wordQuestions.length;
+            }, 0)
+          )
+        );
+      } else if (type === "vocabulary") {
+        dispatch(setRetryQuestions(quizData.length));
+      }
+    } else if (action === "quiz") {
+      let retryQuestionsNumber = 0;
+      quizData.forEach(set => {
+        if ("kanjiQuestion" in set) retryQuestionsNumber += 1;
+        if ("wordQuestions" in set) retryQuestionsNumber += set.wordQuestions.length;
+        if ("vocabularyQuestion" in set) retryQuestionsNumber += 1;
+      });
+      dispatch(setRetryQuestions(retryQuestionsNumber));
     }
   }
 
   let currentQuestionIndex = 0;
-  if (!retry) {
-    if (type === "kanji" || action === "quiz") {
-      currentQuestionIndex = quizData.reduce((index, set, setIndex) => {
+
+  if (action === "study") {
+    if (!retry) {
+      if (type === "kanji") {
+        currentQuestionIndex = quizData.reduce((index, set, setIndex) => {
+          if (setIndex < current.set) {
+            return index + 1 + set.wordQuestions.length;
+          } else if (setIndex === current.set) {
+            if (current.type === "kanjiQuestion") {
+              return index;
+            } else if (current.type === "wordQuestions") {
+              return index + 1 + current.wordIndex;
+            }
+          }
+          return index;
+        }, 0);
+      } else if (type === "vocabulary") {
+        currentQuestionIndex = currentVocabularyQuestion;
+      }
+    } else {
+      currentQuestionIndex = currentWrongQuestion;
+    }
+  } else if (action === "quiz") {
+    if (!retry) {
+      quizData.forEach((set, setIndex) => {
         if (setIndex < current.set) {
-          return index + 1 + set.wordQuestions.length;
+          if ("kanjiQuestion" in set) currentQuestionIndex += 1;
+          if ("wordQuestions" in set) currentQuestionIndex += set.wordQuestions.length;
+          if ("vocabularyQuestion" in set) currentQuestionIndex += 1;
         } else if (setIndex === current.set) {
-          if (current.type === "kanjiQuestion") {
-            return index;
-          } else if (current.type === "wordQuestions") {
-            return index + 1 + current.wordIndex;
+          if (("kanjiQuestion" in set) && ("wordQuestions" in set)) {
+            if (current.type === "wordQuestions") {
+              currentQuestionIndex += 1 + set.wordQuestions.length - 1;
+            } else if (current.type === "kanjiQuestion") {
+              currentQuestionIndex += 0;
+            }
+          } else if ("vocabularyQuestion" in set) {
+            currentQuestionIndex += 0;
           }
         }
-        return index;
-      }, 0);
-    } else if (type === "vocabulary") {
-      currentQuestionIndex = currentVocabularyQuestion;
+      })
+    } else {
+      currentQuestionIndex = currentWrongQuestion;
     }
-  } else {
-    currentQuestionIndex = currentWrongQuestion;
   }
 
   const progressPercentage = (currentQuestionIndex / retryQuestions) * 100;
@@ -107,7 +142,7 @@ const ProgressBar = () => {
         <ProgressBarContainer>
           <Bar percentage={progressPercentage}>
             <PercentageText>{
-              (type === "kanji" && !showAllKanjis) || (type === "vocabulary")
+              (type === "kanji" && !showAllKanjis) || (type === "vocabulary") || action === "quiz"
                 ? Math.round(progressPercentage)
                 : Math.round(progressPercentage * 10) / (10)
             }%</PercentageText>

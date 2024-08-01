@@ -185,6 +185,7 @@ const QuizCard = ({
 
   const handleKeyDown = (event) => {
     if (current.type === "kanjiQuestion") {
+
       if (event.key === "ArrowDown") {
         setPreselectedOptionIndex((prevIndex) =>
           prevIndex < quizData[current.set]?.kanjiQuestion?.options.length - 1
@@ -205,6 +206,30 @@ const QuizCard = ({
           setPreselectedOptionIndex(-1);
         }
       }
+
+    } else if (current.type === "vocabularyQuestion") {
+
+      if (event.key === "ArrowDown") {
+        setPreselectedOptionIndex((prevIndex) =>
+          prevIndex < quizData[current.set]?.vocabularyQuestion?.options.length - 1
+            ? prevIndex + 1
+            : 0
+        );
+      } else if (event.key === "ArrowUp") {
+        setPreselectedOptionIndex((prevIndex) => {
+          return prevIndex > 0
+            ? prevIndex - 1
+            : quizData[current.set]?.vocabularyQuestion?.options?.length - 1
+        }
+        );
+      } else if (event.key === "Enter") {
+        if (preselectedOptionIndex >= 0 && preselectedOptionIndex < quizData[current.set]?.vocabularyQuestion?.options.length) {
+          const selectedOption = quizData[current.set]?.vocabularyQuestion?.options[preselectedOptionIndex];
+          dispatch(selectOption([preselectedOptionIndex, selectedOption, type, action]));
+          setPreselectedOptionIndex(-1);
+        }
+      }
+
     }
   };
 
@@ -225,6 +250,91 @@ const QuizCard = ({
     setPreselectedOptionIndex(-1);
   }, [current]);
 
+  const getExerciseStatement = () => {
+    if (action === "quiz") {
+      if (current.type === "kanjiQuestion") {
+        return "Select the meaning of the kanji:";
+      } else if (current.type === "wordQuestions") {
+        return "Write the reading of the word:";
+      } else if (current.type === "vocabularyQuestion") {
+        return "Select the meaning of the word:";
+      }
+    } else if (action === "study") {
+      if (type === "vocabulary") {
+        return "Select the meaning of the word:";
+      } else if (type === "kanji") {
+        if (current.type === "kanjiQuestion") {
+          return "Select the meaning of the kanji:";
+        } else if (current.type === "wordQuestions") {
+          return "Write the reading of the word:";
+        }
+      }
+    }
+  }
+
+  const getSymbols = () => {
+    if (action === "study") {
+      if (type === "kanji") {
+        if (current.type === "kanjiQuestion") {
+          return quizData[current.set]?.kanjiQuestion?.kanji?.kanji
+        } else {
+          return quizData[current.set]?.wordQuestions[current.wordIndex]?.word?.word
+        }
+
+      } else {
+        return (
+          <Symbols>
+            <Reading>
+              {quizData[currentVocabularyQuestion].reading}
+            </Reading>
+            <Word>
+              {quizData[currentVocabularyQuestion].word}
+            </Word>
+          </Symbols>
+        )
+      }
+    } else {
+      if (current.type === "kanjiQuestion") {
+        return quizData[current.set]?.kanjiQuestion?.kanji?.kanji
+      } else if (current.type === "wordQuestions") {
+        return quizData[current.set]?.wordQuestions[current.wordIndex]?.word?.word
+      } else {
+        return (
+          <Symbols>
+            <Reading>
+              {quizData[current.set]?.vocabularyQuestion.reading}
+            </Reading>
+            <Word>
+              {quizData[current.set]?.vocabularyQuestion.word}
+            </Word>
+          </Symbols>
+        )
+      }
+    }
+  }
+
+  const isNextButtonDisabled = () => {
+    let isDisabled = false;
+    if (action === "study") {
+
+      if (type === "kanji") {
+        if (current.type === "kanjiQuestion") {
+          isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some((opt) => opt.isSelected);
+        }
+      } else if (type === "vocabulary") {
+        isDisabled = !quizData[currentVocabularyQuestion].options.some((opt) => opt.isSelected);
+      }
+
+    } else {
+      if (current.type === "kanjiQuestion") {
+        isDisabled = !quizData[current.set]?.kanjiQuestion?.options.some((opt) => opt.isSelected);
+      } else if (current.type === "vocabularyQuestion") {
+        isDisabled = !quizData[current.set]?.vocabularyQuestion?.options.some((opt) => opt.isSelected);
+      }
+    }
+    return isDisabled;
+  }
+
   return (
     <Card>
       {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) &&
@@ -232,118 +342,158 @@ const QuizCard = ({
       }
       {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && score && (
         <CardContent>
-          {((type === "kanji" || action === "quiz") && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1) ? (
+          {(((action === "study" && type === "kanji") || (action === "quiz")) && current.set <= quizData.length - 1) || (action === "study" && type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1) ? (
             <>
-              <ExerciseStatement>
-                {(type === "kanji" || action === "quiz") && (
-                  current.type === "kanjiQuestion"
-                    ? "Select the meaning of the kanji:"
-                    : "Write the reading of the word:"
-                )}
-                {type === "vocabulary" && (
-                  "Select the meaning of the word:"
-                )}
-              </ExerciseStatement>
+              <ExerciseStatement>{getExerciseStatement()}</ExerciseStatement>
               <SymbolsContainer>
-                {(type === "kanji" || action === "quiz")  && (
-                  current.type === "kanjiQuestion"
-                    ? quizData[current.set]?.kanjiQuestion?.kanji.kanji
-                    : quizData[current.set]?.wordQuestions[current.wordIndex].word
-                      .word
-                )}
-                {type === "vocabulary" &&
-                  <Symbols>
-                    <Reading>
-                      {quizData[currentVocabularyQuestion].reading}
-                    </Reading>
-                    <Word>
-                      {quizData[currentVocabularyQuestion].word}
-                    </Word>
-                  </Symbols>
-                }
+                {getSymbols()}
               </SymbolsContainer>
 
-              {((type === "kanji" || action === "quiz") && current.type === "kanjiQuestion") || (type === "vocabulary") ? (
-                <OptionsContainer>
-                  {(type === "kanji" || action === "quiz") && quizData[current.set]?.kanjiQuestion?.options?.map(
-                    (option, optionIndex) => (
-                      <Option
-                        key={"kanjiOption" + optionIndex}
-                        isSelected={option.isSelected}
-                        isCorrect={option.isCorrect}
-                        disabled={quizData[
-                          current.set
-                        ]?.kanjiQuestion?.options.some((opt) => opt.isSelected)}
-                        onClick={() =>
-                          dispatch(selectOption([optionIndex, option, type, action]))
-                        }
-                        onTouchStart={() =>
-                          dispatch(selectOption([optionIndex, option, type, action]))
-                        }
-                        preselect={preselectedOptionIndex === optionIndex}
-                      >
-                        {option?.value.join(", ")}
-                      </Option>
+              {(action === "study" && type === "kanji" && current.type === "kanjiQuestion") || (action === "study" && type === "vocabulary") || (action === "quiz" && (current.type === "kanjiQuestion" || current.type === "vocabularyQuestion")) ?
+
+                (
+                  <OptionsContainer>
+                    {((action === "study" && type === "kanji") || (action === "quiz" && current.type === "kanjiQuestion")) && quizData[current.set]?.kanjiQuestion?.options?.map(
+                      (option, optionIndex) => (
+                        <Option
+                          key={"kanjiOption" + optionIndex}
+                          isSelected={option.isSelected}
+                          isCorrect={option.isCorrect}
+                          disabled={quizData[
+                            current.set
+                          ]?.kanjiQuestion?.options.some((opt) => opt.isSelected)}
+                          onClick={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          onTouchStart={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          preselect={preselectedOptionIndex === optionIndex}
+                        >
+                          {option?.value.join(", ")}
+                        </Option>
+                      )
+                    )}
+
+                    {action === "quiz" && current.type === "vocabularyQuestion" && quizData[current.set]?.vocabularyQuestion?.options?.map(
+                      (option, optionIndex) => (
+                        <Option
+                          key={"vocabularyOption" + optionIndex}
+                          isSelected={option.isSelected}
+                          isCorrect={option.isCorrect}
+                          disabled={quizData[
+                            current.set
+                          ]?.vocabularyQuestion?.options.some((opt) => opt.isSelected)}
+                          onClick={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          onTouchStart={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          preselect={preselectedOptionIndex === optionIndex}
+                        >
+                          {option?.value.join(", ")}
+                        </Option>
+                      )
+                    )}
+
+                    {action === "study" && type === "vocabulary" && quizData[currentVocabularyQuestion]?.options?.map(
+                      (option, optionIndex) => (
+                        <Option
+                          key={"vocabularyOption" + optionIndex}
+                          isSelected={option.isSelected}
+                          isCorrect={option.isCorrect}
+                          disabled={quizData[currentVocabularyQuestion]?.options.some((opt) => opt.isSelected)}
+                          onClick={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          onTouchStart={() =>
+                            dispatch(selectOption([optionIndex, option, type, action]))
+                          }
+                          preselect={preselectedOptionIndex === optionIndex}
+                        >
+                          {option?.value.join(", ")}
+                        </Option>
+                      )
+                    )}
+                  </OptionsContainer>
+
+                ) : (
+                  (action === "study" && type === "kanji" && current.type === "wordQuestions")
+
+                    ? (
+                      <FormContainer>
+                        <Message
+                          hide={
+                            !answered ||
+                            quizData[current.set]?.wordQuestions[current.wordIndex]
+                              .userInput.isCorrect
+                          }
+                        >
+                          The correct reading is:{" "}
+                          {
+                            quizData[current.set]?.wordQuestions[current.wordIndex]
+                              .word.kana_reading
+                          }
+                        </Message>
+                        <Form>
+                          <Input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="reading"
+                            value={
+                              quizData[current.set]?.wordQuestions[current.wordIndex]
+                                .userInput.value
+                            }
+                            onChange={handleWordReadingChange}
+                            isCorrect={
+                              quizData[current.set]?.wordQuestions[current.wordIndex]
+                                .userInput.isCorrect
+                            }
+                            showAnswer={answered}
+                            onKeyDown={handleKeyPress}
+                          />
+                        </Form>
+                      </FormContainer>
                     )
-                  )}
-                  {type === "vocabulary" && quizData[currentVocabularyQuestion]?.options?.map(
-                    (option, optionIndex) => (
-                      <Option
-                        key={"vocabularyOption" + optionIndex}
-                        isSelected={option.isSelected}
-                        isCorrect={option.isCorrect}
-                        disabled={quizData[currentVocabularyQuestion]?.options.some((opt) => opt.isSelected)}
-                        onClick={() =>
-                          dispatch(selectOption([optionIndex, option, type, action]))
-                        }
-                        onTouchStart={() =>
-                          dispatch(selectOption([optionIndex, option, type, action]))
-                        }
-                        preselect={preselectedOptionIndex === optionIndex}
-                      >
-                        {option?.value.join(", ")}
-                      </Option>
+
+                    : (
+                      (action === "quiz" && current.type === "wordQuestions") &&
+                      (<FormContainer>
+                        <Message
+                          hide={
+                            !answered ||
+                            quizData[current.set]?.wordQuestions[current.wordIndex]
+                              .userInput.isCorrect
+                          }
+                        >
+                          The correct reading is:{" "}
+                          {
+                            quizData[current.set]?.wordQuestions[current.wordIndex]
+                              .word.kana_reading
+                          }
+                        </Message>
+                        <Form>
+                          <Input
+                            ref={inputRef}
+                            type="text"
+                            placeholder="reading"
+                            value={
+                              quizData[current.set]?.wordQuestions[current.wordIndex]
+                                .userInput.value
+                            }
+                            onChange={handleWordReadingChange}
+                            isCorrect={
+                              quizData[current.set]?.wordQuestions[current.wordIndex]
+                                .userInput.isCorrect
+                            }
+                            showAnswer={answered}
+                            onKeyDown={handleKeyPress}
+                          />
+                        </Form>
+                      </FormContainer>)
                     )
-                  )}
-                </OptionsContainer>
-              ) : (
-                (type === "kanji" || action === "quiz") &&
-                <FormContainer>
-                  {current.type === "wordQuestions" && (
-                    <Message
-                      hide={
-                        !answered ||
-                        quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .userInput.isCorrect
-                      }
-                    >
-                      The correct reading is:{" "}
-                      {
-                        quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .word.kana_reading
-                      }
-                    </Message>
-                  )}
-                  <Form>
-                    <Input
-                      ref={inputRef}
-                      type="text"
-                      placeholder="reading"
-                      value={
-                        quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .userInput.value
-                      }
-                      onChange={handleWordReadingChange}
-                      isCorrect={
-                        quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .userInput.isCorrect
-                      }
-                      showAnswer={answered}
-                      onKeyDown={handleKeyPress}
-                    />
-                  </Form>
-                </FormContainer>
-              )}
+                )}
             </>
           ) : (
             <>
@@ -359,6 +509,7 @@ const QuizCard = ({
               <FinalScoreContainer score={score} quizData={quizData} />
               {score.wrongAnswers !== 0 && (
                 <>
+                {/* TO DO */}
                   <ReviewContainer
                     quizData={quizData}
                     lastWrongQuestion={(type === "kanji" || action === "quiz") ? lastWrongQuestion : quizData[lastVocabularyWrongQuestionIndex]}
@@ -370,33 +521,13 @@ const QuizCard = ({
           )}
         </CardContent>
       )}
+
+
       {quizData && (((type === "kanji" || action === "quiz") && current) || (type === "vocabulary" && (currentVocabularyQuestion || currentVocabularyQuestion === 0))) && (((type === "kanji" || action === "quiz") && current.set <= quizData.length - 1) || (type === "vocabulary" && currentVocabularyQuestion <= quizData.length - 1)) && (
+
         <NextButtonContainer>
-          {((type === "kanji" || action === "quiz") && (current.type === "kanjiQuestion" ||
-            (current.type === "wordQuestions" && answered))) || (type === "vocabulary") ? (
-            <Button
-              full
-              monochrome
-              roundColored
-              onClick={() => handleNextQuestion()}
-              disabled={
-                ((type === "kanji" || action === "quiz") &&
-                  (current.type === "kanjiQuestion" &&
-                    !quizData[current.set]?.kanjiQuestion?.options.some(
-                      (opt) => opt.isSelected
-                    )
-                  )
-                ) || (type === "vocabulary" && !quizData[currentVocabularyQuestion].options.some((opt) => opt.isSelected))
-              }
-            >
-              <ButtonText>Next</ButtonText>
-              <ButtonIcon>
-                <NextQuestionIcon />
-              </ButtonIcon>
-            </Button>
-          ) : (
-            (type === "kanji" || action === "quiz") &&
-            <Button
+          {(current.type === "wordQuestions" && !answered)
+            ? (<Button
               full
               monochrome
               roundColored
@@ -413,8 +544,21 @@ const QuizCard = ({
               <ButtonIcon>
                 <NextQuestionIcon />
               </ButtonIcon>
-            </Button>
-          )}
+            </Button>)
+
+            : (<Button
+              full
+              monochrome
+              roundColored
+              onClick={() => handleNextQuestion()}
+              disabled={isNextButtonDisabled()}
+            >
+              <ButtonText>Next</ButtonText>
+              <ButtonIcon>
+                <NextQuestionIcon />
+              </ButtonIcon>
+            </Button>)
+          }
         </NextButtonContainer>
       )}
     </Card>
