@@ -60,21 +60,24 @@ const Divider = styled.div`
 const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
   const action = useSelector((state) => state.studySettings.action);
   const type = useSelector((state) => state.studySettings.studyType);
-  const lastVocabularyWrongQuestionIndex = useSelector((state) => state.quizPage.lastVocabularyWrongQuestionIndex);
+  const lastVocabularyWrongQuestionIndex = useSelector(
+    (state) => state.quizPage.lastVocabularyWrongQuestionIndex
+  );
 
   return (
     <ReviewContainer>
       <div>Review wrong answers</div>
       <WrongQuestionsContainer>
-        {(type === "kanji" || action === "quiz") && quizData.map((set, setIndex) => (
-          <React.Fragment key={`set-${setIndex}`}>
-            {set.kanjiQuestion.options.some(
-              (option) =>
-                option.isSelected && !option.isCorrect
-            ) && (
+        {((action === "study" && type === "kanji") || action === "quiz") &&
+          quizData.map((set, setIndex) => (
+            <React.Fragment key={`set-${setIndex}`}>
+              {set?.kanjiQuestion?.options?.some(
+                (option) => option.isSelected && !option.isCorrect
+              ) && (
                 <KanjiQuestion key={"kanjiQuestion" + setIndex}>
                   <QuestionItem>
-                    <span>kanji:</span> <span>{set.kanjiQuestion.kanji.kanji}</span>
+                    <span>kanji:</span>{" "}
+                    <span>{set.kanjiQuestion.kanji.kanji}</span>
                   </QuestionItem>
 
                   <QuestionItem>
@@ -94,69 +97,115 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
                         .value.join(", ")}
                     </Wrong>
                   </QuestionItem>
-                  {!(lastWrongQuestion.set === setIndex && lastWrongQuestion.type === "kanjiQuestion") && <Divider></Divider>}
+                  {!(
+                    lastWrongQuestion.set === setIndex &&
+                    lastWrongQuestion.type === "kanjiQuestion"
+                  ) && <Divider></Divider>}
                 </KanjiQuestion>
               )}
 
-            {set.wordQuestions.map(
-              (wordQuestion, wordIndex) =>
-                !wordQuestion.userInput.isCorrect && (
-                  <WordQuestion key={"wordQuestion" + setIndex + wordIndex}>
-                    <QuestionItem>
-                      word: {wordQuestion.word.word}
-                    </QuestionItem>
-                    <QuestionItem>
-                      reading:{" "}
-                      <Correct>{wordQuestion.word.kana_reading}</Correct>
-                    </QuestionItem>
-                    <QuestionItem>
-                      your answer: <Wrong>{wordQuestion.userInput.value}</Wrong>
-                    </QuestionItem>
-                    {!(lastWrongQuestion.set === setIndex && lastWrongQuestion.type === "wordQuestions" && lastWrongQuestion.wordIndex === wordIndex) && <Divider></Divider>}
-                  </WordQuestion>
-                )
-            )}
-          </React.Fragment>
-        ))}
+              {/* TO DO */}
+              {set?.vocabularyQuestion?.options?.some(
+                (option) => option.isSelected && !option.isCorrect
+              ) && (
+                <KanjiQuestion key={"vocabularyQuestion" + setIndex}>
+                  <QuestionItem>
+                    <span>word:</span>{" "}
+                    <span>{set.vocabularyQuestion.word}</span>
+                  </QuestionItem>
 
+                  <QuestionItem>
+                    <span>meaning: </span>
+                    <Correct>
+                      {set.vocabularyQuestion.options
+                        .find((option) => option.isCorrect)
+                        .value.join(", ")}
+                    </Correct>
+                  </QuestionItem>
 
-        {type === "vocabulary" && quizData.map((question, questionIndex) => (
-          <React.Fragment key={questionIndex}>
-            {question.options.some((option) => option.isSelected && !option.isCorrect) && (
-              <KanjiQuestion>
-                <QuestionItem>
-                  <><span>{"word: "}</span><span>{question.word}</span></>
-                </QuestionItem>
+                  <QuestionItem>
+                    <span>your answer: </span>
+                    <Wrong>
+                      {set.vocabularyQuestion.options
+                        .find((option) => option.isSelected)
+                        .value.join(", ")}
+                    </Wrong>
+                  </QuestionItem>
+                  {!(
+                    lastWrongQuestion.set === setIndex &&
+                    lastWrongQuestion.type === "vocabularyQuestion"
+                  ) && <Divider></Divider>}
+                </KanjiQuestion>
+              )}
 
-                <QuestionItem>
-                  <span>meaning: </span>
-                  <Correct>
-                    {question.options
-                      .find((option) => option.isCorrect)
-                      .value.join(", ")
-                    }
-                  </Correct>
-                </QuestionItem>
+              {set?.wordQuestions?.map(
+                (wordQuestion, wordIndex) =>
+                  !wordQuestion.userInput.isCorrect && (
+                    <WordQuestion key={"wordQuestion" + setIndex + wordIndex}>
+                      <QuestionItem>
+                        word: {wordQuestion.word.word}
+                      </QuestionItem>
+                      <QuestionItem>
+                        reading:{" "}
+                        <Correct>{wordQuestion.word.kana_reading}</Correct>
+                      </QuestionItem>
+                      <QuestionItem>
+                        your answer:{" "}
+                        <Wrong>{wordQuestion.userInput.value}</Wrong>
+                      </QuestionItem>
+                      {!(
+                        lastWrongQuestion.set === setIndex &&
+                        lastWrongQuestion.type === "wordQuestions" &&
+                        lastWrongQuestion.wordIndex === wordIndex
+                      ) && <Divider></Divider>}
+                    </WordQuestion>
+                  )
+              )}
+            </React.Fragment>
+          ))}
 
-                <QuestionItem>
-                  <span>your answer: </span>
-                  <Wrong>
-                    {question.options
-                      .find((option) => option.isSelected)
-                      .value.join(", ")
-                    }
-                  </Wrong>
-                </QuestionItem>
-                {
-                  !(questionIndex === lastVocabularyWrongQuestionIndex) && <Divider></Divider>
-                }
-              </KanjiQuestion>
-            )}
-          </React.Fragment>
-        ))}
+        {action === "study" &&
+          type === "vocabulary" &&
+          quizData.map((question, questionIndex) => (
+            <React.Fragment key={questionIndex}>
+              {question.options.some(
+                (option) => option.isSelected && !option.isCorrect
+              ) && (
+                <KanjiQuestion>
+                  <QuestionItem>
+                    <>
+                      <span>{"word: "}</span>
+                      <span>{question.word}</span>
+                    </>
+                  </QuestionItem>
+
+                  <QuestionItem>
+                    <span>meaning: </span>
+                    <Correct>
+                      {question.options
+                        .find((option) => option.isCorrect)
+                        .value.join(", ")}
+                    </Correct>
+                  </QuestionItem>
+
+                  <QuestionItem>
+                    <span>your answer: </span>
+                    <Wrong>
+                      {question.options
+                        .find((option) => option.isSelected)
+                        .value.join(", ")}
+                    </Wrong>
+                  </QuestionItem>
+                  {!(questionIndex === lastVocabularyWrongQuestionIndex) && (
+                    <Divider></Divider>
+                  )}
+                </KanjiQuestion>
+              )}
+            </React.Fragment>
+          ))}
       </WrongQuestionsContainer>
     </ReviewContainer>
-  )
+  );
 };
 
 export default ReviewContainerComponent;

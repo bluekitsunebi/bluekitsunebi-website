@@ -331,6 +331,8 @@ const QuizPage = () => {
     } catch (error) {
       console.error(`Failed to load quiz data from database`, error);
     }
+    // TO BE DELETED
+    vocabularyData.slice(0, 1);
     return { kanjiData, vocabularyData };
   };
 
@@ -366,8 +368,8 @@ const QuizPage = () => {
       originalData?.kanjiData?.length !== 0
     ) {
       // TO BE DELETED
-      for (let i = 0; i < originalData.kanjiData.length; i++) {
-        // for (let i = 0; i < 1; i++) {
+      // for (let i = 0; i < originalData.kanjiData.length; i++) {
+        for (let i = 0; i < 1; i++) {
         let questionsSet = {
           kanjiQuestion: null,
           wordQuestions: [],
@@ -394,6 +396,8 @@ const QuizPage = () => {
       originalData?.vocabularyData?.length !== 0
     ) {
       originalData.vocabularyData = setVocabularyData(originalData.vocabularyData);
+      // TO BE DELETED
+      originalData.vocabularyData.slice(0, 1);
       originalData.vocabularyData.forEach((question) => {
         let questionsSet = {
           vocabularyQuestion: {
@@ -405,8 +409,9 @@ const QuizPage = () => {
         quizData.push(questionsSet);
       })
     }
-    // TO DO
     quizData.sort(() => Math.random() - 0.5);
+    // TO BO DELETED
+    quizData.slice(0, 1);
     return quizData;
   };
 
@@ -531,7 +536,7 @@ const QuizPage = () => {
     }
     wordQuestions.sort(() => Math.random() - 0.5);
     // TO BE DELETED
-    // wordQuestions = wordQuestions.slice(0, 1)
+    wordQuestions = wordQuestions.slice(0, 1)
     return wordQuestions;
   };
 
