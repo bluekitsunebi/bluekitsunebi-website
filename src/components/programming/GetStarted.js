@@ -74,7 +74,7 @@ export default function InfoSection({ onRender, pushDownFooter = true }) {
                 </div>
                 <div>
                   {langData.InfoSection.details[2][0]}
-                  <Breakable>{langData.InfoSection.details[3][1]}</Breakable>
+                  <Breakable>{langData.InfoSection.details[2][1]}</Breakable>
                 </div>
                 <div>
                   {langData.InfoSection.details[3][0]}{" "}

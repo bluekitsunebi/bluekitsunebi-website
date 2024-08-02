@@ -95,8 +95,8 @@
     "button": "Enroll now",
     "disabled": "Coming soon",
     "categories": [
-      { "switcherText": "Romanian" },
       { "switcherText": "English" },
+      { "switcherText": "Romanian" },
       { "switcherText": "Japanese" }
     ],
     "durations": [
@@ -113,9 +113,9 @@
           "Individual English Lessons"
         ],
         "price": [
-          ["90 RON", "130 RON", "170 RON"],
-
           ["$32", "$43", "$56"],
+          
+          ["90 RON", "130 RON", "170 RON"],
 
           ["$32", "$43", "$56"]
         ],
