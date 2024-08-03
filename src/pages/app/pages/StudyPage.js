@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
@@ -236,7 +236,6 @@ const StudyPage = () => {
   const kanjiData = useSelector((state) => state.studyPage.kanjiData);
   const wordsData = useSelector((state) => state.studyPage.wordsData);
 
-
   const fetchWordsData = async (newLessonId = lessonId) => {
     const data = await getWordsData(newLessonId);
     dispatch(setWordsData(data));
@@ -255,11 +254,13 @@ const StudyPage = () => {
       try {
         const query = `
           SELECT 
+            w.id,
             w.word,
             w.meanings,
             w.parts_of_speech,
             w.kana_reading,
-            w.usually_kana
+            w.usually_kana,
+            vl.priority_score
           FROM 
             vocab_lessons vl
           JOIN 
@@ -273,11 +274,13 @@ const StudyPage = () => {
           const row = stmt.getAsObject();
           data.push(
             {
+              id: row.id,
               word: row.word,
               meanings: JSON.parse(row.meanings),
               parts_of_speech: JSON.parse(row.parts_of_speech),
               kana_reading: row.kana_reading,
-              usually_kana: row.usually_kana === "True"
+              usually_kana: row.usually_kana === "True",
+              priority_score: row.priority_score
             }
           );
         }
@@ -389,7 +392,8 @@ const StudyPage = () => {
         '[' || GROUP_CONCAT('{ "id": ' || kl.id_word ||
         ', "word": "' || w.word ||
         '", "kana_reading": "' || w.kana_reading ||
-        '", "meanings": ' || w.meanings || '}', ', ') || ']' AS words
+        '", "meanings": ' || w.meanings ||
+        ', "priority_score": ' || kl.priority_score || '}', ', ') || ']' AS words
       FROM kanji_lessons kl
       JOIN words w ON kl.id_word = w.id
       JOIN kanjis k ON kl.id_kanji = k.id
@@ -432,15 +436,26 @@ const StudyPage = () => {
     dispatch(setPage("learningSettings"));
   };
 
+  // scroll to top of list
+  const wordsListRef = useRef(null);
+  const scrollToTop = () => {
+    if (wordsListRef.current) {
+      wordsListRef.current.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }
+  // ------------------------
+
   const previousKanji = () => {
     if (currentKanjiIndex > 0) {
       dispatch(setCurrentKanjiIndex(currentKanjiIndex - 1));
+      scrollToTop();
     }
   };
 
   const nextKanji = () => {
     if (!kanjiList[currentKanjiIndex]?.lessonDone) {
       dispatch(setCurrentKanjiIndex(currentKanjiIndex + 1));
+      scrollToTop();
     }
   };
 
@@ -516,10 +531,22 @@ const StudyPage = () => {
             )}
 
             {type === "kanji" && kanjiData?.words?.length !== 0 && (
-              <WordsList hide={kanjiList[currentKanjiIndex]?.lessonDone}>
+              <WordsList ref={wordsListRef} hide={kanjiList[currentKanjiIndex]?.lessonDone}>
                 {kanjiData?.words?.map((word) => (
-                  <div key={word.id}>
-                    {word.word} ({word.kana_reading}) ={" "}
+                  <div key={word.id} 
+                    // TO BE DELETED
+                    style={{ backgroundColor: 
+                    word.priority_score === 1 ? "#caffbf" // green
+                    : word.priority_score === 2 ? "#fdffb6" //yellow 
+                    : word.priority_score === 2 ? "#ffd6a5" //orange
+                    : "#ffadad" //red
+                    }}
+                    // -------------
+                  >
+                    {/* TO BE DELETED */}
+                    <div style={{ width: '7rem', display: 'inline-block' }}> [{word.id}] </div>
+                    {/* ------------- */}
+                     {word.word} ({word.kana_reading}) ={" "}
                     {word?.meanings.join(", ")}
                   </div>
                 ))}
@@ -541,7 +568,20 @@ const StudyPage = () => {
                 <>
                   <VocabularyList>
                     {wordsData.map((word, index) =>
-                      <Item key={index}>
+                      <Item 
+                        key={index}
+                        // TO BE DELETED
+                        style={{ backgroundColor: 
+                          word.priority_score === 1 ? "#caffbf" // green
+                          : word.priority_score === 2 ? "#fdffb6" //yellow 
+                          : word.priority_score === 2 ? "#ffd6a5" //orange
+                          : "#ffadad" //red
+                        }}
+                      // -------------
+                      >
+                        {/* TO BE DELETED */}
+                        <span style={{ width: '7rem', display: 'inline-block' }}> [{word.id}] </span>
+                        {/* ------------- */}
                         <WordContainer>
                           <ReadingContainer>
                             <Reading>{word?.kana_reading}</Reading>
