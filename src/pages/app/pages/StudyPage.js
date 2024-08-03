@@ -536,10 +536,11 @@ const StudyPage = () => {
                   <div key={word.id} 
                     // TO BE DELETED
                     style={{ backgroundColor: 
-                    word.priority_score === 1 ? "#caffbf" // green
-                    : word.priority_score === 2 ? "#fdffb6" //yellow 
-                    : word.priority_score === 2 ? "#ffd6a5" //orange
-                    : "#ffadad" //red
+                      word.priority_score === 1 ? "#caffbf" // green
+                      : word.priority_score === 2 ? "#fdffb6" //yellow 
+                      : word.priority_score === 3 ? "#ffd6a5" //orange
+                      : word.priority_score === 4 ? "#ffadad" //red
+                      : "#d3d3d3" //gray
                     }}
                     // -------------
                   >
@@ -574,8 +575,9 @@ const StudyPage = () => {
                         style={{ backgroundColor: 
                           word.priority_score === 1 ? "#caffbf" // green
                           : word.priority_score === 2 ? "#fdffb6" //yellow 
-                          : word.priority_score === 2 ? "#ffd6a5" //orange
-                          : "#ffadad" //red
+                          : word.priority_score === 3 ? "#ffd6a5" //orange
+                          : word.priority_score === 4 ? "#ffadad" //red
+                          : "#d3d3d3" //gray
                         }}
                       // -------------
                       >
