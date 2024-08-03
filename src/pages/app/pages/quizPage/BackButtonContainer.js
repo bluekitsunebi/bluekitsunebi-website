@@ -24,10 +24,10 @@ const BackButton = styled.div`
   ${tw`w-fit`}
 `;
 
-const BackButtonContainerComponent = ({mobile, desktop}) => {
+const BackButtonContainerComponent = ({ mobile, desktop, page = "study" }) => {
   const dispatch = useDispatch();
   const handleBackToStudy = () => {
-    dispatch(setPage("study"));
+    dispatch(setPage(page));
     dispatch(resetQuiz());
   };
 
@@ -39,7 +39,7 @@ const BackButtonContainerComponent = ({mobile, desktop}) => {
         </Button>
       </BackButton>
     </BackButtonContainer>
-  )
+  );
 };
 
 export default BackButtonContainerComponent;

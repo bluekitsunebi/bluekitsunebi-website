@@ -626,7 +626,7 @@ const QuizPage = () => {
 
   return (
     <>
-      <BackButtonContainer desktop />
+      <BackButtonContainer desktop page={"learningSettings"}/>
       <QuizPageContainer>
         <QuizCard
           handleWordReadingChange={handleWordReadingChange}
