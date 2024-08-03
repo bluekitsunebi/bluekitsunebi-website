@@ -320,14 +320,13 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
       } else if (current.type === "wordQuestions") {
         return quizData[current.set]?.wordQuestions[current.wordIndex]?.word
           ?.word;
-        // TO DO
       } else if (current.type === "vocabularyQuestion") {
         return (
           <Symbols>
             <Reading>
               {quizData[current.set]?.vocabularyQuestion?.reading}
             </Reading>
-            <Word>{quizData[current.set]?.vocabularyQuestion.word}</Word>
+            <Word>{quizData[current.set]?.vocabularyQuestion?.word}</Word>
           </Symbols>
         );
       }
@@ -618,7 +617,6 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
                 <FinalScoreContainer score={score} quizData={quizData} />
                 {score.wrongAnswers !== 0 && (
                   <>
-                    {/* TO DO */}
                     <ReviewContainer
                       quizData={quizData}
                       lastWrongQuestion={

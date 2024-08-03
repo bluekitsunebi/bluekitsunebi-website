@@ -104,7 +104,6 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
                 </KanjiQuestion>
               )}
 
-              {/* TO DO */}
               {set?.vocabularyQuestion?.options?.some(
                 (option) => option.isSelected && !option.isCorrect
               ) && (

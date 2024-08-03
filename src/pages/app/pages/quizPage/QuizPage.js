@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
@@ -36,6 +36,7 @@ const QuizPage = () => {
     (state) => state.studySettings.showAllKanjis
   );
   const wordsData = useSelector((state) => state.studyPage.wordsData);
+  const [questionHaveInitialType, setQuestionHaveInitialType] = useState(false);
 
   const kanjiQuery = () => {
     let query = `
@@ -331,8 +332,6 @@ const QuizPage = () => {
     } catch (error) {
       console.error(`Failed to load quiz data from database`, error);
     }
-    // TO BE DELETED
-    vocabularyData.slice(0, 1);
     return { kanjiData, vocabularyData };
   };
 
@@ -367,9 +366,7 @@ const QuizPage = () => {
       originalData?.kanjiData?.length &&
       originalData?.kanjiData?.length !== 0
     ) {
-      // TO BE DELETED
-      // for (let i = 0; i < originalData.kanjiData.length; i++) {
-        for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < originalData.kanjiData.length; i++) {
         let questionsSet = {
           kanjiQuestion: null,
           wordQuestions: [],
@@ -395,9 +392,9 @@ const QuizPage = () => {
       originalData?.vocabularyData?.length &&
       originalData?.vocabularyData?.length !== 0
     ) {
-      originalData.vocabularyData = setVocabularyData(originalData.vocabularyData);
-      // TO BE DELETED
-      originalData.vocabularyData.slice(0, 1);
+      originalData.vocabularyData = setVocabularyData(
+        originalData.vocabularyData
+      );
       originalData.vocabularyData.forEach((question) => {
         let questionsSet = {
           vocabularyQuestion: {
@@ -407,11 +404,9 @@ const QuizPage = () => {
           },
         };
         quizData.push(questionsSet);
-      })
+      });
     }
     quizData.sort(() => Math.random() - 0.5);
-    // TO BO DELETED
-    quizData.slice(0, 1);
     return quizData;
   };
 
@@ -493,8 +488,9 @@ const QuizPage = () => {
       JOIN 
         kanjis k ON kl.id_kanji = k.id
       WHERE 
-        kl.level = "${randomLevel || level}" AND kl.id_lesson = ${randomLessonId || lessonId - 1
-      }
+        kl.level = "${randomLevel || level}" AND kl.id_lesson = ${
+      randomLessonId || lessonId - 1
+    }
       GROUP BY 
         kl.id_kanji, 
         kl.level, 
@@ -535,8 +531,6 @@ const QuizPage = () => {
       wordQuestions.push(wordQuestion);
     }
     wordQuestions.sort(() => Math.random() - 0.5);
-    // TO BE DELETED
-    wordQuestions = wordQuestions.slice(0, 1)
     return wordQuestions;
   };
 
@@ -549,21 +543,25 @@ const QuizPage = () => {
   }, []);
 
   useEffect(() => {
-    if (quizData.length !== 0) {
+    if (!questionHaveInitialType && quizData.length !== 0) {
       if (action === "study" && type === "kanji") {
         dispatch(setCurrentType("kanjiQuestion"));
       } else if (action === "quiz") {
-        if (("kanjiQuestion" in quizData[0]) && ("wordQuestions" in quizData[0])) {
+        if ("kanjiQuestion" in quizData[0] && "wordQuestions" in quizData[0]) {
           dispatch(setCurrentType("kanjiQuestion"));
         } else if ("vocabularyQuestion" in quizData[0]) {
           dispatch(setCurrentType("vocabularyQuestion"));
         }
       }
+      setQuestionHaveInitialType(true);
     }
   }, [quizData]);
 
   const handleWordReadingChange = (e) => {
-    if (type === "kanji" || (action === "quiz" && current.type === "wordQuestions")) {
+    if (
+      type === "kanji" ||
+      (action === "quiz" && current.type === "wordQuestions")
+    ) {
       const value = e.target.value.replace(/\s+/g, "");
       const regex =
         /^[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF\uFF00-\uFFEFa-zA-Z]*$/;
@@ -575,7 +573,6 @@ const QuizPage = () => {
 
   const handleNextQuestion = () => {
     if (!retry) {
-      console.log("next");
       dispatch(nextQuestion([type, action]));
     } else {
       dispatch(nextWrongQuestion([type, action]));
@@ -586,7 +583,7 @@ const QuizPage = () => {
   };
 
   useEffect(() => {
-    if ((action === "study" && type === "kanji") || (action === "quiz")) {
+    if ((action === "study" && type === "kanji") || action === "quiz") {
       const handleGlobalKeyPress = (e) => {
         if (e.key !== "Enter") return;
         let isDisabled = false;
