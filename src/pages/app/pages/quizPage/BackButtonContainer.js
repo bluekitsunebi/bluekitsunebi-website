@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 import Button from "../../Button";
@@ -24,7 +24,13 @@ const BackButton = styled.div`
   ${tw`w-fit`}
 `;
 
-const BackButtonContainerComponent = ({ mobile, desktop, page = "study" }) => {
+const BackButtonContainerComponent = ({ mobile, desktop}) => {
+  const action = useSelector((state) => state.studySettings.action);
+  let page = "study";
+  if(action === "quiz") {
+    page = "learningSettings";
+  }
+
   const dispatch = useDispatch();
   const handleBackToStudy = () => {
     dispatch(setPage(page));

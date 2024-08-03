@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
@@ -231,7 +231,6 @@ const StudyPage = () => {
   );
   const kanjiData = useSelector((state) => state.studyPage.kanjiData);
   const wordsData = useSelector((state) => state.studyPage.wordsData);
-
   const fetchWordsData = async (newLessonId = lessonId) => {
     const data = await getWordsData(newLessonId);
     dispatch(setWordsData(data));
@@ -289,9 +288,8 @@ const StudyPage = () => {
   };
 
   useEffect(() => {
-    if (type === "kanji") {
-      kanjiList.length !== 0 &&
-        dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
+    if(currentKanjiIndex === null && type === "kanji" && kanjiList.length !== 0) {
+      dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
     }
   }, [kanjiList]);
 
