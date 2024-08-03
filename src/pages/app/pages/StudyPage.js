@@ -552,7 +552,7 @@ const StudyPage = () => {
                         <PartsOfSpeech>
                           {word?.parts_of_speech?.join(", ")}
                         </PartsOfSpeech>
-                        {word?.usually_kana && <UsuallyKana>Usually not using kanji</UsuallyKana>}
+                        {word?.usually_kana && <UsuallyKana>Usually not written in kanji</UsuallyKana>}
                       </Item>
                     )}
                   </VocabularyList>
