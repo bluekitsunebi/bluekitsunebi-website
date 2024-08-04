@@ -339,7 +339,7 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
     if (quizData?.length !== 0) {
       setSymbols(getSymbols());
     }
-  }, [quizData, current]);
+  }, [quizData, current, currentVocabularyQuestion]);
 
   const getIsDisabled = () => {
     let isButtonDisabled = false;
@@ -351,7 +351,7 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
           ]?.kanjiQuestion?.options.some((opt) => opt.isSelected);
         }
       } else if (type === "vocabulary") {
-        isButtonDisabled = !quizData[currentVocabularyQuestion].options.some(
+        isButtonDisabled = !quizData[currentVocabularyQuestion]?.options.some(
           (opt) => opt.isSelected
         );
       }
@@ -375,7 +375,7 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
     if(quizData?.length !== 0) {
       setIsDisabled(getIsDisabled());
     }
-  }, [current, quizData]);
+  }, [current, quizData, currentVocabularyQuestion]);
 
   return (
     <Card>

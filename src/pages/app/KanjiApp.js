@@ -2,7 +2,7 @@ import React from "react";
 import tw from "twin.macro";
 import styled from "styled-components";
 import LearningSettingsPage from "./pages/LearningSettingsPage";
-import StudyPage from "./pages/StudyPage";
+import StudyPage from "./pages/studyPage/StudyPage";
 import QuizPage from "./pages/quizPage/QuizPage";
 import { useSelector } from "react-redux";
 
