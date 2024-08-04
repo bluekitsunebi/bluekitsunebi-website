@@ -48,8 +48,18 @@ const QuizPage = () => {
               json_object(
                 'id', kl.id_word,
                 'word', w.word,
-                'kana_reading', w.kana_reading,
-                'romaji_reading', w.romaji_reading
+                'kana_readings', 
+                  '[' || (
+                    SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.kana_reading, ',', '","') || '"')
+                    FROM words w2
+                    WHERE w2.word = w.word
+                  ) || ']',
+                'romaji_readings', 
+                  '[' || (
+                    SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.romaji_reading, ',', '","') || '"')
+                    FROM words w2
+                    WHERE w2.word = w.word
+                  ) || ']'
               )
             ) || ']' AS words
           FROM 
@@ -86,9 +96,16 @@ const QuizPage = () => {
       while (stmt.step()) {
         let row = stmt.getAsObject();
         row.meanings = JSON.parse(row.meanings).slice(0, 3);
-        let words = JSON.parse(row.words).slice(0, 5);
-        words.sort(() => Math.random() - 0.5);
-        row.words = words.slice(0, 3);
+        row.words = JSON.parse(row.words)
+          .slice(0, 5)
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3);
+        for (let i = 0; i <= row.words.length - 1; i++) {
+          row.words[i].kana_readings = JSON.parse(row.words[i].kana_readings);
+          row.words[i].romaji_readings = JSON.parse(
+            row.words[i].romaji_readings
+          );
+        }
         originalData.push(row);
       }
       stmt.free();
@@ -184,8 +201,18 @@ const QuizPage = () => {
       '[' || GROUP_CONCAT(
         json_object(
           'word', w.word,
-          'kana_reading', w.kana_reading,
-          'romaji_reading', w.romaji_reading
+          'kana_readings', 
+            '[' || (
+              SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.kana_reading, ',', '","') || '"')
+              FROM words w2
+              WHERE w2.word = w.word
+            ) || ']',
+          'romaji_readings', 
+            '[' || (
+              SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.romaji_reading, ',', '","') || '"')
+              FROM words w2
+              WHERE w2.word = w.word
+            ) || ']'
         )
       ) || ']' AS words,
       'kanji' AS question_type
@@ -312,13 +339,20 @@ const QuizPage = () => {
       while (stmt.step()) {
         let row = stmt.getAsObject();
         if (row.question_type === "kanji") {
+          row.words = JSON.parse(row.words)
+            .slice(0, 5)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 3);
+          for (let i = 0; i <= row.words.length - 1; i++) {
+            row.words[i].kana_readings = JSON.parse(row.words[i].kana_readings);
+            row.words[i].romaji_readings = JSON.parse(
+              row.words[i].romaji_readings
+            );
+          }
           kanjiData.push({
             kanji: row.question,
             meanings: JSON.parse(row.meanings).slice(0, 3),
-            words: JSON.parse(row.words)
-              .slice(0, 5)
-              .sort(() => Math.random() - 0.5)
-              .slice(0, 3),
+            words: row.words,
           });
         } else if (row.question_type === "vocabulary") {
           vocabularyData.push({
@@ -626,7 +660,7 @@ const QuizPage = () => {
 
   return (
     <>
-      <BackButtonContainer desktop/>
+      <BackButtonContainer desktop />
       <QuizPageContainer>
         <QuizCard
           handleWordReadingChange={handleWordReadingChange}

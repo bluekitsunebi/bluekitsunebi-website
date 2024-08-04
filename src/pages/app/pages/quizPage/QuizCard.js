@@ -309,8 +309,8 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
       } else {
         return (
           <Symbols>
-            <Reading>{quizData[currentVocabularyQuestion].reading}</Reading>
-            <Word>{quizData[currentVocabularyQuestion].word}</Word>
+            <Reading>{quizData[currentVocabularyQuestion]?.reading}</Reading>
+            <Word>{quizData[currentVocabularyQuestion]?.word}</Word>
           </Symbols>
         );
       }
@@ -333,11 +333,13 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
     }
   };
 
-  const [symbols, setSymbols] = useState(getSymbols());
+  const [symbols, setSymbols] = useState(null);
 
   useEffect(() => {
-    setSymbols(getSymbols());
-  }, [action, type, current]);
+    if (quizData?.length !== 0) {
+      setSymbols(getSymbols());
+    }
+  }, [quizData, current]);
 
   const getIsDisabled = () => {
     let isButtonDisabled = false;
@@ -367,11 +369,13 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
     return isButtonDisabled;
   };
 
-  const [isDisabled, setIsDisabled] = useState(getIsDisabled());
+  const [isDisabled, setIsDisabled] = useState();
 
   useEffect(() => {
-    setIsDisabled(getIsDisabled());
-  }, [action, type, current, quizData]);
+    if(quizData?.length !== 0) {
+      setIsDisabled(getIsDisabled());
+    }
+  }, [current, quizData]);
 
   return (
     <Card>
@@ -533,11 +537,14 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
                           .userInput.isCorrect
                       }
                     >
-                      The correct reading is:{" "}
-                      {
-                        quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .word.kana_reading
-                      }
+                      {quizData[current.set]?.wordQuestions[current.wordIndex]
+                        .word.kana_readings?.length > 1
+                        ? "Correct readings are:　"
+                        : "Correct reading is: "}
+
+                      {quizData[current.set]?.wordQuestions[
+                        current.wordIndex
+                      ].word.kana_readings.join("、")}
                     </Message>
                     <Form>
                       <Input
@@ -572,12 +579,13 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
                           ].userInput.isCorrect
                         }
                       >
-                        The correct reading is:{" "}
-                        {
-                          quizData[current.set]?.wordQuestions[
-                            current.wordIndex
-                          ].word.kana_reading
-                        }
+                        {quizData[current.set]?.wordQuestions[current.wordIndex]
+                          .word.kana_readings?.length > 1
+                          ? "Correct readings are:　"
+                          : "Correct reading is: "}
+                        {quizData[current.set]?.wordQuestions[
+                          current.wordIndex
+                        ].word.kana_readings.join("、")}
                       </Message>
                       <Form>
                         <Input

@@ -175,14 +175,12 @@ export const quizPageSlice = createSlice({
         state.quizData[state.current.set].wordQuestions[state.current.wordIndex]
           .userInput.value;
       if (
-        userInput ===
-          state.quizData[state.current.set].wordQuestions[
-            state.current.wordIndex
-          ].word.kana_reading ||
-        userInput ===
-          state.quizData[state.current.set].wordQuestions[
-            state.current.wordIndex
-          ].word.romaji_reading
+        state.quizData[state.current.set].wordQuestions[
+          state.current.wordIndex
+        ].word.kana_readings.includes(userInput) ||
+        state.quizData[state.current.set].wordQuestions[
+          state.current.wordIndex
+        ].word.romaji_readings.includes(userInput)
       ) {
         state.quizData[state.current.set].wordQuestions[
           state.current.wordIndex
