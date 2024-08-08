@@ -537,14 +537,10 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
                           .userInput.isCorrect
                       }
                     >
-                      {quizData[current.set]?.wordQuestions[current.wordIndex]
-                        .word.kana_readings?.length > 1
-                        ? "Correct readings are:　"
-                        : "Correct reading is: "}
-
+                      Correct reading is:{" "}
                       {quizData[current.set]?.wordQuestions[
                         current.wordIndex
-                      ].word.kana_readings.join("、")}
+                      ].word.kana_reading}
                     </Message>
                     <Form>
                       <Input
@@ -579,13 +575,10 @@ const QuizCard = ({ handleWordReadingChange, handleNextQuestion }) => {
                           ].userInput.isCorrect
                         }
                       >
-                        {quizData[current.set]?.wordQuestions[current.wordIndex]
-                          .word.kana_readings?.length > 1
-                          ? "Correct readings are:　"
-                          : "Correct reading is: "}
+                        Correct reading is:{" "}
                         {quizData[current.set]?.wordQuestions[
                           current.wordIndex
-                        ].word.kana_readings.join("、")}
+                        ].word.kana_reading}
                       </Message>
                       <Form>
                         <Input

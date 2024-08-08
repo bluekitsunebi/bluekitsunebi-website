@@ -26,6 +26,7 @@ import QuizLevel from "../QuizLevel";
 import QuizType from "../QuizType";
 import QuizLesson from "../QuizLesson";
 import Button from "../Button";
+import { setStartQuizLoading } from "store/app/studyPageSlice";
 
 const ButtonsContainer = styled.div`
   ${tw`flex flex-row w-full gap-2`}
@@ -34,7 +35,6 @@ const ButtonsContainer = styled.div`
 const ButtonContainer = styled.div`
   ${tw`w-fit`}
 `;
-
 
 const LearningSettingsPage = () => {
   const dispatch = useDispatch();
@@ -48,9 +48,14 @@ const LearningSettingsPage = () => {
 
   const quizSettings = useSelector((state) => state.quizSettings.quizSettings);
   const allSelected = useSelector((state) => state.quizSettings.allSelected);
-  const allDeselected = useSelector((state) => state.quizSettings.allDeselected);
+  const allDeselected = useSelector(
+    (state) => state.quizSettings.allDeselected
+  );
   const allExpanded = useSelector((state) => state.quizSettings.allExpanded);
   const allShrunk = useSelector((state) => state.quizSettings.allShrunk);
+  const startQuizLoading = useSelector(
+    (state) => state.studyPage.startQuizLoading
+  );
 
   const handleSetStudyType = (type) => {
     dispatch(setStudyType(type));
@@ -76,13 +81,16 @@ const LearningSettingsPage = () => {
   // ---------------------
 
   const handleStartQuiz = () => {
-    if (!allDeselected) {
-      dispatch(setPage("quiz"));
-    }
+    dispatch(setStartQuizLoading(true));
   };
 
-  return (
+  useEffect(() => {
+    if (setStartQuizLoading === true) {
+      dispatch(setPage("quiz"));
+    }
+  }, [setStartQuizLoading]);
 
+  return (
     <Card>
       <PrimarySettings>
         <ActionSelector />
@@ -132,10 +140,14 @@ const LearningSettingsPage = () => {
             <>
               <ButtonsContainer>
                 <ButtonContainer onClick={() => handleSelectAll()}>
-                  <Button monochrome disabled={allSelected}>Select all</Button>
+                  <Button monochrome disabled={allSelected}>
+                    Select all
+                  </Button>
                 </ButtonContainer>
                 <ButtonContainer onClick={() => handleDeselectAll()}>
-                  <Button monochrome disabled={allDeselected}>Deselect All</Button>
+                  <Button monochrome disabled={allDeselected}>
+                    Deselect All
+                  </Button>
                 </ButtonContainer>
               </ButtonsContainer>
               {/* TO DO - show/hide all */}
@@ -182,7 +194,9 @@ const LearningSettingsPage = () => {
                 ))}
               </QuizListWrapper>
               <ButtonContainer onClick={() => handleStartQuiz()}>
-                <Button disabled={allDeselected}>Start Quiz</Button>
+                <Button disabled={allDeselected} loading={startQuizLoading}>
+                  Start Quiz
+                </Button>
               </ButtonContainer>
             </>
           )
@@ -192,7 +206,6 @@ const LearningSettingsPage = () => {
         )}
       </PrimarySettings>
     </Card>
-
   );
 };
 

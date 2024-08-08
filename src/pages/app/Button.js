@@ -1,9 +1,23 @@
 import React from "react";
 import tw from "twin.macro";
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+// import { FaSpinner as LoadingIcon } from "react-icons/fa6";
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+// const SpinnerIcon = styled(LoadingIcon)`
+// animation: ${spin} 1s linear infinite;
+// `;
 
 const ButtonWrapper = styled.div`
-  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none
+  ${tw`bg-white hover:bg-primary-500 text-primary-700 font-semibold hover:text-white py-2 px-4 border-primary-500 hover:border-transparent cursor-pointer border rounded text-center w-full h-fit transition-colors duration-300 select-none flex flex-row gap-2 items-center justify-center
     
     text-xl sm:text-2xl
     `}
@@ -134,6 +148,7 @@ const Button = ({
   full,
   disabled,
   roundColored,
+  loading,
 }) => {
   return (
     <ButtonWrapper
@@ -150,8 +165,9 @@ const Button = ({
       full={full}
       disabled={disabled}
       roundColored={roundColored}
+      {...(loading && {loading: {loading}})}
     >
-      {children}
+      {!loading ? children : "Loading"}
     </ButtonWrapper>
   );
 };

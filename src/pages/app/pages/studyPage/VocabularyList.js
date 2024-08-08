@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
 
@@ -59,30 +60,32 @@ const UsuallyKana = styled.div`
   }
 `;
 
-const VocabularyList = ({ wordsData }) => (
-  <VocabularyListContainer>
-    {wordsData.map((word, index) => (
-      <Item key={index}>
-        <WordContainer>
-          <ReadingContainer>
-            <Reading>{word?.kana_reading}</Reading>
-          </ReadingContainer>
-          <Word>{word?.word}</Word>
-        </WordContainer>
-        <Meanings>
-          {" = " +
-            word?.meanings?.join(", ") +
-            (word?.parts_of_speech ? " " : "")}
-        </Meanings>
-        <PartsOfSpeech>
-          {word?.parts_of_speech?.join(", ")}
-        </PartsOfSpeech>
-        {word?.usually_kana && (
-          <UsuallyKana>Usually not written in kanji</UsuallyKana>
-        )}
-      </Item>
-    ))}
-  </VocabularyListContainer>
-);
+const VocabularyList = () => {
+  const wordsData = useSelector((state) => state.studyPage.wordsData);
+
+  return (
+    <VocabularyListContainer>
+      {wordsData.map((word, index) => (
+        <Item key={index}>
+          <WordContainer>
+            <ReadingContainer>
+              <Reading>{word?.kana_reading}</Reading>
+            </ReadingContainer>
+            <Word>{word?.word}</Word>
+          </WordContainer>
+          <Meanings>
+            {" = " +
+              word?.meanings?.join(", ") +
+              (word?.parts_of_speech ? " " : "")}
+          </Meanings>
+          <PartsOfSpeech>{word?.parts_of_speech?.join(", ")}</PartsOfSpeech>
+          {word?.usually_kana && (
+            <UsuallyKana>Usually not written in kanji</UsuallyKana>
+          )}
+        </Item>
+      ))}
+    </VocabularyListContainer>
+  );
+};
 
 export default VocabularyList;

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import tw from "twin.macro";
 import styled, { css } from "styled-components";
 
@@ -33,11 +34,16 @@ const WordsListContainer = styled.div`
   }
 `;
 
-const WordsList = ({ kanjiData, hide }) => {
+const WordsList = () => {
+  const kanjiData = useSelector((state) => state.studyPage.kanjiData);
+  const kanjiList = useSelector((state) => state.studyPage.kanjiList);
+  const currentKanjiIndex = useSelector(
+    (state) => state.studyPage.currentKanjiIndex
+  );
   const wordsListRef = useRef(null);
 
   return (
-    <WordsListContainer ref={wordsListRef} hide={hide}>
+    <WordsListContainer ref={wordsListRef} hide={kanjiList[currentKanjiIndex]?.lessonDone}>
       {kanjiData?.words?.map((word) => (
         <div key={word.id}>
           {word.word} ({word.kana_reading}) ={" "}

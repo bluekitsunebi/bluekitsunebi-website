@@ -5,6 +5,7 @@ const initialState = {
   currentKanjiIndex: null,
   kanjiData: null,
   wordsData: null,
+  startQuizLoading: false,
 };
 
 export const studyPageSlice = createSlice({
@@ -33,6 +34,9 @@ export const studyPageSlice = createSlice({
         state.wordsData = null;
       }
     },
+    setStartQuizLoading(state, action) {
+      state.startQuizLoading = action.payload;
+    },
   },
 });
 
@@ -44,5 +48,6 @@ export const {
   setKanjiData,
   reset,
   setWordsData,
+  setStartQuizLoading,
 } = studyPageSlice.actions;
 export default studyPageSlice.reducer;

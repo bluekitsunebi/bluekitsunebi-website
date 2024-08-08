@@ -1,15 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import tw from "twin.macro";
 import styled from "styled-components";
-import { setPage } from "store/app/appSlice";
 import { setStudyKanji, setStudyLesson } from "store/app/studySettingsSlice";
 import {
-  setKanjiList,
   setCurrentKanjiIndex,
   setKanjiData,
-  setWordsData,
-  reset,
 } from "store/app/studyPageSlice";
 import BackButtonComponent from "./BackButton";
 import KanjiNavigator from "./KanjiNavigator";
@@ -45,76 +41,19 @@ const StudyPage = () => {
   const showAllKanjis = useSelector(
     (state) => state.studySettings.showAllKanjis
   );
-  const responseStudyKanjiLessons = useSelector(
-    (state) => state.studySettings.responseStudyKanjiLessons
-  );
-  const responseStudyVocabularyLessons = useSelector(
-    (state) => state.studySettings.responseStudyVocabularyLessons
-  );
   const kanjiList = useSelector((state) => state.studyPage.kanjiList);
   const currentKanjiIndex = useSelector(
     (state) => state.studyPage.currentKanjiIndex
   );
   const kanjiData = useSelector((state) => state.studyPage.kanjiData);
   const wordsData = useSelector((state) => state.studyPage.wordsData);
-  const fetchWordsData = async (newLessonId = lessonId) => {
-    const data = await getWordsData(newLessonId);
-    dispatch(setWordsData(data));
-  };
 
   useEffect(() => {
-    if (type === "kanji") {
-      dispatch(setKanjiList(getKanjiList()));
-    } else if (type === "vocabulary") {
-      fetchWordsData();
-    }
-  }, []);
-
-  const getWordsData = async (newLessonId) => {
-    if (level && newLessonId) {
-      try {
-        const query = `
-          SELECT 
-            w.id,
-            w.word,
-            w.meanings,
-            w.parts_of_speech,
-            w.kana_reading,
-            w.usually_kana,
-            vl.priority_score
-          FROM 
-            vocab_lessons vl
-          JOIN 
-            words w ON vl.id_word = w.id
-          WHERE 
-            vl.level = "${level}" AND vl.id_lesson = ${newLessonId};
-        `;
-        const stmt = database.prepare(query);
-        let data = [];
-        while (stmt.step()) {
-          const row = stmt.getAsObject();
-          data.push({
-            id: row.id,
-            word: row.word,
-            meanings: JSON.parse(row.meanings),
-            parts_of_speech: JSON.parse(row.parts_of_speech),
-            kana_reading: row.kana_reading,
-            usually_kana: row.usually_kana === "True",
-            priority_score: row.priority_score,
-          });
-        }
-        return data;
-      } catch (error) {
-        console.error(
-          `Failed to load words data for ${level}, lesson ${newLessonId} from database`,
-          error
-        );
-      }
-    } else return null;
-  };
-
-  useEffect(() => {
-    if(currentKanjiIndex === null && type === "kanji" && kanjiList.length !== 0) {
+    if (
+      currentKanjiIndex === null &&
+      type === "kanji" &&
+      kanjiList.length !== 0
+    ) {
       dispatch(setCurrentKanjiIndex(getCurrentKajiIndex()));
     }
   }, [kanjiList]);
@@ -139,52 +78,6 @@ const StudyPage = () => {
       fetchKanjiData();
     }
   }, [kanjiId]);
-
-  const getKanjiList = () => {
-    if (responseStudyKanjiLessons && level) {
-      if (!showAllKanjis && lessonId) {
-        const lesson = responseStudyKanjiLessons[level]?.find(
-          (lesson) => lesson?.id === lessonId
-        );
-        if (lesson && lesson.kanjis) {
-          let list =
-            lesson.kanjis?.map((kanji) => ({
-              level: level,
-              idLesson: lessonId,
-              idKanji: kanji.id,
-              lessonDone: false,
-            })) || [];
-
-          list.push({
-            level: null,
-            idLesson: null,
-            idKanji: null,
-            lessonDone: true,
-          });
-          return list;
-        } else {
-          return [];
-        }
-      } else if (showAllKanjis) {
-        let list =
-          responseStudyKanjiLessons[level]?.flatMap((lesson) =>
-            lesson.kanjis.map((kanji) => ({
-              level: level,
-              idLesson: lesson.id,
-              idKanji: kanji.id,
-              lessonDone: false,
-            }))
-          ) || [];
-        list.push({
-          level: null,
-          idLesson: null,
-          idKanji: null,
-          lessonDone: true,
-        });
-        return list;
-      } else return [];
-    } else return [];
-  };
 
   const getCurrentKajiIndex = () => {
     let index = kanjiList?.findIndex((kanji) => kanji.idKanji === kanjiId);
@@ -246,93 +139,27 @@ const StudyPage = () => {
     } else return null;
   };
 
-  const handleBackToLessons = () => {
-    if (type === "kanji") {
-      showAllKanjis && dispatch(setStudyLesson(null));
-    }
-    dispatch(reset(type));
-    dispatch(setPage("learningSettings"));
-  };
-
-  // scroll to top of list
-  const wordsListRef = useRef(null);
-  const scrollToTop = () => {
-    if (wordsListRef.current) {
-      wordsListRef.current.scrollTo({ top: 0, behavior: "instant" });
-    }
-  };
-  // ------------------------
-
-  const previousKanji = () => {
-    if (currentKanjiIndex > 0) {
-      dispatch(setCurrentKanjiIndex(currentKanjiIndex - 1));
-      scrollToTop();
-    }
-  };
-
-  const nextKanji = () => {
-    if (!kanjiList[currentKanjiIndex]?.lessonDone) {
-      dispatch(setCurrentKanjiIndex(currentKanjiIndex + 1));
-      scrollToTop();
-    }
-  };
-
-  const previousLesson = () => {
-    if (lessonId > 1) {
-      dispatch(setStudyLesson(lessonId - 1));
-      fetchWordsData(lessonId - 1);
-    }
-  };
-
-  const nextLesson = () => {
-    if (
-      responseStudyVocabularyLessons[level] &&
-      lessonId < responseStudyVocabularyLessons[level].length
-    ) {
-      dispatch(setStudyLesson(lessonId + 1));
-      fetchWordsData(lessonId + 1);
-    }
-  };
-
-  const goToQuiz = () => {
-    dispatch(setPage("quiz"));
-  };
-
   return (
     <>
-      <BackButtonComponent onClick={handleBackToLessons} />
+      <BackButtonComponent />
       <StudyPageContainer>
         <Card>
-          <KanjiNavigator
-            type={type}
-            kanjiData={kanjiData}
-            currentKanjiIndex={currentKanjiIndex}
-            kanjiList={kanjiList}
-            lessonId={lessonId}
-            responseStudyVocabularyLessons={responseStudyVocabularyLessons}
-            level={level}
-            previousKanji={previousKanji}
-            nextKanji={nextKanji}
-            previousLesson={previousLesson}
-            nextLesson={nextLesson}
-          />
+          <KanjiNavigator />
 
           {type === "kanji" && !kanjiList[currentKanjiIndex]?.lessonDone && (
-            <KanjiDetails kanjiData={kanjiData} />
+            <KanjiDetails />
           )}
 
-          {type === "kanji" && kanjiData?.words?.length !== 0 && (
-            <WordsList kanjiData={kanjiData} hide={kanjiList[currentKanjiIndex]?.lessonDone} />
-          )}
+          {type === "kanji" && kanjiData?.words?.length !== 0 && <WordsList />}
 
           {type === "kanji" && kanjiList[currentKanjiIndex]?.lessonDone && (
-            <StartQuiz type={type} goToQuiz={goToQuiz} />
+            <StartQuiz />
           )}
 
           {type === "vocabulary" && wordsData && wordsData.length !== 0 && (
             <>
-              <VocabularyList wordsData={wordsData} />
-              <StartQuiz type={type} goToQuiz={goToQuiz} />
+              <VocabularyList />
+              <StartQuiz />
             </>
           )}
         </Card>

@@ -48,18 +48,9 @@ const QuizPage = () => {
               json_object(
                 'id', kl.id_word,
                 'word', w.word,
-                'kana_readings', 
-                  '[' || (
-                    SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.kana_reading, ',', '","') || '"')
-                    FROM words w2
-                    WHERE w2.word = w.word
-                  ) || ']',
-                'romaji_readings', 
-                  '[' || (
-                    SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.romaji_reading, ',', '","') || '"')
-                    FROM words w2
-                    WHERE w2.word = w.word
-                  ) || ']'
+                'kana_reading', w.kana_reading,
+                'romaji_reading', w.romaji_reading,
+                'other_readings', w.other_readings,
               )
             ) || ']' AS words
           FROM 
@@ -101,10 +92,7 @@ const QuizPage = () => {
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
         for (let i = 0; i <= row.words.length - 1; i++) {
-          row.words[i].kana_readings = JSON.parse(row.words[i].kana_readings);
-          row.words[i].romaji_readings = JSON.parse(
-            row.words[i].romaji_readings
-          );
+          row.words[i].other_readings = JSON.parse(row.words[i].other_readings);
         }
         originalData.push(row);
       }
@@ -201,18 +189,9 @@ const QuizPage = () => {
       '[' || GROUP_CONCAT(
         json_object(
           'word', w.word,
-          'kana_readings', 
-            '[' || (
-              SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.kana_reading, ',', '","') || '"')
-              FROM words w2
-              WHERE w2.word = w.word
-            ) || ']',
-          'romaji_readings', 
-            '[' || (
-              SELECT GROUP_CONCAT(DISTINCT '"' || REPLACE(w2.romaji_reading, ',', '","') || '"')
-              FROM words w2
-              WHERE w2.word = w.word
-            ) || ']'
+          'kana_reading', w.kana_reading,
+          'romaji_reading', w.romaji_reading,
+          'other_readings', w.other_readings
         )
       ) || ']' AS words,
       'kanji' AS question_type
@@ -344,10 +323,7 @@ const QuizPage = () => {
             .sort(() => Math.random() - 0.5)
             .slice(0, 3);
           for (let i = 0; i <= row.words.length - 1; i++) {
-            row.words[i].kana_readings = JSON.parse(row.words[i].kana_readings);
-            row.words[i].romaji_readings = JSON.parse(
-              row.words[i].romaji_readings
-            );
+            row.words[i].other_readings = JSON.parse(row.words[i].other_readings);
           }
           kanjiData.push({
             kanji: row.question,
@@ -358,7 +334,8 @@ const QuizPage = () => {
           vocabularyData.push({
             word: row.question,
             meanings: JSON.parse(row.meanings),
-            kana_reading: row.words,
+            // TO DO
+            // kana_reading: row.words,
           });
         }
       }

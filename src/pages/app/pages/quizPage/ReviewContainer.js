@@ -146,7 +146,7 @@ const ReviewContainerComponent = ({ quizData, lastWrongQuestion }) => {
                       </QuestionItem>
                       <QuestionItem>
                         reading:{" "}
-                        <Correct>{wordQuestion.word.kana_readings.join("、")}</Correct>
+                        <Correct>{wordQuestion.word.kana_reading}</Correct>
                       </QuestionItem>
                       <QuestionItem>
                         your answer:{" "}
